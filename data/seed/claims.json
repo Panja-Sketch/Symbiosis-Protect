@@ -1,0 +1,65 @@
+[
+ {
+  "cause": "Monsoon wind lifted roof tiles before purchase by current owner (prior-owner loss history)",
+  "date": "2023-08-14",
+  "id": "clm-p1-1",
+  "paid_usd": 4200,
+  "peril": "wind_hail",
+  "policy_id": "pol-p1",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "cause": "Water heater supply line failed between tenants; found after several days",
+  "date": "2021-05-03",
+  "id": "clm-p2-1",
+  "paid_usd": 6800,
+  "peril": "water",
+  "policy_id": "pol-p2",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "cause": "Guest slipped on a wet entry floor after a monsoon roof leak",
+  "date": "2022-09-21",
+  "id": "clm-p3-1",
+  "paid_usd": 3500,
+  "peril": "liability",
+  "policy_id": "pol-p3",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "cause": "Ice machine supply line leaked into dry storage over a weekend",
+  "date": "2024-06-30",
+  "id": "clm-p3-2",
+  "paid_usd": 11200,
+  "peril": "water",
+  "policy_id": "pol-p3",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "cause": "Stockroom pipe burst during a hard freeze while heat was set back",
+  "date": "2023-01-18",
+  "id": "clm-p4-1",
+  "paid_usd": 18400,
+  "peril": "freeze",
+  "policy_id": "pol-p4",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "cause": "Washer hose failure in an upper unit damaged the ceiling of the unit below",
+  "date": "2024-07-09",
+  "id": "clm-p5-1",
+  "paid_usd": 27900,
+  "peril": "water",
+  "policy_id": "pol-p5",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "cause": "Compressor trip during an extreme-heat week; cooler warmed overnight",
+  "date": "2022-07-26",
+  "id": "clm-p6-1",
+  "paid_usd": 64000,
+  "peril": "spoilage",
+  "policy_id": "pol-p6",
+  "provenance": "SYNTHETIC"
+ }
+]

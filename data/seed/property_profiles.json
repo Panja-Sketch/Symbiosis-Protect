@@ -1,0 +1,120 @@
+[
+ {
+  "construction": "stucco frame",
+  "freeze_exposed_plumbing": false,
+  "has_central_ac": true,
+  "heated_year_round": true,
+  "location_id": "loc-p1",
+  "notes": "Bought 2026. Seller records do not show water heater age or hose replacement.",
+  "occupancy": "owner_occupied",
+  "provenance": "SYNTHETIC",
+  "roof_type": "concrete tile",
+  "scheduled_closures": [],
+  "sprinkler_type": "none",
+  "sqft": 2150,
+  "stories": 1,
+  "unit_count": null,
+  "year_built": 1998
+ },
+ {
+  "construction": "block and stucco",
+  "freeze_exposed_plumbing": false,
+  "has_central_ac": true,
+  "heated_year_round": true,
+  "location_id": "loc-p2",
+  "notes": "Lease ended 2026-10-18; next tenant expected 2026-12-01 (about 6 weeks vacant).",
+  "occupancy": "vacant_between_tenants",
+  "provenance": "SYNTHETIC",
+  "roof_type": "tile",
+  "scheduled_closures": [],
+  "sprinkler_type": "none",
+  "sqft": 1380,
+  "stories": 1,
+  "unit_count": null,
+  "year_built": 1984
+ },
+ {
+  "construction": "masonry",
+  "freeze_exposed_plumbing": false,
+  "has_central_ac": true,
+  "heated_year_round": true,
+  "location_id": "loc-p3",
+  "notes": "Four rooftop AC units over the dining room and kitchen.",
+  "occupancy": "commercial_open",
+  "provenance": "SYNTHETIC",
+  "roof_type": "flat membrane with roof drains and scuppers",
+  "scheduled_closures": [],
+  "sprinkler_type": "none",
+  "sqft": 5200,
+  "stories": 1,
+  "unit_count": null,
+  "year_built": 2006
+ },
+ {
+  "construction": "wood frame",
+  "freeze_exposed_plumbing": true,
+  "has_central_ac": false,
+  "heated_year_round": true,
+  "location_id": "loc-p4",
+  "notes": "Back stockroom and sprinkler riser sit on an exterior wall.",
+  "occupancy": "commercial_open",
+  "provenance": "SYNTHETIC",
+  "roof_type": "membrane, snow-load rated",
+  "scheduled_closures": [
+   {
+    "end": "2026-11-26",
+    "label": "Thanksgiving Day",
+    "start": "2026-11-26"
+   },
+   {
+    "end": "2026-12-26",
+    "label": "Christmas closure",
+    "start": "2026-12-24"
+   },
+   {
+    "end": "2027-01-01",
+    "label": "New Year's Day",
+    "start": "2027-01-01"
+   }
+  ],
+  "sprinkler_type": "wet",
+  "sqft": 8400,
+  "stories": 1,
+  "unit_count": null,
+  "year_built": 1996
+ },
+ {
+  "construction": "wood frame, stucco",
+  "freeze_exposed_plumbing": false,
+  "has_central_ac": true,
+  "heated_year_round": true,
+  "location_id": "loc-p5",
+  "notes": "4 floors x 12 units (A-L). Unit label = floor number + letter, e.g. 3B sits above 2B.",
+  "occupancy": "multi_unit_residential",
+  "provenance": "SYNTHETIC",
+  "roof_type": "flat roof with internal drains",
+  "scheduled_closures": [],
+  "sprinkler_type": "none",
+  "sqft": 41000,
+  "stories": 4,
+  "unit_count": 48,
+  "year_built": 1988
+ },
+ {
+  "construction": "insulated metal panel",
+  "freeze_exposed_plumbing": false,
+  "has_central_ac": false,
+  "heated_year_round": true,
+  "location_id": "loc-p6",
+  "notes": "Two cooler rooms, packing line with wash-down, standby generator.",
+  "occupancy": "agricultural_facility",
+  "provenance": "SYNTHETIC",
+  "roof_type": "metal",
+  "scheduled_closures": [],
+  "sprinkler_type": "none",
+  "sqft": 22000,
+  "stories": 1,
+  "unit_count": null,
+  "year_built": 2009
+ }
+]

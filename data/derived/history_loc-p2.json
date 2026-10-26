@@ -1,0 +1,224 @@
+{
+ "avg_per_year": {
+  "days_ge_105f": 24.0,
+  "days_ge_110f": 4.6,
+  "longest_streak_ge_110f": 2.8,
+  "monsoon_days_ge_050in": 3.2,
+  "monsoon_precip_in": 5.9,
+  "nights_le_28f": 0.8,
+  "nights_le_32f": 4.8,
+  "precip_in": 15.3
+ },
+ "city": "Tucson",
+ "grid_lat": 32.231983,
+ "grid_lon": -110.92009,
+ "location_id": "loc-p2",
+ "monthly_normals": [
+  {
+   "mean_max_f": 64.4,
+   "mean_min_f": 39.7,
+   "mean_precip_in": 1.2,
+   "month": 1
+  },
+  {
+   "mean_max_f": 67.3,
+   "mean_min_f": 42.1,
+   "mean_precip_in": 1.13,
+   "month": 2
+  },
+  {
+   "mean_max_f": 74.3,
+   "mean_min_f": 47.1,
+   "mean_precip_in": 0.68,
+   "month": 3
+  },
+  {
+   "mean_max_f": 81.6,
+   "mean_min_f": 53.6,
+   "mean_precip_in": 0.24,
+   "month": 4
+  },
+  {
+   "mean_max_f": 90.4,
+   "mean_min_f": 62.3,
+   "mean_precip_in": 0.11,
+   "month": 5
+  },
+  {
+   "mean_max_f": 99.5,
+   "mean_min_f": 71.9,
+   "mean_precip_in": 0.18,
+   "month": 6
+  },
+  {
+   "mean_max_f": 98.6,
+   "mean_min_f": 77.2,
+   "mean_precip_in": 1.35,
+   "month": 7
+  },
+  {
+   "mean_max_f": 97.2,
+   "mean_min_f": 76.2,
+   "mean_precip_in": 1.31,
+   "month": 8
+  },
+  {
+   "mean_max_f": 93.6,
+   "mean_min_f": 70.6,
+   "mean_precip_in": 1.12,
+   "month": 9
+  },
+  {
+   "mean_max_f": 84.7,
+   "mean_min_f": 58.9,
+   "mean_precip_in": 0.62,
+   "month": 10
+  },
+  {
+   "mean_max_f": 73.3,
+   "mean_min_f": 47.8,
+   "mean_precip_in": 0.7,
+   "month": 11
+  },
+  {
+   "mean_max_f": 63.5,
+   "mean_min_f": 39.6,
+   "mean_precip_in": 1.24,
+   "month": 12
+  }
+ ],
+ "normals_period": "1991-2020",
+ "per_year": {
+  "2021": {
+   "days_ge_100f": 40,
+   "days_ge_105f": 12,
+   "days_ge_110f": 6,
+   "days_ge_115f": 0,
+   "days_observed": 365,
+   "longest_streak_ge_110f": 6,
+   "max_temp_f": 112.4,
+   "min_temp_f": 30.3,
+   "monsoon_days_ge_025in": 14,
+   "monsoon_days_ge_050in": 7,
+   "monsoon_precip_in": 13.48,
+   "nights_ge_90f": 0,
+   "nights_le_20f": 0,
+   "nights_le_28f": 0,
+   "nights_le_32f": 2,
+   "precip_in": 18.85,
+   "wettest_day": {
+    "date": "2021-07-24",
+    "precip_in": 1.86
+   }
+  },
+  "2022": {
+   "days_ge_100f": 48,
+   "days_ge_105f": 12,
+   "days_ge_110f": 0,
+   "days_ge_115f": 0,
+   "days_observed": 365,
+   "longest_streak_ge_110f": 0,
+   "max_temp_f": 108.8,
+   "min_temp_f": 29.5,
+   "monsoon_days_ge_025in": 9,
+   "monsoon_days_ge_050in": 6,
+   "monsoon_precip_in": 8.08,
+   "nights_ge_90f": 0,
+   "nights_le_20f": 0,
+   "nights_le_28f": 0,
+   "nights_le_32f": 5,
+   "precip_in": 15.15,
+   "wettest_day": {
+    "date": "2022-08-19",
+    "precip_in": 1.38
+   }
+  },
+  "2023": {
+   "days_ge_100f": 75,
+   "days_ge_105f": 38,
+   "days_ge_110f": 7,
+   "days_ge_115f": 0,
+   "days_observed": 365,
+   "longest_streak_ge_110f": 3,
+   "max_temp_f": 112.1,
+   "min_temp_f": 27.4,
+   "monsoon_days_ge_025in": 3,
+   "monsoon_days_ge_050in": 1,
+   "monsoon_precip_in": 2.48,
+   "nights_ge_90f": 0,
+   "nights_le_20f": 0,
+   "nights_le_28f": 2,
+   "nights_le_32f": 8,
+   "precip_in": 12.29,
+   "wettest_day": {
+    "date": "2023-09-13",
+    "precip_in": 1.23
+   }
+  },
+  "2024": {
+   "days_ge_100f": 82,
+   "days_ge_105f": 27,
+   "days_ge_110f": 4,
+   "days_ge_115f": 0,
+   "days_observed": 366,
+   "longest_streak_ge_110f": 2,
+   "max_temp_f": 111.4,
+   "min_temp_f": 27.3,
+   "monsoon_days_ge_025in": 3,
+   "monsoon_days_ge_050in": 1,
+   "monsoon_precip_in": 3.19,
+   "nights_ge_90f": 0,
+   "nights_le_20f": 0,
+   "nights_le_28f": 1,
+   "nights_le_32f": 5,
+   "precip_in": 15.51,
+   "wettest_day": {
+    "date": "2024-01-21",
+    "precip_in": 1.26
+   }
+  },
+  "2025": {
+   "days_ge_100f": 76,
+   "days_ge_105f": 31,
+   "days_ge_110f": 6,
+   "days_ge_115f": 0,
+   "days_observed": 365,
+   "longest_streak_ge_110f": 3,
+   "max_temp_f": 114.4,
+   "min_temp_f": 26.1,
+   "monsoon_days_ge_025in": 1,
+   "monsoon_days_ge_050in": 1,
+   "monsoon_precip_in": 2.5,
+   "nights_ge_90f": 0,
+   "nights_le_20f": 0,
+   "nights_le_28f": 1,
+   "nights_le_32f": 4,
+   "precip_in": 14.53,
+   "wettest_day": {
+    "date": "2025-10-12",
+    "precip_in": 2.46
+   }
+  }
+ },
+ "provenance": "HISTORIC",
+ "record_in_period": {
+  "coldest": {
+   "date": "2011-02-03",
+   "temp_f": 21.0
+  },
+  "hottest": {
+   "date": "2025-08-06",
+   "temp_f": 114.4
+  }
+ },
+ "source": "Open-Meteo Historical Weather API (ERA5-based reanalysis), non-commercial tier",
+ "source_url": "https://open-meteo.com/en/docs/historical-weather-api",
+ "years": [
+  "2021",
+  "2022",
+  "2023",
+  "2024",
+  "2025"
+ ],
+ "years_count": 5
+}

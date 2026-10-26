@@ -1,0 +1,34 @@
+[
+ {
+  "agency_name": "Sonoran Shield Insurance Group (synthetic)",
+  "email": "dana@sonoran-shield.example",
+  "id": "agent-1",
+  "name": "Dana Whitfield",
+  "phone": "602-555-0142",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "agency_name": "Old Pueblo Risk Partners (synthetic)",
+  "email": "marcus@oldpueblo-risk.example",
+  "id": "agent-2",
+  "name": "Marcus Ybarra",
+  "phone": "520-555-0177",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "agency_name": "High Country Agency (synthetic)",
+  "email": "priya@highcountry-agency.example",
+  "id": "agent-3",
+  "name": "Priya Nakamura",
+  "phone": "928-555-0108",
+  "provenance": "SYNTHETIC"
+ },
+ {
+  "agency_name": "Colorado River Ag Insurance (synthetic)",
+  "email": "tomas@crag-insurance.example",
+  "id": "agent-4",
+  "name": "Tomás Reyes",
+  "phone": "928-555-0163",
+  "provenance": "SYNTHETIC"
+ }
+]

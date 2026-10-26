@@ -36,6 +36,12 @@ def seed():
         env={"FIRESTORE_EMULATOR_HOST": "127.0.0.1:8080"})
 
 
+def data():
+    """Rebuild derived datasets + seed JSON (downloads cached in data/raw)."""
+    for script in ("build_locations", "build_history", "build_storm_events", "build_nri", "build_seed"):
+        run(["uv", "run", "python", f"../scripts/{script}.py"], cwd=ROOT / "api")
+
+
 def wait_for(url, seconds=90):
     end = time.time() + seconds
     while time.time() < end:
@@ -72,7 +78,7 @@ def deploy():
     sys.exit("Deploy is gated to Phase 9 and requires the owner to say 'deploy'.")
 
 
-TASKS = {"dev": dev, "seed": seed, "test": test, "lint": lint, "deploy": deploy}
+TASKS = {"dev": dev, "data": data, "seed": seed, "test": test, "lint": lint, "deploy": deploy}
 
 if __name__ == "__main__":
     name = sys.argv[1] if len(sys.argv) > 1 else ""

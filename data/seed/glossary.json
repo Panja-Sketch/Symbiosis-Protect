@@ -1,0 +1,183 @@
+[
+ {
+  "plain": "The amount you pay yourself on a covered loss before the insurance pays the rest.",
+  "related_codes": [],
+  "term": "Deductible"
+ },
+ {
+  "plain": "The most the policy will pay for a given type of coverage.",
+  "related_codes": [],
+  "term": "Limit"
+ },
+ {
+  "plain": "A smaller cap inside a larger coverage, for one kind of loss (for example, water backup).",
+  "related_codes": [],
+  "term": "Sub-limit"
+ },
+ {
+  "plain": "An add-on that changes a policy by adding, removing or adjusting coverage.",
+  "related_codes": [],
+  "term": "Endorsement"
+ },
+ {
+  "plain": "Something the policy generally does not cover.",
+  "related_codes": [],
+  "term": "Exclusion"
+ },
+ {
+  "plain": "Happening quickly and unexpectedly, like a hose bursting — as opposed to a slow drip over weeks.",
+  "related_codes": [
+   "HO_WATER_SUDDEN"
+  ],
+  "term": "Sudden and accidental"
+ },
+ {
+  "plain": "Water that escapes slowly over a long period. These are usually treated differently from sudden leaks.",
+  "related_codes": [],
+  "term": "Gradual leak"
+ },
+ {
+  "plain": "Water that comes up through a drain, sewer or sump instead of coming from a pipe. Usually needs its own add-on.",
+  "related_codes": [
+   "END_WATER_BACKUP"
+  ],
+  "term": "Water backup"
+ },
+ {
+  "plain": "Water from rising creeks, washes or surface runoff. Usually insured separately, not under property policies.",
+  "related_codes": [
+   "EX_FLOOD"
+  ],
+  "term": "Flood"
+ },
+ {
+  "plain": "Coverage for sudden mechanical or electrical failure of machinery such as AC or refrigeration.",
+  "related_codes": [
+   "END_EQUIP_BREAKDOWN"
+  ],
+  "term": "Equipment breakdown"
+ },
+ {
+  "plain": "Paying to replace an item with a new one, rather than its used value.",
+  "related_codes": [
+   "END_REPLACEMENT_COST"
+  ],
+  "term": "Replacement cost"
+ },
+ {
+  "plain": "What an item was worth at the time of loss after wear is taken into account.",
+  "related_codes": [],
+  "term": "Actual cash value"
+ },
+ {
+  "plain": "Extra living costs while a covered loss makes your home unlivable.",
+  "related_codes": [
+   "HO_LOSS_OF_USE"
+  ],
+  "term": "Loss of use"
+ },
+ {
+  "plain": "Net income and ongoing expenses covered while a covered loss temporarily closes your business.",
+  "related_codes": [
+   "BOP_BI"
+  ],
+  "term": "Business income"
+ },
+ {
+  "plain": "Time at the start of a closure or outage during which the policy does not yet pay.",
+  "related_codes": [],
+  "term": "Waiting period"
+ },
+ {
+  "plain": "Perishable goods that go bad after cooling fails from a covered cause.",
+  "related_codes": [
+   "BOP_SPOILAGE",
+   "AG_SPOILAGE"
+  ],
+  "term": "Spoilage"
+ },
+ {
+  "plain": "A power outage caused away from your building, such as a utility line failure.",
+  "related_codes": [
+   "AG_UTILITY",
+   "END_UTILITY_SERVICES"
+  ],
+  "term": "Off-premises power interruption"
+ },
+ {
+  "plain": "Your legal responsibility when someone else is hurt or their property is damaged.",
+  "related_codes": [],
+  "term": "Liability"
+ },
+ {
+  "plain": "Small medical bills for injured guests paid regardless of who is at fault.",
+  "related_codes": [
+   "HO_MEDPAY",
+   "BOP_MEDPAY"
+  ],
+  "term": "Medical payments"
+ },
+ {
+  "plain": "Extra repair cost to meet current building codes after a covered loss.",
+  "related_codes": [
+   "END_ORDINANCE",
+   "CRE_LAW"
+  ],
+  "term": "Ordinance or law"
+ },
+ {
+  "plain": "A building with no one living in or using it. Long vacancy can limit some coverage.",
+  "related_codes": [
+   "EX_VACANCY"
+  ],
+  "term": "Vacancy"
+ },
+ {
+  "plain": "A policy expectation to keep the building heated, or to drain the water system, to prevent freeze damage.",
+  "related_codes": [
+   "END_HEAT_MAINTAIN",
+   "BOP_FREEZE_CONDITION"
+  ],
+  "term": "Heat-maintenance condition"
+ },
+ {
+  "plain": "A fire sprinkler system with water in the pipes all the time, which can freeze in unheated spaces.",
+  "related_codes": [],
+  "term": "Wet sprinkler system"
+ },
+ {
+  "plain": "The small drain pipe that carries water produced by your air conditioner outdoors. Clogs can overflow indoors.",
+  "related_codes": [],
+  "term": "Condensate line"
+ },
+ {
+  "plain": "The flexible hose connecting a fixture or appliance to the building's water pipes.",
+  "related_codes": [],
+  "term": "Supply line"
+ },
+ {
+  "plain": "A valve that stops water flow to a fixture, a unit, or the whole building.",
+  "related_codes": [],
+  "term": "Shutoff valve"
+ },
+ {
+  "plain": "June 15 through September 30 in Arizona, when storms bring wind, hail, dust and flash floods.",
+  "related_codes": [],
+  "term": "Monsoon season"
+ },
+ {
+  "plain": "How strongly a completed safety task is evidenced: a tap (E0), a photo (E1), a document (E2), a review (E3), or sensor data (E4).",
+  "related_codes": [],
+  "term": "Proof level"
+ },
+ {
+  "plain": "A fix confirmed by device readings returning to normal, not just by someone saying it was done.",
+  "related_codes": [],
+  "term": "Sensor-verified"
+ },
+ {
+  "plain": "Your independent insurance agent, who confirms coverage decisions and can change your policy.",
+  "related_codes": [],
+  "term": "Agent"
+ }
+]

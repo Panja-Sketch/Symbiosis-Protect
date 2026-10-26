@@ -1,0 +1,98 @@
+[
+ {
+  "key": "water_sudden_vs_gradual",
+  "plain": "Policies like this one generally respond to water that escapes suddenly and accidentally, such as a burst hose or a one-time AC drain overflow. They generally treat leaks that go on for a long time differently. That's why catching a small drip early, and clearing a clogged AC drain before it overflows, matters. Your agent confirms how any specific loss would be handled.",
+  "related_codes": [
+   "HO_WATER_SUDDEN",
+   "DF_WATER_SUDDEN",
+   "BOP_WATER_SUDDEN",
+   "CRE_WATER_ESCAPE"
+  ],
+  "title": "Sudden leak vs. slow leak"
+ },
+ {
+  "key": "flood_exclusion",
+  "plain": "Water rising from washes, streets or creeks during a monsoon storm is generally a flood loss, which property policies usually exclude. Flood is typically a separate policy with its own waiting period. Ask your agent whether flood coverage makes sense for your location.",
+  "related_codes": [
+   "EX_FLOOD"
+  ],
+  "title": "Flash flooding is usually not included"
+ },
+ {
+  "key": "water_backup",
+  "plain": "Water that comes back up through drains is usually covered only with a water-backup add-on, often with a lower limit. Check whether your policy lists it under endorsements.",
+  "related_codes": [
+   "END_WATER_BACKUP",
+   "EX_BACKUP"
+  ],
+  "title": "Drain and sewer backup"
+ },
+ {
+  "key": "freeze_heat_condition",
+  "plain": "For freeze losses, the policy expects reasonable care: keep the building heated, or shut off and drain the water system. A thermostat at 40°F or above is the simple, common practice. Your agent can explain what applies to your policy.",
+  "related_codes": [
+   "BOP_FREEZE_CONDITION",
+   "END_HEAT_MAINTAIN",
+   "EX_FREEZE_HEAT_OFF"
+  ],
+  "title": "Keep the heat on — or drain the system"
+ },
+ {
+  "key": "spoilage_cooling_failure",
+  "plain": "Spoilage coverage is for sudden failures from covered causes. Showing regular service records helps demonstrate reasonable care. Outages caused away from your site depend on the off-premises power add-on and its waiting period.",
+  "related_codes": [
+   "AG_SPOILAGE",
+   "BOP_SPOILAGE",
+   "AG_UTILITY",
+   "END_UTILITY_SERVICES"
+  ],
+  "title": "Spoilage when cooling fails"
+ },
+ {
+  "key": "vacancy_limit",
+  "plain": "If a home or unit stays empty for a long time, some water and freeze losses may be limited. Between tenants: shut off the water, check for drips, and ask your agent about vacancy permission.",
+  "related_codes": [
+   "EX_VACANCY",
+   "END_VACANCY_PERMIT"
+  ],
+  "title": "Empty properties are treated more carefully"
+ },
+ {
+  "key": "unit_below_damage",
+  "plain": "Water from an upper unit can damage ceilings and belongings below. The building's coverage and the residents' own renters insurance each play a part. Fast detection and shutoff reduce the damage. Your agent confirms how a loss would be handled.",
+  "related_codes": [
+   "CRE_WATER_ESCAPE",
+   "CRE_BUILDINGS",
+   "CRE_GL"
+  ],
+  "title": "A leak upstairs can damage the unit below"
+ },
+ {
+  "key": "wear_and_age",
+  "plain": "Policies usually do not pay to replace a worn-out water heater or hose themselves. They may respond to resulting sudden damage. Replacing aging parts on a schedule is the best protection.",
+  "related_codes": [
+   "EX_WEAR"
+  ],
+  "title": "Old parts are your upkeep"
+ },
+ {
+  "key": "slip_fall_liability",
+  "plain": "If a guest slips on a wet floor after a leak or roof leak, liability coverage may help with defense and settlements. Putting out signs, drying the floor, and documenting what you did are good practice.",
+  "related_codes": [
+   "BOP_GL",
+   "BOP_MEDPAY"
+  ],
+  "title": "Wet floors and liability"
+ },
+ {
+  "key": "roof_wind_hail",
+  "plain": "Policies generally respond to wind and hail damage to roofs. Rain entering through an opening that the storm just created is treated differently from rain entering through an existing leak or clogged drain. Keeping roofs and drains maintained matters.",
+  "related_codes": [
+   "HO_DWELLING",
+   "BOP_BUILDING",
+   "CRE_BUILDINGS",
+   "AG_BUILDINGS"
+  ],
+  "title": "Monsoon wind and hail"
+ }
+]

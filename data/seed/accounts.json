@@ -1,0 +1,146 @@
+[
+ {
+  "agent_id": "agent-1",
+  "contact": {
+   "email": "maya@demo.example",
+   "phone": "480-555-0111"
+  },
+  "display_name": "Maya Okafor",
+  "headline": "New homeowner · Chandler",
+  "id": "acct-p1",
+  "persona_id": "P1",
+  "preferences": {
+   "channels": [
+    "in_app",
+    "email"
+   ],
+   "quiet_hours": [
+    "21:00",
+    "07:00"
+   ]
+  },
+  "program_label": "Personal-lines preview (AZ demo data)",
+  "provenance": "SYNTHETIC",
+  "type": "person"
+ },
+ {
+  "agent_id": "agent-2",
+  "contact": {
+   "email": "luis@demo.example",
+   "phone": "520-555-0122"
+  },
+  "display_name": "Luis Mendoza",
+  "headline": "Landlord · Tucson rental",
+  "id": "acct-p2",
+  "persona_id": "P2",
+  "preferences": {
+   "channels": [
+    "in_app",
+    "email"
+   ],
+   "quiet_hours": [
+    "21:00",
+    "07:00"
+   ]
+  },
+  "program_label": "Personal-lines preview (AZ demo data)",
+  "provenance": "SYNTHETIC",
+  "type": "person"
+ },
+ {
+  "agent_id": "agent-1",
+  "contact": {
+   "email": "owner@saguaro-grill.example",
+   "phone": "480-555-0133"
+  },
+  "display_name": "Saguaro Grill",
+  "headline": "Restaurant · Tempe",
+  "id": "acct-p3",
+  "persona_id": "P3",
+  "preferences": {
+   "channels": [
+    "in_app",
+    "email"
+   ],
+   "quiet_hours": [
+    "21:00",
+    "07:00"
+   ]
+  },
+  "program_label": null,
+  "provenance": "SYNTHETIC",
+  "type": "business"
+ },
+ {
+  "agent_id": "agent-3",
+  "contact": {
+   "email": "manager@ponderosa-outfitters.example",
+   "phone": "928-555-0144"
+  },
+  "display_name": "Ponderosa Outfitters",
+  "headline": "Outdoor retail · Flagstaff",
+  "id": "acct-p4",
+  "persona_id": "P4",
+  "preferences": {
+   "channels": [
+    "in_app",
+    "email"
+   ],
+   "quiet_hours": [
+    "21:00",
+    "07:00"
+   ]
+  },
+  "program_label": null,
+  "provenance": "SYNTHETIC",
+  "type": "business"
+ },
+ {
+  "agent_id": "agent-1",
+  "contact": {
+   "email": "manager@mesa-palms.example",
+   "phone": "480-555-0155"
+  },
+  "display_name": "Mesa Palms Apartments",
+  "headline": "48-unit apartment community · Mesa",
+  "id": "acct-p5",
+  "persona_id": "P5",
+  "preferences": {
+   "channels": [
+    "in_app",
+    "email"
+   ],
+   "quiet_hours": [
+    "21:00",
+    "07:00"
+   ]
+  },
+  "program_label": null,
+  "provenance": "SYNTHETIC",
+  "type": "business"
+ },
+ {
+  "agent_id": "agent-4",
+  "contact": {
+   "email": "ops@desert-bloom-produce.example",
+   "phone": "928-555-0166"
+  },
+  "display_name": "Desert Bloom Produce",
+  "headline": "Cooler & packing · Yuma",
+  "id": "acct-p6",
+  "persona_id": "P6",
+  "preferences": {
+   "channels": [
+    "in_app",
+    "email"
+   ],
+   "quiet_hours": [
+    "21:00",
+    "07:00"
+   ]
+  },
+  "program_label": null,
+  "provenance": "SYNTHETIC",
+  "type": "business"
+ }
+]

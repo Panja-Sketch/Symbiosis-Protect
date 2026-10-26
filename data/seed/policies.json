@@ -1,0 +1,899 @@
+[
+ {
+  "account_id": "acct-p1",
+  "coverages": [
+   {
+    "code": "HO_DWELLING",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "A monsoon wind event lifts roof tiles",
+     "A supply line bursts and soaks drywall"
+    ],
+    "limit_note": null,
+    "limit_usd": 385000,
+    "name_plain": "Your home (structure)",
+    "what_it_covers_plain": "The house itself, including attached garage, walls, roof, built-in appliances and fixtures, when damaged by a covered event such as fire, wind, hail, or a sudden pipe or appliance leak.",
+    "what_it_does_not_plain": "Wear and tear, gradual leaks, flood, earthquake, and the cost to fix the failed part."
+   },
+   {
+    "code": "HO_OTHER_STRUCT",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "A wall fence is knocked down by a microburst"
+    ],
+    "limit_note": null,
+    "limit_usd": 38500,
+    "name_plain": "Other structures",
+    "what_it_covers_plain": "Detached items such as a block wall, shed, or detached garage.",
+    "what_it_does_not_plain": "Structures used mainly for business."
+   },
+   {
+    "code": "HO_CONTENTS",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "Furniture ruined by a sudden water-heater leak"
+    ],
+    "limit_note": null,
+    "limit_usd": 192500,
+    "name_plain": "Your belongings",
+    "what_it_covers_plain": "Furniture, clothing, electronics and other personal items, at home or while traveling.",
+    "what_it_does_not_plain": "Flood damage, and high-value items beyond sub-limits (jewelry, collectibles)."
+   },
+   {
+    "code": "HO_LOSS_OF_USE",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "Hotel stay while floors are dried and replaced"
+    ],
+    "limit_note": null,
+    "limit_usd": 77000,
+    "name_plain": "Extra living costs",
+    "what_it_covers_plain": "Reasonable added costs to live elsewhere while a covered loss makes the home unlivable.",
+    "what_it_does_not_plain": "Costs unrelated to a covered loss."
+   },
+   {
+    "code": "HO_WATER_SUDDEN",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "A washing-machine hose lets go while you're at work"
+    ],
+    "limit_note": "Part of home and belongings limits",
+    "limit_usd": null,
+    "name_plain": "Sudden water leaks (inside the home)",
+    "what_it_covers_plain": "Damage from water that escapes suddenly and accidentally from plumbing, an appliance, or an AC system — for example, a hose that bursts or a condensate line that overflows once.",
+    "what_it_does_not_plain": "Leaks that happen slowly over time, seepage, flood, and sewer backup."
+   },
+   {
+    "code": "HO_LIABILITY",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "A guest slips on a wet floor at your house"
+    ],
+    "limit_note": null,
+    "limit_usd": 300000,
+    "name_plain": "Personal liability",
+    "what_it_covers_plain": "If someone is injured or their property is damaged and you are legally responsible, this helps with legal defense and settlements, up to the limit.",
+    "what_it_does_not_plain": "Intentional acts, your own injuries, and business activities."
+   },
+   {
+    "code": "HO_MEDPAY",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [],
+    "limit_note": null,
+    "limit_usd": 5000,
+    "name_plain": "Guest medical payments",
+    "what_it_covers_plain": "Small medical bills for guests hurt at your home, regardless of fault.",
+    "what_it_does_not_plain": "Injuries to you or people who live with you."
+   }
+  ],
+  "deductibles": {
+   "all_peril": 2500,
+   "water": "same as all-peril",
+   "wind_hail": "same as all-peril"
+  },
+  "endorsements": [
+   {
+    "code": "END_WATER_BACKUP",
+    "name_plain": "Water backup (sewer and drain)",
+    "present": false,
+    "why_it_matters_plain": "Without it, a backed-up drain or sewer line is typically not covered. Ask your agent about adding it."
+   },
+   {
+    "code": "END_EQUIP_BREAKDOWN",
+    "name_plain": "Home systems / equipment breakdown",
+    "present": false,
+    "why_it_matters_plain": "Helps with mechanical failure of AC units, pool equipment and appliances. Ask your agent about it."
+   },
+   {
+    "code": "END_REPLACEMENT_COST",
+    "name_plain": "Replacement cost on belongings",
+    "present": true,
+    "why_it_matters_plain": "Pays to replace items with new ones rather than their depreciated value."
+   }
+  ],
+  "exclusions_plain": [
+   {
+    "code": "EX_FLOOD",
+    "plain": "Rising water from flash floods, washes, or overflowing streams is generally not part of this policy. Flood is usually a separate policy. Ask your agent about flood coverage, especially during monsoon season.",
+    "title": "Flood and surface water"
+   },
+   {
+    "code": "EX_GRADUAL",
+    "plain": "Damage from a leak that goes on for weeks or months, or from repeated seepage, is typically treated differently from a sudden pipe burst. Catching drips early matters.",
+    "title": "Slow, hidden leaks"
+   },
+   {
+    "code": "EX_WEAR",
+    "plain": "The cost to repair or replace the worn-out part itself (an old water heater, a cracked hose) is usually not covered, though resulting damage to other property may be considered.",
+    "title": "Wear, age, and upkeep"
+   },
+   {
+    "code": "EX_BACKUP",
+    "plain": "Water that backs up through sewers or drains, or comes up from a sump, is usually covered only if you have a specific water-backup add-on.",
+    "title": "Sewer and drain backup"
+   },
+   {
+    "code": "EX_EARTHQUAKE",
+    "plain": "Earthquake and ground movement are generally excluded.",
+    "title": "Earth movement"
+   }
+  ],
+  "id": "pol-p1",
+  "lob": "homeowners",
+  "preview_flag": true,
+  "product_label": "Homeowners (HO-3 style) — Personal-lines preview (AZ demo data)",
+  "provenance": "SYNTHETIC",
+  "status": "active",
+  "summary_disclaimer": "This is a plain-language summary written for this demo, not your policy contract. Your policy documents and your agent confirm final coverage decisions.",
+  "term_end": "2027-03-01",
+  "term_start": "2026-03-01"
+ },
+ {
+  "account_id": "acct-p2",
+  "coverages": [
+   {
+    "code": "DF_DWELLING",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "A water heater tank splits and floods the kitchen"
+    ],
+    "limit_note": null,
+    "limit_usd": 240000,
+    "name_plain": "Rental house (structure)",
+    "what_it_covers_plain": "The rental house when damaged by a listed event such as fire, wind, hail, or a sudden leak from plumbing or equipment.",
+    "what_it_does_not_plain": "Tenant belongings, gradual leaks, flood, wear and tear."
+   },
+   {
+    "code": "DF_OTHER_STRUCT",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [],
+    "limit_note": null,
+    "limit_usd": 24000,
+    "name_plain": "Other structures",
+    "what_it_covers_plain": "Detached garage, shed or fence on the lot.",
+    "what_it_does_not_plain": "Anything rented out separately for business."
+   },
+   {
+    "code": "DF_RENTAL_INCOME",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "Home is vacant for repairs after a covered leak"
+    ],
+    "limit_note": null,
+    "limit_usd": 48000,
+    "name_plain": "Lost rent",
+    "what_it_covers_plain": "Rent you lose while a covered loss makes the home unrentable, for a limited period.",
+    "what_it_does_not_plain": "Rent lost for reasons not tied to a covered loss, such as a tenant simply leaving."
+   },
+   {
+    "code": "DF_OWNER_CONTENTS",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [],
+    "limit_note": null,
+    "limit_usd": 15000,
+    "name_plain": "Your items kept at the rental",
+    "what_it_covers_plain": "Appliances or furnishings that belong to you (not the tenant).",
+    "what_it_does_not_plain": "Tenant belongings — tenants need their own renters insurance."
+   },
+   {
+    "code": "DF_WATER_SUDDEN",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "A supply line fails between tenants"
+    ],
+    "limit_note": "Part of dwelling limit",
+    "limit_usd": null,
+    "name_plain": "Sudden water leaks",
+    "what_it_covers_plain": "Damage from water that escapes suddenly from plumbing, appliances, or AC equipment.",
+    "what_it_does_not_plain": "Slow or hidden leaks that continue over time, flood, drain backup, and damage that happens while the home sits vacant beyond the vacancy limit noted below."
+   },
+   {
+    "code": "DF_LIABILITY",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "A visitor is injured on a loose stair tread"
+    ],
+    "limit_note": null,
+    "limit_usd": 300000,
+    "name_plain": "Landlord liability",
+    "what_it_covers_plain": "If someone is hurt at the property and you're legally responsible, helps with defense and settlements up to the limit.",
+    "what_it_does_not_plain": "Intentional acts and business activities beyond renting."
+   }
+  ],
+  "deductibles": {
+   "all_peril": 2500,
+   "water": "same as all-peril"
+  },
+  "endorsements": [
+   {
+    "code": "END_VACANCY_PERMIT",
+    "name_plain": "Extended vacancy permission",
+    "present": false,
+    "why_it_matters_plain": "In this demo policy, certain water losses may be limited if the home is empty longer than 60 days. Ask your agent about extending that between tenants."
+   },
+   {
+    "code": "END_WATER_BACKUP",
+    "name_plain": "Water backup (sewer and drain)",
+    "present": false,
+    "why_it_matters_plain": "Without it, backed-up drains are typically not covered."
+   },
+   {
+    "code": "END_ORDINANCE",
+    "name_plain": "Ordinance or law",
+    "present": true,
+    "why_it_matters_plain": "Helps pay extra costs when current building codes require upgrades during a covered repair."
+   }
+  ],
+  "exclusions_plain": [
+   {
+    "code": "EX_FLOOD",
+    "plain": "Rising water from flash floods, washes, or overflowing streams is generally not part of this policy. Flood is usually a separate policy. Ask your agent about flood coverage, especially during monsoon season.",
+    "title": "Flood and surface water"
+   },
+   {
+    "code": "EX_GRADUAL",
+    "plain": "Damage from a leak that goes on for weeks or months, or from repeated seepage, is typically treated differently from a sudden pipe burst. Catching drips early matters.",
+    "title": "Slow, hidden leaks"
+   },
+   {
+    "code": "EX_WEAR",
+    "plain": "The cost to repair or replace the worn-out part itself (an old water heater, a cracked hose) is usually not covered, though resulting damage to other property may be considered.",
+    "title": "Wear, age, and upkeep"
+   },
+   {
+    "code": "EX_BACKUP",
+    "plain": "Water that backs up through sewers or drains, or comes up from a sump, is usually covered only if you have a specific water-backup add-on.",
+    "title": "Sewer and drain backup"
+   },
+   {
+    "code": "EX_NEGLECT",
+    "plain": "Failing to take reasonable steps to protect the property after a loss starts, such as leaving a known leak running, can reduce what is paid.",
+    "title": "Neglect"
+   },
+   {
+    "code": "EX_VACANCY",
+    "plain": "If the home stays vacant for more than 60 days in a row, some water and freeze losses may be limited. Plan shutoff and checks between tenants.",
+    "title": "Long vacancy"
+   }
+  ],
+  "id": "pol-p2",
+  "lob": "dwelling_fire",
+  "preview_flag": true,
+  "product_label": "Dwelling Fire (rental) — Personal-lines preview (AZ demo data)",
+  "provenance": "SYNTHETIC",
+  "status": "active",
+  "summary_disclaimer": "This is a plain-language summary written for this demo, not your policy contract. Your policy documents and your agent confirm final coverage decisions.",
+  "term_end": "2027-03-01",
+  "term_start": "2026-03-01"
+ },
+ {
+  "account_id": "acct-p3",
+  "coverages": [
+   {
+    "code": "BOP_BUILDING",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "Roof drain blocks and rain enters the dining room ceiling"
+    ],
+    "limit_note": null,
+    "limit_usd": 850000,
+    "name_plain": "Your building",
+    "what_it_covers_plain": "The restaurant building, built-in kitchen equipment and fixtures when damaged by a covered event such as fire, wind, hail or a sudden leak.",
+    "what_it_does_not_plain": "Flood, wear and tear, gradual leaks, and earthquake."
+   },
+   {
+    "code": "BOP_BPP",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "Ice machine line leaks into the dry-storage room"
+    ],
+    "limit_note": null,
+    "limit_usd": 310000,
+    "name_plain": "Business belongings",
+    "what_it_covers_plain": "Kitchen equipment, furniture, inventory and supplies.",
+    "what_it_does_not_plain": "Flood, and employee personal items."
+   },
+   {
+    "code": "BOP_BI",
+    "deductible_note": "72-hour waiting period",
+    "deductible_usd": null,
+    "examples": [
+     "Dining room closed 3 weeks after a covered water loss"
+    ],
+    "limit_note": "Up to 12 months of actual loss, after a short waiting period",
+    "limit_usd": null,
+    "name_plain": "Lost business income",
+    "what_it_covers_plain": "Net income and ongoing expenses while a covered loss forces a temporary closure.",
+    "what_it_does_not_plain": "Slowdowns not caused by a covered loss; closures ordered for reasons not in the policy."
+   },
+   {
+    "code": "BOP_SPOILAGE",
+    "deductible_note": null,
+    "deductible_usd": 1000,
+    "examples": [
+     "Walk-in cooler compressor fails over a weekend"
+    ],
+    "limit_note": null,
+    "limit_usd": 25000,
+    "name_plain": "Food spoilage",
+    "what_it_covers_plain": "Spoiled food when refrigeration fails from a covered cause, including power failure on your premises.",
+    "what_it_does_not_plain": "Spoilage from turning equipment off or poor maintenance."
+   },
+   {
+    "code": "BOP_WATER_SUDDEN",
+    "deductible_note": null,
+    "deductible_usd": 2500,
+    "examples": [
+     "Dishwasher supply line bursts"
+    ],
+    "limit_note": "Part of building and belongings limits",
+    "limit_usd": null,
+    "name_plain": "Sudden water leaks",
+    "what_it_covers_plain": "Damage from water escaping suddenly from plumbing, kitchen equipment, or AC equipment.",
+    "what_it_does_not_plain": "Long-term seepage, flood, and sewer backup unless added."
+   },
+   {
+    "code": "BOP_GL",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "A guest slips on a wet floor after a roof leak"
+    ],
+    "limit_note": "$1,000,000 per occurrence / $2,000,000 total per year",
+    "limit_usd": 1000000,
+    "name_plain": "General liability",
+    "what_it_covers_plain": "If a customer is hurt or their property damaged and you're legally responsible, helps with defense and settlements.",
+    "what_it_does_not_plain": "Intentional acts; liquor liability unless separately added."
+   },
+   {
+    "code": "BOP_MEDPAY",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [],
+    "limit_note": null,
+    "limit_usd": 10000,
+    "name_plain": "Guest medical payments",
+    "what_it_covers_plain": "Small medical bills for injured guests regardless of fault.",
+    "what_it_does_not_plain": "Injuries to employees (workers' compensation applies)."
+   }
+  ],
+  "deductibles": {
+   "all_peril": 2500,
+   "spoilage": 1000,
+   "water_backup": 5000
+  },
+  "endorsements": [
+   {
+    "code": "END_EQUIP_BREAKDOWN",
+    "name_plain": "Equipment breakdown",
+    "present": true,
+    "why_it_matters_plain": "Helps with sudden mechanical or electrical failure of kitchen and HVAC equipment."
+   },
+   {
+    "code": "END_WATER_BACKUP",
+    "name_plain": "Water backup",
+    "present": true,
+    "why_it_matters_plain": "Helps with sewer or drain backup into the restaurant, up to a sub-limit of $25,000."
+   },
+   {
+    "code": "END_UTILITY_SERVICES",
+    "name_plain": "Off-premises power interruption",
+    "present": false,
+    "why_it_matters_plain": "Without it, spoilage from a utility outage away from your building may not be covered."
+   }
+  ],
+  "exclusions_plain": [
+   {
+    "code": "EX_FLOOD",
+    "plain": "Rising water from flash floods, washes, or overflowing streams is generally not part of this policy. Flood is usually a separate policy. Ask your agent about flood coverage, especially during monsoon season.",
+    "title": "Flood and surface water"
+   },
+   {
+    "code": "EX_GRADUAL",
+    "plain": "Damage from a leak that goes on for weeks or months, or from repeated seepage, is typically treated differently from a sudden pipe burst. Catching drips early matters.",
+    "title": "Slow, hidden leaks"
+   },
+   {
+    "code": "EX_WEAR",
+    "plain": "The cost to repair or replace the worn-out part itself (an old water heater, a cracked hose) is usually not covered, though resulting damage to other property may be considered.",
+    "title": "Wear, age, and upkeep"
+   },
+   {
+    "code": "EX_NEGLECT",
+    "plain": "Failing to take reasonable steps to protect the property after a loss starts, such as leaving a known leak running, can reduce what is paid.",
+    "title": "Neglect"
+   },
+   {
+    "code": "EX_EARTHQUAKE",
+    "plain": "Earthquake and ground movement are generally excluded.",
+    "title": "Earth movement"
+   }
+  ],
+  "id": "pol-p3",
+  "lob": "bop",
+  "preview_flag": false,
+  "product_label": "Businessowners Policy — Restaurant",
+  "provenance": "SYNTHETIC",
+  "status": "active",
+  "summary_disclaimer": "This is a plain-language summary written for this demo, not your policy contract. Your policy documents and your agent confirm final coverage decisions.",
+  "term_end": "2027-03-01",
+  "term_start": "2026-03-01"
+ },
+ {
+  "account_id": "acct-p4",
+  "coverages": [
+   {
+    "code": "BOP_BUILDING",
+    "deductible_note": null,
+    "deductible_usd": 5000,
+    "examples": [
+     "Roof damaged by heavy snow load",
+     "Sprinkler line cracks in a hard freeze"
+    ],
+    "limit_note": null,
+    "limit_usd": 1400000,
+    "name_plain": "Your building",
+    "what_it_covers_plain": "The store building and permanent fixtures when damaged by a covered event, including heavy snow weight and sudden pipe or sprinkler leaks.",
+    "what_it_does_not_plain": "Flood, wear and tear, gradual leaks, and damage when heat was not kept on (see freeze note)."
+   },
+   {
+    "code": "BOP_BPP",
+    "deductible_note": null,
+    "deductible_usd": 5000,
+    "examples": [
+     "Winter gear stock soaked by a burst pipe"
+    ],
+    "limit_note": null,
+    "limit_usd": 650000,
+    "name_plain": "Business belongings",
+    "what_it_covers_plain": "Inventory, shelving, registers and supplies.",
+    "what_it_does_not_plain": "Flood and shoplifting or employee theft."
+   },
+   {
+    "code": "BOP_BI",
+    "deductible_note": "72-hour waiting period",
+    "deductible_usd": null,
+    "examples": [
+     "Store closed 5 weeks during holiday season after a covered freeze loss"
+    ],
+    "limit_note": "Up to 12 months of actual loss, after a waiting period",
+    "limit_usd": null,
+    "name_plain": "Lost business income",
+    "what_it_covers_plain": "Net income and ongoing expenses during a temporary closure from a covered loss.",
+    "what_it_does_not_plain": "Seasonal slowdowns or closures not tied to a covered loss."
+   },
+   {
+    "code": "BOP_FREEZE_CONDITION",
+    "deductible_note": null,
+    "deductible_usd": 5000,
+    "examples": [
+     "Heat kept at 40°F or above over the holiday closure"
+    ],
+    "limit_note": "Part of building and belongings limits",
+    "limit_usd": null,
+    "name_plain": "Freezing pipes and sprinklers",
+    "what_it_covers_plain": "Damage from pipes or sprinkler lines that freeze and burst, when you took reasonable care to keep the building heated or to drain and shut off the water.",
+    "what_it_does_not_plain": "Freeze damage when heat was off and the water system was not drained or shut off."
+   },
+   {
+    "code": "BOP_GL",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "A customer slips on an icy entry"
+    ],
+    "limit_note": "$1,000,000 per occurrence / $2,000,000 total per year",
+    "limit_usd": 1000000,
+    "name_plain": "General liability",
+    "what_it_covers_plain": "If a customer is hurt or their property damaged and you're legally responsible, helps with defense and settlements.",
+    "what_it_does_not_plain": "Intentional acts and professional advice claims."
+   },
+   {
+    "code": "BOP_MEDPAY",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [],
+    "limit_note": null,
+    "limit_usd": 10000,
+    "name_plain": "Guest medical payments",
+    "what_it_covers_plain": "Small medical bills for hurt customers regardless of fault.",
+    "what_it_does_not_plain": "Injuries to employees."
+   }
+  ],
+  "deductibles": {
+   "all_peril": 5000,
+   "water": "same as all-peril"
+  },
+  "endorsements": [
+   {
+    "code": "END_EQUIP_BREAKDOWN",
+    "name_plain": "Equipment breakdown",
+    "present": true,
+    "why_it_matters_plain": "Helps with sudden failure of boilers, furnaces and electrical equipment."
+   },
+   {
+    "code": "END_WATER_BACKUP",
+    "name_plain": "Water backup",
+    "present": false,
+    "why_it_matters_plain": "Without it, drain and sewer backup is typically not covered. Ask your agent."
+   },
+   {
+    "code": "END_HEAT_MAINTAIN",
+    "name_plain": "Heat-maintenance condition (policy condition)",
+    "present": true,
+    "why_it_matters_plain": "Your policy expects heat to be kept on, or the water system drained, during closures. Keeping the thermostat at 40°F or above is the simple way to meet this."
+   }
+  ],
+  "exclusions_plain": [
+   {
+    "code": "EX_FLOOD",
+    "plain": "Rising water from flash floods, washes, or overflowing streams is generally not part of this policy. Flood is usually a separate policy. Ask your agent about flood coverage, especially during monsoon season.",
+    "title": "Flood and surface water"
+   },
+   {
+    "code": "EX_GRADUAL",
+    "plain": "Damage from a leak that goes on for weeks or months, or from repeated seepage, is typically treated differently from a sudden pipe burst. Catching drips early matters.",
+    "title": "Slow, hidden leaks"
+   },
+   {
+    "code": "EX_WEAR",
+    "plain": "The cost to repair or replace the worn-out part itself (an old water heater, a cracked hose) is usually not covered, though resulting damage to other property may be considered.",
+    "title": "Wear, age, and upkeep"
+   },
+   {
+    "code": "EX_NEGLECT",
+    "plain": "Failing to take reasonable steps to protect the property after a loss starts, such as leaving a known leak running, can reduce what is paid.",
+    "title": "Neglect"
+   },
+   {
+    "code": "EX_FREEZE_HEAT_OFF",
+    "plain": "If the heat is off and the system isn't drained, freeze damage may not be paid.",
+    "title": "Freeze with no heat"
+   }
+  ],
+  "id": "pol-p4",
+  "lob": "bop",
+  "preview_flag": false,
+  "product_label": "Businessowners Policy — Retail",
+  "provenance": "SYNTHETIC",
+  "status": "active",
+  "summary_disclaimer": "This is a plain-language summary written for this demo, not your policy contract. Your policy documents and your agent confirm final coverage decisions.",
+  "term_end": "2027-03-01",
+  "term_start": "2026-03-01"
+ },
+ {
+  "account_id": "acct-p5",
+  "coverages": [
+   {
+    "code": "CRE_BUILDINGS",
+    "deductible_note": null,
+    "deductible_usd": 10000,
+    "examples": [
+     "A leak in Unit 3B damages the ceiling of 2B",
+     "Hail damages roofing"
+    ],
+    "limit_note": null,
+    "limit_usd": 9600000,
+    "name_plain": "Apartment buildings",
+    "what_it_covers_plain": "All residential buildings, common areas, and permanent equipment when damaged by a covered event such as fire, wind, hail or sudden water escape.",
+    "what_it_does_not_plain": "Flood, wear and tear, gradual leaks, and tenants' belongings."
+   },
+   {
+    "code": "CRE_OWNER_PROPERTY",
+    "deductible_note": null,
+    "deductible_usd": 10000,
+    "examples": [],
+    "limit_note": null,
+    "limit_usd": 250000,
+    "name_plain": "Owner-provided property",
+    "what_it_covers_plain": "Appliances, furniture, maintenance equipment and supplies you own.",
+    "what_it_does_not_plain": "Residents' belongings."
+   },
+   {
+    "code": "CRE_RENTAL_INCOME",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "Four units offline for repairs after water damage"
+    ],
+    "limit_note": "Up to 12 months of actual loss",
+    "limit_usd": 1200000,
+    "name_plain": "Lost rental income",
+    "what_it_covers_plain": "Rent you lose while units are unlivable from a covered loss.",
+    "what_it_does_not_plain": "Vacancies unrelated to a loss."
+   },
+   {
+    "code": "CRE_WATER_ESCAPE",
+    "deductible_note": "Higher deductible applies to water losses",
+    "deductible_usd": 25000,
+    "examples": [
+     "Washer hose in 3B fails and water reaches 2B"
+    ],
+    "limit_note": "Part of buildings limit",
+    "limit_usd": null,
+    "name_plain": "Water escaping from plumbing, appliances and HVAC",
+    "what_it_covers_plain": "Sudden escape of water from pipes, water heaters, appliances, or AC equipment, including damage to units below.",
+    "what_it_does_not_plain": "Slow leaks over time, flood, and drain backup beyond the sub-limit. Repair of the failed fixture itself."
+   },
+   {
+    "code": "CRE_GL",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "A resident's belongings damaged and the owner is found responsible"
+    ],
+    "limit_note": "$1,000,000 per occurrence / $2,000,000 total per year",
+    "limit_usd": 1000000,
+    "name_plain": "Premises liability",
+    "what_it_covers_plain": "If a resident or visitor is hurt, or their property damaged, and you're legally responsible, helps with defense and settlements.",
+    "what_it_does_not_plain": "Intentional acts; residents' own belongings."
+   },
+   {
+    "code": "CRE_LAW",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [],
+    "limit_note": null,
+    "limit_usd": 480000,
+    "name_plain": "Building-code upgrade costs",
+    "what_it_covers_plain": "Extra cost to meet current building codes when repairing a covered loss.",
+    "what_it_does_not_plain": "Upgrades not required by code."
+   }
+  ],
+  "deductibles": {
+   "all_peril": 10000,
+   "water": 25000,
+   "water_backup": 10000
+  },
+  "endorsements": [
+   {
+    "code": "END_WATER_BACKUP",
+    "name_plain": "Water backup",
+    "present": true,
+    "why_it_matters_plain": "Helps with sewer and drain backup, up to a sub-limit of $100,000."
+   },
+   {
+    "code": "END_EQUIP_BREAKDOWN",
+    "name_plain": "Equipment breakdown",
+    "present": false,
+    "why_it_matters_plain": "Without it, sudden failure of boilers, pumps and elevators may not be covered. Ask your agent."
+   },
+   {
+    "code": "END_SENSOR_PROGRAM",
+    "name_plain": "Water-sensor program participation",
+    "present": false,
+    "why_it_matters_plain": "Optional program. Using sensors can help find leaks sooner; it does not change what is covered."
+   }
+  ],
+  "exclusions_plain": [
+   {
+    "code": "EX_FLOOD",
+    "plain": "Rising water from flash floods, washes, or overflowing streams is generally not part of this policy. Flood is usually a separate policy. Ask your agent about flood coverage, especially during monsoon season.",
+    "title": "Flood and surface water"
+   },
+   {
+    "code": "EX_GRADUAL",
+    "plain": "Damage from a leak that goes on for weeks or months, or from repeated seepage, is typically treated differently from a sudden pipe burst. Catching drips early matters.",
+    "title": "Slow, hidden leaks"
+   },
+   {
+    "code": "EX_WEAR",
+    "plain": "The cost to repair or replace the worn-out part itself (an old water heater, a cracked hose) is usually not covered, though resulting damage to other property may be considered.",
+    "title": "Wear, age, and upkeep"
+   },
+   {
+    "code": "EX_BACKUP",
+    "plain": "Water that backs up through sewers or drains, or comes up from a sump, is usually covered only if you have a specific water-backup add-on.",
+    "title": "Sewer and drain backup"
+   },
+   {
+    "code": "EX_NEGLECT",
+    "plain": "Failing to take reasonable steps to protect the property after a loss starts, such as leaving a known leak running, can reduce what is paid.",
+    "title": "Neglect"
+   },
+   {
+    "code": "EX_TENANT_PROP",
+    "plain": "Residents need their own renters insurance for their items.",
+    "title": "Residents' belongings"
+   }
+  ],
+  "id": "pol-p5",
+  "lob": "commercial_real_estate",
+  "preview_flag": false,
+  "product_label": "Commercial Property & Liability — Apartment Community (48 units)",
+  "provenance": "SYNTHETIC",
+  "status": "active",
+  "summary_disclaimer": "This is a plain-language summary written for this demo, not your policy contract. Your policy documents and your agent confirm final coverage decisions.",
+  "term_end": "2027-03-01",
+  "term_start": "2026-03-01"
+ },
+ {
+  "account_id": "acct-p6",
+  "coverages": [
+   {
+    "code": "AG_BUILDINGS",
+    "deductible_note": null,
+    "deductible_usd": 10000,
+    "examples": [
+     "Monsoon wind damages the packing-shed roof"
+    ],
+    "limit_note": null,
+    "limit_usd": 2200000,
+    "name_plain": "Cooler and packing buildings",
+    "what_it_covers_plain": "The cooling building, packing shed and permanent fixtures when damaged by a covered event.",
+    "what_it_does_not_plain": "Flood, wear and tear, and gradual leaks."
+   },
+   {
+    "code": "AG_EQUIPMENT",
+    "deductible_note": null,
+    "deductible_usd": 10000,
+    "examples": [
+     "Wash-down water reaches electrical panels in a sudden event"
+    ],
+    "limit_note": null,
+    "limit_usd": 1350000,
+    "name_plain": "Machinery and equipment",
+    "what_it_covers_plain": "Packing lines, forklifts, washers and cooling equipment.",
+    "what_it_does_not_plain": "Wear and tear; vehicles on roads."
+   },
+   {
+    "code": "AG_STOCK",
+    "deductible_note": null,
+    "deductible_usd": 10000,
+    "examples": [
+     "Lettuce stored in the cooler"
+    ],
+    "limit_note": null,
+    "limit_usd": 600000,
+    "name_plain": "Harvested produce in storage",
+    "what_it_covers_plain": "Packed or stored harvested produce while in your buildings.",
+    "what_it_does_not_plain": "Unharvested crops in the field (those are insured separately)."
+   },
+   {
+    "code": "AG_SPOILAGE",
+    "deductible_note": "Spoilage deductible",
+    "deductible_usd": 10000,
+    "examples": [
+     "Compressor trips during a heat wave and the room warms"
+    ],
+    "limit_note": "Sub-limit",
+    "limit_usd": 250000,
+    "name_plain": "Spoilage from cooling failure",
+    "what_it_covers_plain": "Produce that spoils when the refrigeration system fails suddenly from a covered cause, including electrical failure on your premises.",
+    "what_it_does_not_plain": "Spoilage from equipment you knew was failing and did not service, or from turning off power."
+   },
+   {
+    "code": "AG_UTILITY",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "Utility outage during a monsoon storm"
+    ],
+    "limit_note": "24-hour waiting period",
+    "limit_usd": 150000,
+    "name_plain": "Off-premises power interruption",
+    "what_it_covers_plain": "Spoilage and income loss when a power outage away from your facility, such as a utility line failure, causes cooling to stop.",
+    "what_it_does_not_plain": "Outages shorter than the waiting period."
+   },
+   {
+    "code": "AG_BI",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [
+     "Packing line down for 2 weeks"
+    ],
+    "limit_note": "Up to 12 months of actual loss",
+    "limit_usd": null,
+    "name_plain": "Lost business income",
+    "what_it_covers_plain": "Net income and ongoing expenses while a covered loss halts packing and cooling.",
+    "what_it_does_not_plain": "Market price drops or crop shortfalls."
+   },
+   {
+    "code": "AG_GL",
+    "deductible_note": null,
+    "deductible_usd": null,
+    "examples": [],
+    "limit_note": null,
+    "limit_usd": 2000000,
+    "name_plain": "General and product liability",
+    "what_it_covers_plain": "If your produce or premises cause injury or damage and you're legally responsible, helps with defense and settlements.",
+    "what_it_does_not_plain": "Recall costs unless separately added."
+   }
+  ],
+  "deductibles": {
+   "all_peril": 10000,
+   "spoilage": 10000
+  },
+  "endorsements": [
+   {
+    "code": "END_EQUIP_BREAKDOWN",
+    "name_plain": "Refrigeration / equipment breakdown",
+    "present": true,
+    "why_it_matters_plain": "Helps with sudden mechanical or electrical failure of cooling equipment."
+   },
+   {
+    "code": "END_UTILITY_SERVICES",
+    "name_plain": "Off-premises power interruption",
+    "present": true,
+    "why_it_matters_plain": "Applies after a 24-hour waiting period — important for monsoon outages."
+   },
+   {
+    "code": "END_RECALL",
+    "name_plain": "Product recall expense",
+    "present": false,
+    "why_it_matters_plain": "Without it, costs of a recall are typically not covered. Ask your agent."
+   }
+  ],
+  "exclusions_plain": [
+   {
+    "code": "EX_FLOOD",
+    "plain": "Rising water from flash floods, washes, or overflowing streams is generally not part of this policy. Flood is usually a separate policy. Ask your agent about flood coverage, especially during monsoon season.",
+    "title": "Flood and surface water"
+   },
+   {
+    "code": "EX_WEAR",
+    "plain": "The cost to repair or replace the worn-out part itself (an old water heater, a cracked hose) is usually not covered, though resulting damage to other property may be considered.",
+    "title": "Wear, age, and upkeep"
+   },
+   {
+    "code": "EX_NEGLECT",
+    "plain": "Failing to take reasonable steps to protect the property after a loss starts, such as leaving a known leak running, can reduce what is paid.",
+    "title": "Neglect"
+   },
+   {
+    "code": "EX_EARTHQUAKE",
+    "plain": "Earthquake and ground movement are generally excluded.",
+    "title": "Earth movement"
+   },
+   {
+    "code": "EX_FIELD_CROPS",
+    "plain": "Unharvested crops are not part of this policy.",
+    "title": "Crops in the field"
+   }
+  ],
+  "id": "pol-p6",
+  "lob": "agribusiness",
+  "preview_flag": false,
+  "product_label": "Agribusiness Property — Cooler & Packing Facility",
+  "provenance": "SYNTHETIC",
+  "status": "active",
+  "summary_disclaimer": "This is a plain-language summary written for this demo, not your policy contract. Your policy documents and your agent confirm final coverage decisions.",
+  "term_end": "2027-03-01",
+  "term_start": "2026-03-01"
+ }
+]

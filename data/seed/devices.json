@@ -1,0 +1,79 @@
+[
+ {
+  "id": "dev-p1-main",
+  "label": "Main line monitor",
+  "location_id": "loc-p1",
+  "model": "Simulated whole-home flow & leak monitor",
+  "provenance": "SIMULATED",
+  "status": "available",
+  "supports_shutoff": true,
+  "unit_label": null,
+  "vendor": "simulated"
+ },
+ {
+  "id": "dev-p1-laundry",
+  "label": "Laundry room leak sensor",
+  "location_id": "loc-p1",
+  "model": "Simulated leak puck",
+  "provenance": "SIMULATED",
+  "status": "available",
+  "supports_shutoff": false,
+  "unit_label": null,
+  "vendor": "simulated"
+ },
+ {
+  "id": "dev-p5-3b",
+  "label": "Unit 3B kitchen/laundry sensor",
+  "location_id": "loc-p5",
+  "model": "Simulated unit leak sensor + valve",
+  "provenance": "SIMULATED",
+  "status": "available",
+  "supports_shutoff": true,
+  "unit_label": "3B",
+  "vendor": "simulated"
+ },
+ {
+  "id": "dev-p5-2b",
+  "label": "Unit 2B sensor",
+  "location_id": "loc-p5",
+  "model": "Simulated unit leak sensor + valve",
+  "provenance": "SIMULATED",
+  "status": "available",
+  "supports_shutoff": true,
+  "unit_label": "2B",
+  "vendor": "simulated"
+ },
+ {
+  "id": "dev-p5-riser",
+  "label": "Building B riser flow",
+  "location_id": "loc-p5",
+  "model": "Simulated riser flow monitor",
+  "provenance": "SIMULATED",
+  "status": "available",
+  "supports_shutoff": true,
+  "unit_label": null,
+  "vendor": "simulated"
+ },
+ {
+  "id": "dev-p6-cooler1",
+  "label": "Cooler room 1 temperature",
+  "location_id": "loc-p6",
+  "model": "Simulated cooler temperature probe",
+  "provenance": "SIMULATED",
+  "status": "available",
+  "supports_shutoff": false,
+  "unit_label": null,
+  "vendor": "simulated"
+ },
+ {
+  "id": "dev-p4-riser",
+  "label": "Stockroom temperature",
+  "location_id": "loc-p4",
+  "model": "Simulated stockroom temperature probe",
+  "provenance": "SIMULATED",
+  "status": "available",
+  "supports_shutoff": false,
+  "unit_label": null,
+  "vendor": "simulated"
+ }
+]
