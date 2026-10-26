@@ -15,6 +15,7 @@ from app.config import Settings, get_settings
 from app.engine.engine import Engine
 from app.engine.playbooks import Config, load_config, load_rules
 from app.seed import load_derived, seed_store
+from app.sense.service import SenseService
 from app.store import FirestoreStore, MemoryStore, Store
 
 
@@ -29,6 +30,7 @@ class Container:
     email: ConsoleEmailNotifier
     storage: BlobStorage
     assistant: Assistant
+    sense: SenseService
 
 
 def build_container(settings: Settings | None = None, store: Store | None = None, cache=None, weather=None, storage=None, gemini=None) -> Container:
@@ -56,7 +58,7 @@ def build_container(settings: Settings | None = None, store: Store | None = None
 
         gemini = GeminiExplainer(s.google_cloud_project, s.google_cloud_location, s.gemini_model)
     assistant = Assistant(store, cache, load_cfg(), gemini, s.ai_asks_per_hour, s.gemini_model)
-    return Container(s, store, engine, scenario, history, config, email, storage or LocalStorage(root), assistant)
+    return Container(s, store, engine, scenario, history, config, email, storage or LocalStorage(root), assistant, SenseService(store, engine))
 
 
 @lru_cache

@@ -1,7 +1,7 @@
 """/api/v1 routes (Phase 2 surface). Every response that carries data includes a `provenance`."""
 
 import hmac
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel
@@ -14,6 +14,8 @@ from app.config import get_settings
 from app.deps import Container, get_container
 from app.ribbon import build_ribbon
 from app.seed import seed_store
+from app.sense import sim
+from app.sense.service import SenseError
 
 router = APIRouter()
 
@@ -303,7 +305,7 @@ def director_time_travel(body: TimeTravelBody, c: Container = Depends(C)):
 @router.post("/director/reset", tags=["director"])
 def director_reset(c: Container = Depends(C)):
     _demo_only()
-    for col in ("tasks", "alerts", "events", "outbox", "proofs"):
+    for col in ("tasks", "alerts", "events", "outbox", "proofs", "cases", "case_evidence", "readings", "device_state", "ai_rate"):
         for doc in c.store.list(col):
             c.store.delete(col, doc["id"])
     scenario.reset(c.store)
@@ -360,3 +362,130 @@ def ask(body: AskBody, c: Container = Depends(C)):
         return c.assistant.ask(body.account_id, q, c.engine.now())
     except RateLimited as e:
         raise HTTPException(429, str(e)) from None
+
+
+# ---- Sense mode ---------------------------------------------------------------------------------------------------
+
+def _now_utc() -> datetime:
+    from datetime import UTC
+
+    return datetime.now(UTC)
+
+
+def _device_view(c: Container, d: dict) -> dict:
+    state = sim.get_state(c.store, d["id"])
+    latest = sim.readings(c.store, d["id"], _now_utc() - timedelta(minutes=2))
+    case = c.sense._case(d["id"]) if d["status"] == "connected" else None
+    recent = sim.readings(c.store, d["id"], _now_utc() - timedelta(minutes=5)) if d["status"] == "connected" else []
+    return {**d, "state": state, "latest": latest[-1] if latest else None, "recent": recent, "case": case, "provenance": "SIMULATED",
+            "scenarios": list(sim.SCENARIOS[d["kind"]])}
+
+
+@router.get("/devices", tags=["sense"])
+def devices(location_id: str | None = None, account_id: str | None = None, c: Container = Depends(C)):
+    if account_id:
+        locs = [x["id"] for x in c.store.list("locations", account_id=account_id)]
+    elif location_id:
+        locs = [location_id]
+    else:
+        raise HTTPException(422, "location_id or account_id required")
+    now = _now_utc()
+    rows = []
+    for lid in locs:
+        for d in c.store.list("devices", location_id=lid):
+            if d["status"] == "connected":
+                c.sense.poll(d["id"], now)
+            rows.append(_device_view(c, d))
+    return {"devices": sorted(rows, key=lambda d: d["id"]), "provenance": "SIMULATED"}
+
+
+class ConnectBody(BaseModel):
+    device_id: str
+
+
+@router.post("/devices/connect", tags=["sense"])
+def connect_device(body: ConnectBody, c: Container = Depends(C)):
+    _must(c.store, "devices", body.device_id)
+    c.sense.connect(body.device_id, _now_utc())
+    return _device_view(c, c.store.get("devices", body.device_id))
+
+
+@router.get("/devices/{device_id}/readings", tags=["sense"])
+def device_readings(device_id: str, since: datetime | None = None, minutes: int = Query(10, ge=1, le=120), c: Container = Depends(C)):
+    d = _must(c.store, "devices", device_id)
+    if d["status"] != "connected":
+        raise HTTPException(409, "device is not connected")
+    now = _now_utc()
+    c.sense.poll(device_id, now)
+    rows = sim.readings(c.store, device_id, since or now - timedelta(minutes=minutes))
+    return {"device_id": device_id, "readings": rows, "provenance": "SIMULATED"}
+
+
+class CommandBody(BaseModel):
+    action: str
+
+
+@router.post("/devices/{device_id}/command", tags=["sense"])
+def device_command(device_id: str, body: CommandBody, c: Container = Depends(C)):
+    d = _must(c.store, "devices", device_id)
+    try:
+        return sim.command(c.store, d, body.action, _now_utc())
+    except ValueError as e:
+        raise HTTPException(422, str(e)) from None
+
+
+@router.get("/accounts/{account_id}/cases", tags=["sense"])
+def account_cases(account_id: str, c: Container = Depends(C)):
+    c.sense.poll_account(account_id, _now_utc())
+    rows = sorted(c.store.list("cases", account_id=account_id), key=lambda x: x["opened_at"], reverse=True)
+    return {"cases": rows, "provenance": "SIMULATED"}
+
+
+@router.get("/cases/{case_id}", tags=["sense"])
+def get_case(case_id: str, c: Container = Depends(C)):
+    case = _must(c.store, "cases", case_id)
+    return {**case, "evidence": c.store.get("case_evidence", case_id)}
+
+
+def _case_action(c: Container, case_id: str, fn: str):
+    _must(c.store, "cases", case_id)
+    try:
+        res = getattr(c.sense, fn)(case_id, _now_utc())
+    except SenseError as e:
+        raise HTTPException(409, str(e)) from None
+    return res
+
+
+@router.post("/cases/{case_id}/report-fix", tags=["sense"])
+def report_fix(case_id: str, c: Container = Depends(C)):
+    return _case_action(c, case_id, "report_fix")
+
+
+@router.post("/cases/{case_id}/shutoff", tags=["sense"])
+def case_shutoff(case_id: str, c: Container = Depends(C)):
+    return _case_action(c, case_id, "shutoff")
+
+
+@router.post("/cases/{case_id}/acting", tags=["sense"])
+def case_acting(case_id: str, c: Container = Depends(C)):
+    return _case_action(c, case_id, "acting")
+
+
+class DeviceScenarioBody(BaseModel):
+    device_id: str
+    scenario: str
+    fix_works: bool | None = None
+
+
+@router.post("/director/device", tags=["director"])
+def director_device(body: DeviceScenarioBody, c: Container = Depends(C)):
+    _demo_only()
+    d = _must(c.store, "devices", body.device_id)
+    if d["status"] != "connected":
+        c.sense.connect(d["id"], _now_utc())
+        d = c.store.get("devices", d["id"])
+    try:
+        sim.set_scenario(c.store, d, body.scenario, _now_utc(), body.fix_works)
+    except ValueError as e:
+        raise HTTPException(422, str(e)) from None
+    return _device_view(c, d)

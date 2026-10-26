@@ -1,6 +1,7 @@
 [
  {
   "id": "dev-p1-main",
+  "kind": "water",
   "label": "Main line monitor",
   "location_id": "loc-p1",
   "model": "Simulated whole-home flow & leak monitor",
@@ -12,6 +13,7 @@
  },
  {
   "id": "dev-p1-laundry",
+  "kind": "water",
   "label": "Laundry room leak sensor",
   "location_id": "loc-p1",
   "model": "Simulated leak puck",
@@ -23,6 +25,7 @@
  },
  {
   "id": "dev-p5-3b",
+  "kind": "water",
   "label": "Unit 3B kitchen/laundry sensor",
   "location_id": "loc-p5",
   "model": "Simulated unit leak sensor + valve",
@@ -34,6 +37,7 @@
  },
  {
   "id": "dev-p5-2b",
+  "kind": "water",
   "label": "Unit 2B sensor",
   "location_id": "loc-p5",
   "model": "Simulated unit leak sensor + valve",
@@ -45,6 +49,7 @@
  },
  {
   "id": "dev-p5-riser",
+  "kind": "water",
   "label": "Building B riser flow",
   "location_id": "loc-p5",
   "model": "Simulated riser flow monitor",
@@ -56,6 +61,7 @@
  },
  {
   "id": "dev-p6-cooler1",
+  "kind": "cooler",
   "label": "Cooler room 1 temperature",
   "location_id": "loc-p6",
   "model": "Simulated cooler temperature probe",
@@ -67,6 +73,7 @@
  },
  {
   "id": "dev-p4-riser",
+  "kind": "stockroom",
   "label": "Stockroom temperature",
   "location_id": "loc-p4",
   "model": "Simulated stockroom temperature probe",

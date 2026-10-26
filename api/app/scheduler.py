@@ -14,7 +14,16 @@ def start(container, minutes: int = 15) -> BackgroundScheduler:
         except Exception:  # noqa: BLE001
             log.exception("scheduled evaluation failed")
 
+    def sense_job():
+        from datetime import UTC, datetime
+
+        try:
+            container.sense.poll_all(datetime.now(UTC))
+        except Exception:  # noqa: BLE001
+            log.exception("sense poll failed")
+
     sched = BackgroundScheduler(timezone="UTC")
+    sched.add_job(sense_job, "interval", seconds=10, id="sense", max_instances=1, coalesce=True)
     sched.add_job(job, "interval", minutes=minutes, id="evaluate", max_instances=1, coalesce=True)
     sched.start()
     return sched

@@ -1,0 +1,58 @@
+# Sense mode thresholds and simulated-device profiles. Nothing here is hard-coded in Python.
+tick_seconds: 5
+backfill_seconds: 55          # readings materialized when a device is connected
+max_ticks_per_poll: 720
+detect_consecutive: 2         # consecutive anomalous readings that open a case
+verify:
+  clean_consecutive: 6        # consecutive clean readings after the fix report => verified
+  bad_consecutive: 8          # consecutive anomalous readings after the fix report => not_improving (sensors stay wet briefly while drying)
+  window_seconds: 300         # no verdict within this window => inconclusive
+  stale_after_seconds: 30     # newest reading older than this => never verified (inconclusive)
+reopen_watch_hours: 24
+thresholds:
+  idle_flow_lpm: 0.3          # flow above this when nothing should be running is anomalous
+  leak_wet: 1
+  stockroom_alert_f: 40       # sprinkler riser / stockroom must stay at or above this
+  stockroom_clear_f: 44
+  cooler_alert_f: 41          # produce cooler must stay at or below this
+  cooler_clear_f: 38
+  detect_consecutive_temp: 3
+profiles:                     # simulated readings per scenario (jitter is deterministic per device and tick)
+  water:
+    normal:      { flow: 0.05, leak: 0, humidity: 40, temp: 72 }
+    slow_leak:   { flow: 0.9,  leak_after_s: 10, humidity_per_tick: 0.8, humidity_cap: 78, temp: 72 }
+    burst:       { flow: 18.0, leak: 1, humidity_per_tick: 2.0, humidity_cap: 90, temp: 72 }
+    recovery:    { flow: 0.02, wet_for_s: 20, humidity_per_tick: -1.5, humidity_floor: 42, temp: 72 }
+  stockroom:
+    normal:      { temp: 52 }
+    freeze_drop: { start: 46, drop_per_tick: 1.2, floor: 24 }
+    recovery:    { start: 30, rise_per_tick: 2.0, cap: 52 }
+  cooler:
+    normal:      { temp: 34 }
+    cooler_drift: { start: 34, rise_per_tick: 0.6, cap: 52 }
+    recovery:    { start: 48, drop_per_tick: 2.0, floor: 34 }
+jitter: { flow: 0.04, temp: 0.3, humidity: 1.0 }
+case_text:
+  leak:
+    title: "Water leak detected{where} — shut off and fix"
+    why: "Your sensor{where_sensor} reports {reading}. Water that runs unnoticed is the most common way a small leak becomes a large loss."
+    steps:
+      - "Use the Shut off water button, or close the nearest shutoff valve."
+      - "Find the source (supply line, hose, fitting, water heater) and stop the flow."
+      - "Move belongings away from wet areas and start drying with towels and fans."
+      - "Make the repair, turn the water back on, then tap I fixed it so the sensor can verify."
+  freeze_risk:
+    title: "Stockroom is getting too cold — raise the heat"
+    why: "Your temperature sensor{where_sensor} reports {reading}, below the {limit}°F the sprinkler riser area should stay above."
+    steps:
+      - "Raise the thermostat and open doors so warm air reaches the riser wall."
+      - "Check for drafts, open vents or dock doors and close them."
+      - "Tap I fixed it once heat is restored so the sensor can verify the temperature recovers."
+  cooler_temp:
+    title: "Cooler is warming up — check refrigeration now"
+    why: "Your cooler probe{where_sensor} reports {reading}, above the {limit}°F limit for stored produce."
+    steps:
+      - "Check that the compressor is running and the doors are closed and sealing."
+      - "Call your refrigeration contractor and move produce to a working cooler if you can."
+      - "Log the time and temperature, and take photos for your records."
+      - "Tap I fixed it once cooling is restored so the sensor can verify the temperature recovers."

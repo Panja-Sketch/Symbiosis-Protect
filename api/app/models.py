@@ -206,6 +206,7 @@ class Device(BaseModel):
     model: str
     label: str
     unit_label: str | None = None
+    kind: Literal["water", "stockroom", "cooler"] = "water"
     status: Literal["available", "connected", "offline"] = "available"
     supports_shutoff: bool = True
     provenance: Provenance = "SIMULATED"
@@ -307,3 +308,30 @@ class Alert(BaseModel):
     sent_channels: list[str] = Field(default_factory=list)
     read_at: datetime | None = None
     provenance: Provenance = "LIVE"
+
+
+class CaseEvent(BaseModel):
+    ts: datetime
+    state: str
+    note: str
+    source: Literal["sensor", "user", "system"] = "system"
+
+
+class Case(BaseModel):
+    """Sense-mode closed loop. Verification is deterministic and never inferred from missing data."""
+
+    id: str
+    device_id: str
+    location_id: str
+    account_id: str
+    kind: Literal["leak", "freeze_risk", "cooler_temp"]
+    state: Literal["detected", "alerted", "acting", "verifying", "verified", "not_improving", "inconclusive", "reopened"]
+    unit_label: str | None = None
+    task_ids: list[str] = Field(default_factory=list)
+    timeline: list[CaseEvent] = Field(default_factory=list)
+    opened_at: datetime
+    fix_reported_at: datetime | None = None
+    verified_at: datetime | None = None
+    manifest_sha256: str | None = None
+    reopen_count: int = 0
+    provenance: Provenance = "SIMULATED"

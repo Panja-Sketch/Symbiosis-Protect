@@ -213,7 +213,7 @@ def devices():
         {"id": "dev-p5-riser", "location_id": "loc-p5", "model": "Simulated riser flow monitor",
          "label": "Building B riser flow", "supports_shutoff": True},
         {"id": "dev-p6-cooler1", "location_id": "loc-p6", "model": "Simulated cooler temperature probe",
-         "label": "Cooler room 1 temperature", "supports_shutoff": False},
+         "label": "Cooler room 1 temperature", "kind": "cooler", "supports_shutoff": False},
         {"id": "dev-p4-riser", "location_id": "loc-p4", "model": "Simulated stockroom temperature probe",
-         "label": "Stockroom temperature", "supports_shutoff": False},
+         "label": "Stockroom temperature", "kind": "stockroom", "supports_shutoff": False},
     ]

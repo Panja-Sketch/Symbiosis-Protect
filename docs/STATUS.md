@@ -39,3 +39,10 @@
 - UI: starter chips per LOB, answer bubbles with provenance pill, cited-coverage chips that jump to the coverage card, agent hand-off (email/call), refusal path.
 - Verified: pytest 103 (18 scripted Q&A across all 6 personas + refusals, claim/pricing/legal hand-off, cross-account leak check, guard rejection of 5 bad-answer classes, outage fallback, cache, rate limit, log contents, all starters pass the guard); Playwright 46/46.
 - Not verified: a live Gemini call (no Vertex credentials on this machine). The Gemini path is covered with a fake client; verify live in Phase 9 with the service account.
+
+## Phase 6 — Sense mode (2026-10-25) ✅
+- `SimulatedWaterDevice` (5 s ticks, deterministic jitter, water / stockroom-temperature / cooler-temperature profiles, valve shutoff) behind the `DeviceAdapter` shape; all output labelled SIMULATED.
+- Case state machine detected → alerted → acting → verifying → verified | not_improving | inconclusive → reopened, with timeline, critical device alert, sensor-linked task, `water_leak` event that makes the existing rule create "Leak in 3B — check unit 2B below", E4 sensor proof with manifest SHA-256 and stored evidence for the Phase 7 export.
+- API: `/devices`, `/devices/connect`, `/devices/{id}/readings|command`, `/accounts/{id}/cases`, `/cases/{id}` (+`report-fix`, `shutoff`, `acting`), `/director/device`; scheduler polls connected devices every 10 s.
+- UI: Sense console (connect, live tiles, sparkline, case timeline and actions, demo controls).
+- Verified: pytest 115 (closed loop incl. recurrence reopen, failed fix = not_improving, stale data = inconclusive not verified, temp probes, no-valve device, determinism); Playwright 50/50 incl. a real-time leak → verified → reopened run on both viewports.
