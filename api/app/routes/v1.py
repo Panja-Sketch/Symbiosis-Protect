@@ -264,11 +264,34 @@ def evaluate_account(account_id: str, c: Container = Depends(C)):
     return c.engine.evaluate_account(account_id)
 
 
-@router.post("/internal/evaluate", tags=["engine"], description="Scheduler hook. Token-protected unless in demo mode.")
-def internal_evaluate(x_scheduler_token: str | None = Header(None), c: Container = Depends(C)):
+def verify_google_id_token(token: str, audience: str) -> dict:
+    from google.auth.transport import requests as g_requests
+    from google.oauth2 import id_token
+
+    return id_token.verify_oauth2_token(token, g_requests.Request(), audience=audience)
+
+
+def authorize_scheduler(x_scheduler_token: str | None, authorization: str | None) -> None:
+    """Cloud: only the Cloud Scheduler service account (OIDC ID token for this API's URL). Local: open in demo mode, else shared token."""
     s = get_settings()
+    if s.internal_auth == "oidc":
+        if not (authorization and authorization.startswith("Bearer ")) or not s.scheduler_audience or not s.scheduler_service_account:
+            raise HTTPException(401, "scheduler identity token required")
+        try:
+            claims = verify_google_id_token(authorization[7:], s.scheduler_audience)
+        except Exception:  # noqa: BLE001 - any verification failure is a 401
+            raise HTTPException(401, "invalid identity token") from None
+        if claims.get("email") != s.scheduler_service_account or not claims.get("email_verified"):
+            raise HTTPException(403, "caller is not the scheduler service account")
+        return
     if not s.demo_mode and not (x_scheduler_token and hmac.compare_digest(x_scheduler_token, s.session_secret)):
         raise HTTPException(401, "scheduler token required")
+
+
+@router.post("/internal/evaluate", tags=["engine"], description="Scheduler hook. OIDC-protected in the cloud, token-protected locally outside demo mode.")
+def internal_evaluate(x_scheduler_token: str | None = Header(None), authorization: str | None = Header(None), c: Container = Depends(C)):
+    authorize_scheduler(x_scheduler_token, authorization)
+    c.sense.poll_all(_now_utc())
     return {"evaluated": c.engine.evaluate_all()}
 
 

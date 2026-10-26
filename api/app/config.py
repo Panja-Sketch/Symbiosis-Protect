@@ -24,6 +24,10 @@ class Settings(BaseSettings):
     scheduler_minutes: int = 15
     ai_asks_per_hour: int = 30
     max_proof_bytes: int = 8_000_000
+    gcs_bucket: str | None = None
+    internal_auth: str = "token"  # token (local) | oidc (Cloud Scheduler ID token)
+    scheduler_audience: str | None = None  # API URL the Scheduler token is minted for
+    scheduler_service_account: str | None = None  # only this identity may call /internal/evaluate
     ai_enabled: bool = False  # true only where Vertex AI service-account credentials exist
 
 

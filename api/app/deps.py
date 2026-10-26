@@ -8,7 +8,7 @@ from app.adapters.cache import FirestoreCache, MemoryCache
 from app.adapters.history import DerivedHistoryProvider
 from app.adapters.notifier import ConsoleEmailNotifier, InAppNotifier, NotifierChain
 from app.adapters.scenario import ScenarioProvider
-from app.adapters.storage import BlobStorage, LocalStorage
+from app.adapters.storage import BlobStorage, GcsStorage, LocalStorage
 from app.adapters.weather import CompositeWeatherProvider, NWSProvider, OpenMeteoProvider
 from app.ai.service import Assistant, load_cfg
 from app.config import Settings, get_settings
@@ -53,6 +53,10 @@ def build_container(settings: Settings | None = None, store: Store | None = None
     config = load_config()
     engine = Engine(store, scenario, history, NotifierChain(InAppNotifier(store), email), load_rules(), config)
     root = Path(__file__).resolve().parents[2] / s.local_storage_dir
+    if storage is None and s.storage_backend == "gcs":
+        if not s.gcs_bucket:
+            raise RuntimeError("STORAGE_BACKEND=gcs requires GCS_BUCKET")
+        storage = GcsStorage(s.gcs_bucket)
     if gemini is None and s.ai_enabled:
         from app.ai.gemini import GeminiExplainer
 

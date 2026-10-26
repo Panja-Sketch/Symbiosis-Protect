@@ -162,3 +162,67 @@ def test_director_state_endpoint(client):
     tc.post("/api/v1/director/reset")
     after = tc.get("/api/v1/director/state").json()
     assert after["injections"] == [] and after["fake_now"] is None
+
+
+def test_internal_evaluate_oidc_mode(client, monkeypatch):
+    tc, *_ = client
+    from app.config import get_settings
+    from app.routes import v1
+
+    s = get_settings()
+    saved = (s.internal_auth, s.scheduler_audience, s.scheduler_service_account)
+    s.internal_auth, s.scheduler_audience, s.scheduler_service_account = "oidc", "https://api.example.run.app", "sched@proj.iam.gserviceaccount.com"
+    try:
+        assert tc.post("/api/v1/internal/evaluate").status_code == 401, "demo mode must not bypass OIDC in the cloud"
+        assert tc.post("/api/v1/internal/evaluate", headers={"x-scheduler-token": s.session_secret}).status_code == 401
+        monkeypatch.setattr(v1, "verify_google_id_token", lambda t, aud: {"email": "attacker@evil.com", "email_verified": True})
+        assert tc.post("/api/v1/internal/evaluate", headers={"Authorization": "Bearer abc"}).status_code == 403
+
+        def boom(t, aud):
+            raise ValueError("bad signature")
+
+        monkeypatch.setattr(v1, "verify_google_id_token", boom)
+        assert tc.post("/api/v1/internal/evaluate", headers={"Authorization": "Bearer abc"}).status_code == 401
+        seen = {}
+
+        def good(t, aud):
+            seen["aud"] = aud
+            return {"email": "sched@proj.iam.gserviceaccount.com", "email_verified": True}
+
+        monkeypatch.setattr(v1, "verify_google_id_token", good)
+        ok = tc.post("/api/v1/internal/evaluate", headers={"Authorization": "Bearer abc"})
+        assert ok.status_code == 200 and seen["aud"] == "https://api.example.run.app" and len(ok.json()["evaluated"]) == 6
+    finally:
+        s.internal_auth, s.scheduler_audience, s.scheduler_service_account = saved
+
+
+def test_gcs_storage_adapter_roundtrip():
+    from app.adapters.storage import GcsStorage
+
+    class Blob:
+        def __init__(self, store, key):
+            self.store, self.key = store, key
+
+        def upload_from_string(self, data, content_type=None):
+            self.store[self.key] = (data, content_type)
+
+        def download_as_bytes(self):
+            return self.store[self.key][0]
+
+    class Bucket:
+        def __init__(self):
+            self.objs = {}
+
+        def blob(self, key):
+            return Blob(self.objs, key)
+
+    class Client:
+        def __init__(self):
+            self.b = Bucket()
+
+        def bucket(self, name):
+            assert name == "my-bucket"
+            return self.b
+
+    g = GcsStorage("my-bucket", Client())
+    assert g.save("proofs/a", b"xyz", "image/png") == "proofs/a" and g.read("proofs/a") == b"xyz"

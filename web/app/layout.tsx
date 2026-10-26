@@ -3,8 +3,8 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import { AppShell } from "@/components/app-shell";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const display = Fraunces({ subsets: ["latin"], variable: "--font-display", display: "swap" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "optional" });
+const display = Fraunces({ subsets: ["latin"], variable: "--font-display", display: "optional" });
 
 export const metadata: Metadata = {
   title: "Symbiosis Protect — Arizona demo",

@@ -1,0 +1,9 @@
+# Build context = repo root (the API image bundles data/seed and data/derived).
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ["build", "-f", "api/Dockerfile", "-t", "${_IMAGE}", "."]
+images: ["${_IMAGE}"]
+substitutions:
+  _IMAGE: us-central1-docker.pkg.dev/PROJECT/symbiosis/api:latest
+options:
+  logging: CLOUD_LOGGING_ONLY

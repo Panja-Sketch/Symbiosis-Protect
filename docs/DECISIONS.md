@@ -38,3 +38,8 @@
 | 2026-10-26 | Tasks triggered by an event that just happened (sensor leak -> 'check the unit below') get event_boost 2.0 in scoring.yaml | They must outrank forecast-driven tasks in the Do-now cap |
 | 2026-10-26 | Added az.bop.flash_flood_readiness.v1 (27 rules) so Saguaro Grill gets the flood-exclusion note in the storm scenario | Demo script step 4 |
 | 2026-10-26 | scenarios.yaml read with explicit UTF-8 | Windows default codec turned the en dash in labels into mojibake |
+| 2026-10-26 | Browser calls go through a runtime proxy route (web/app/backend/[...path]) instead of a build-time Next rewrite; API_BASE_URL is read at runtime | One web image works against any API URL on Cloud Run |
+| 2026-10-26 | Cloud API runs max 1 instance (spec says max 2) | Sense device state/readings are serialized with an in-process lock; a second instance could race. Raise only after moving that to Firestore transactions |
+| 2026-10-26 | /internal/evaluate in the cloud requires a Google OIDC ID token from the scheduler service account (INTERNAL_AUTH=oidc); demo mode no longer bypasses it when oidc is on | Spec section 12/14 |
+| 2026-10-26 | Fonts use display: optional | Removed a 0.286 layout shift; Lighthouse performance 92-93 on mobile |
+| 2026-10-26 | Phase 9 scripts are written and dry-run tested but NOT executed; deploy needs the owner to say deploy (OWNER_SAID_DEPLOY=yes) | CLAUDE.md rule |

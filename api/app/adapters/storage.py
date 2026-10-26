@@ -33,3 +33,21 @@ class LocalStorage:
 
 def sha256_hex(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+class GcsStorage:
+    """Cloud Storage BlobStorage. The bucket has a 30-day lifecycle delete rule (see infra/deploy.sh)."""
+
+    def __init__(self, bucket: str, client=None):
+        if client is None:
+            from google.cloud import storage
+
+            client = storage.Client()
+        self.bucket = client.bucket(bucket)
+
+    def save(self, key: str, data: bytes, content_type: str) -> str:
+        self.bucket.blob(key).upload_from_string(data, content_type=content_type)
+        return key
+
+    def read(self, key: str) -> bytes:
+        return self.bucket.blob(key).download_as_bytes()

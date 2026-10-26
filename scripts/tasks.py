@@ -77,11 +77,35 @@ def dev():
             p.terminate()
 
 
+def _infra(script, *args, need_owner=True):
+    """Run an infra script through bash. Owner approval (OWNER_SAID_DEPLOY=yes) is enforced inside the script (CLAUDE.md)."""
+    bash = shutil.which("bash")
+    if not bash:
+        sys.exit("bash is required (Git Bash on Windows, or Cloud Shell).")
+    sys.exit(run([bash, f"infra/{script}.sh", *args], check=False).returncode)
+
+
 def deploy():
-    sys.exit("Deploy is gated to Phase 9 and requires the owner to say 'deploy'.")
+    _infra("deploy")
 
 
-TASKS = {"dev": dev, "e2e": e2e, "data": data, "seed": seed, "test": test, "lint": lint, "deploy": deploy}
+def destroy():
+    _infra("destroy")
+
+
+def budget():
+    _infra("budget")
+
+
+def scheduler_pause():
+    _infra("scheduler", "pause")
+
+
+def scheduler_resume():
+    _infra("scheduler", "resume")
+
+
+TASKS = {"scheduler-pause": scheduler_pause, "scheduler-resume": scheduler_resume, "destroy": destroy, "budget": budget, "dev": dev, "e2e": e2e, "data": data, "seed": seed, "test": test, "lint": lint, "deploy": deploy}
 
 if __name__ == "__main__":
     name = sys.argv[1] if len(sys.argv) > 1 else ""
