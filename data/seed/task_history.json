@@ -23,7 +23,7 @@
   "rule_id": "az.ho.travel_vacancy_shutoff.v1",
   "status": "done",
   "title": "Shut off the water and check for drips between tenants",
-  "visibility": "shared"
+  "visibility": "private"
  },
  {
   "account_id": "acct-p2",

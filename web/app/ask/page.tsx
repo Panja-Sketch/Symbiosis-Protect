@@ -1,10 +1,10 @@
 import { AskChat } from "@/components/ask-chat";
 import { apiGet } from "@/lib/api";
-import { getSession } from "@/lib/session";
+import { policyholderOnly } from "@/lib/session";
 import type { AccountResponse } from "@/lib/types";
 
 export default async function AskPage() {
-  const { account_id } = getSession();
+  const { account_id } = policyholderOnly();
   const [{ starters }, acct] = await Promise.all([
     apiGet<{ starters: string[] }>(`/assistant/starters?account_id=${account_id}`),
     apiGet<AccountResponse>(`/accounts/${account_id}`),

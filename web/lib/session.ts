@@ -1,6 +1,7 @@
 import "server-only";
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import type { Role } from "./types";
 
 // "Demo identity" only: an HMAC-signed cookie choosing persona + role. Not authentication.
@@ -43,4 +44,22 @@ export function decodeSession(value: string | undefined): Session {
 
 export function getSession(): Session {
   return decodeSession(cookies().get(SESSION_COOKIE)?.value);
+}
+
+export function homeFor(role: Role): string {
+  return role === "agent" ? "/agent" : role === "underwriter" ? "/underwriter" : "/";
+}
+
+/** Policyholder screens: other roles are sent to their own home. Returns the session for convenience. */
+export function policyholderOnly(): Session {
+  const s = getSession();
+  if (s.role !== "policyholder") redirect(homeFor(s.role));
+  return s;
+}
+
+/** Agent / underwriter screens. */
+export function roleOnly(...roles: Role[]): Session {
+  const s = getSession();
+  if (!roles.includes(s.role)) redirect(homeFor(s.role));
+  return s;
 }

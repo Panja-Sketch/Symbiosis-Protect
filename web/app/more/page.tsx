@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { policyholderOnly } from "@/lib/session";
 import { Bell, ChevronRight, MapPin, Radio, Settings } from "lucide-react";
 
 const LINKS = [
@@ -9,6 +10,7 @@ const LINKS = [
 ];
 
 export default function MorePage() {
+  policyholderOnly();
   return (
     <div className="space-y-4">
       <h1 className="font-display text-2xl font-semibold">More</h1>

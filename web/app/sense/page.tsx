@@ -1,9 +1,9 @@
 import { SenseConsole } from "@/components/sense-console";
 import { apiGet } from "@/lib/api";
-import { getSession } from "@/lib/session";
+import { policyholderOnly } from "@/lib/session";
 
 export default async function SensePage() {
-  const { account_id } = getSession();
+  const { account_id } = policyholderOnly();
   const { devices } = await apiGet<{ devices: never[] }>(`/devices?account_id=${account_id}`);
   return (
     <div className="space-y-4">

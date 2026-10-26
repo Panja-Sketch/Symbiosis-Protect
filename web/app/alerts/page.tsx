@@ -1,10 +1,10 @@
 import { AlertList } from "@/components/alert-list";
 import { apiGet } from "@/lib/api";
-import { getSession } from "@/lib/session";
+import { policyholderOnly } from "@/lib/session";
 import type { AlertRow } from "@/lib/types";
 
 export default async function AlertsPage() {
-  const { account_id } = getSession();
+  const { account_id } = policyholderOnly();
   const alerts = await apiGet<AlertRow[]>(`/alerts?account_id=${account_id}`);
   return (
     <div className="space-y-4">

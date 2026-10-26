@@ -172,7 +172,11 @@ class Engine:
             proof_default_level=r.proof.default_level, proof_accepted=r.proof.accepted, opened_at=ctx.now,
             due_at=ctx.now + timedelta(hours=r.expires_after_hours), expires_after_hours=r.expires_after_hours,
             cooldown_days=r.cooldown_days, relevant_date=(ctx.now + timedelta(hours=hours)).date(),
-            provenance=prov, **self._refresh(ctx, c, last))
+            visibility=self._default_visibility(account_id), provenance=prov, **self._refresh(ctx, c, last))
+
+    def _default_visibility(self, account_id: str) -> str:
+        acct = self.store.get("accounts", account_id) or {}
+        return "shared" if acct.get("preferences", {}).get("share_default", True) else "private"
 
     # ---- bucketing ----------------------------------------------------------------------------
     def rebucket(self, account_id: str) -> None:

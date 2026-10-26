@@ -9,8 +9,8 @@ export class ApiError extends Error {
 }
 
 /** Server-side GET against the FastAPI service (never cached: weather and tasks change). */
-export async function apiGet<T>(path: string): Promise<T> {
-  const r = await fetch(`${API}/api/v1${path}`, { cache: "no-store" });
+export async function apiGet<T>(path: string, role?: string): Promise<T> {
+  const r = await fetch(`${API}/api/v1${path}`, { cache: "no-store", headers: role ? { "X-Demo-Role": role } : {} });
   if (!r.ok) throw new ApiError(r.status, `${path} -> ${r.status}`);
   return r.json() as Promise<T>;
 }

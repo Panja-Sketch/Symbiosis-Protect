@@ -4,11 +4,11 @@ import { Provenance } from "@/components/provenance";
 import { RiskRibbon } from "@/components/risk-ribbon";
 import { TaskList } from "@/components/task-list";
 import { apiGet, apiTry } from "@/lib/api";
-import { getSession } from "@/lib/session";
+import { policyholderOnly } from "@/lib/session";
 import type { AccountResponse, HistoryResponse, Policy, Ribbon, TasksResponse, WeatherAlert, WeatherResponse } from "@/lib/types";
 
 export default async function HomePage() {
-  const { account_id } = getSession();
+  const { account_id } = policyholderOnly();
   const acct = await apiGet<AccountResponse>(`/accounts/${account_id}`);
   const loc = acct.locations[0];
   const [tasks, policies, ribbon, weather, alerts, history] = await Promise.all([

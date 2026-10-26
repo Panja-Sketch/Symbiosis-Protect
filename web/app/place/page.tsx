@@ -3,11 +3,11 @@ import { HistoryCharts } from "@/components/history-charts";
 import { Provenance } from "@/components/provenance";
 import { Card, CardBody, CardHeader, CardTitle } from "@/components/ui/card";
 import { apiGet } from "@/lib/api";
-import { getSession } from "@/lib/session";
+import { policyholderOnly } from "@/lib/session";
 import type { AccountResponse, AssetsResponse, HistoryResponse } from "@/lib/types";
 
 export default async function PlacePage() {
-  const { account_id } = getSession();
+  const { account_id } = policyholderOnly();
   const acct = await apiGet<AccountResponse>(`/accounts/${account_id}`);
   const loc = acct.locations[0];
   const [assets, history] = await Promise.all([

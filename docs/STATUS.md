@@ -46,3 +46,10 @@
 - API: `/devices`, `/devices/connect`, `/devices/{id}/readings|command`, `/accounts/{id}/cases`, `/cases/{id}` (+`report-fix`, `shutoff`, `acting`), `/director/device`; scheduler polls connected devices every 10 s.
 - UI: Sense console (connect, live tiles, sparkline, case timeline and actions, demo controls).
 - Verified: pytest 115 (closed loop incl. recurrence reopen, failed fix = not_improving, stale data = inconclusive not verified, temp probes, no-valve device, determinism); Playwright 50/50 incl. a real-time leak → verified → reopened run on both viewports.
+
+## Phase 7 — Roles (2026-10-25) ✅
+- Agent book (6 clients: active alerts with provenance, high-risk forecast days, shared open high-priority tasks, shared completion %, proof mix, Sense status, rule-composed renewal talking points) and Underwriter portfolio (participation, task completion, proof-level mix, active alerts by county, Sense cases, accounts table) with account drill-down (shared tasks/history/proofs/cases, synthetic claims).
+- Sharing rules enforced in the API: per-task share toggle, account default (Settings), declined = always private, insurer/agent-issued = always visible and uncapped; proof visibility follows its task.
+- Insurer/agent-issued recommendations (`POST /tasks/issue`) with alert to the policyholder; evidence export `POST /evidence/{policy}/export` → ZIP with `manifest.json`, `manifest.sha256` and per-file SHA-256 (shared-only for underwriter/agent, everything for the owner), persisted as `EvidencePackage`.
+- Settings screen is real now (channels, quiet hours, sharing default).
+- Verified: pytest 128 (role gates, private hidden, toggle, declined, portfolio tiles, issue + cap bypass, export zip re-hash, scope, sense evidence, preferences); Playwright 72/72 incl. role switch + redirects, same SHA-256 across policyholder/underwriter views, privacy toggle, issue → policyholder labelled card, export download + hash, agent book alert flags, axe on role pages.

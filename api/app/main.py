@@ -4,6 +4,7 @@ from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
+from app.routes.roles import router as roles_router
 from app.routes.v1 import router as v1_router
 
 API_PREFIX = "/api/v1"
@@ -53,6 +54,7 @@ def create_app() -> FastAPI:
     app.include_router(health)
     app.include_router(health, prefix=API_PREFIX)
     app.include_router(v1_router, prefix=API_PREFIX)
+    app.include_router(roles_router, prefix=API_PREFIX)
     return app
 
 

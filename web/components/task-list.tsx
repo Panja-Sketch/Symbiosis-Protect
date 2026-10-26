@@ -26,6 +26,44 @@ function Pills({ t }: { t: Task }) {
   );
 }
 
+function ShareToggle({ task }: { task: Task }) {
+  const router = useRouter();
+  const [shared, setShared] = useState(task.visibility === "shared");
+  const [err, setErr] = useState<string | null>(null);
+  if (task.source !== "rule") {
+    return <p className="mt-3 text-xs text-muted">Issued by your {task.source}; it is visible to them.</p>;
+  }
+  if (task.status === "declined") return null;
+  async function change(next: boolean) {
+    setErr(null);
+    const r = await fetch(`/backend/api/v1/tasks/${task.id}/visibility`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ visibility: next ? "shared" : "private" }),
+    });
+    if (r.ok) {
+      setShared(next);
+      router.refresh();
+    } else setErr("Could not change sharing.");
+  }
+  return (
+    <div className="mt-4 rounded-lg bg-surface-2 p-3 text-sm">
+      <label className="flex min-h-[44px] items-start gap-3">
+        <input type="checkbox" checked={shared} onChange={(e) => change(e.target.checked)} className="mt-1 h-5 w-5" data-testid="share-task" />
+        <span>
+          <strong>Share this task and its proof with my insurer and agent</strong>
+          <span className="block text-muted">{shared ? "They can see this task and any proof you add." : "Private: only you can see this task."}</span>
+        </span>
+      </label>
+      {err && (
+        <p role="alert" className="text-clay-text">
+          {err}
+        </p>
+      )}
+    </div>
+  );
+}
+
 function CoverageLens({ task, policy, onClose }: { task: Task; policy: Policy; onClose: () => void }) {
   const router = useRouter();
   const [pending, start] = useTransition();
@@ -101,6 +139,8 @@ function CoverageLens({ task, policy, onClose }: { task: Task; policy: Policy; o
           <li key={i}>{r}</li>
         ))}
       </ul>
+
+      <ShareToggle task={task} />
 
       <h3 className={h}>Proof</h3>
       {task.status === "done" ? (

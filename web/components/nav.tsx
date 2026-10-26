@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, FileText, Home, ListChecks, MapPin, Menu, MessageCircle, Radio, Settings } from "lucide-react";
+import { Bell, BriefcaseBusiness, FileText, Home, ListChecks, MapPin, Menu, MessageCircle, Radio, Settings, ShieldCheck } from "lucide-react";
+import type { Role } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
@@ -15,17 +16,22 @@ const ITEMS = [
   { href: "/sense", label: "Sense", icon: Radio },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
+const ROLE_ITEMS = {
+  agent: [{ href: "/agent", label: "My book", icon: BriefcaseBusiness }],
+  underwriter: [{ href: "/underwriter", label: "Portfolio", icon: ShieldCheck }],
+} as const;
 const TABS = [...ITEMS.slice(0, 4), { href: "/more", label: "More", icon: Menu }];
 
 function active(path: string, href: string) {
   return href === "/" ? path === "/" : path === href || path.startsWith(href + "/");
 }
 
-export function Sidebar({ unread }: { unread: number }) {
+export function Sidebar({ unread, role }: { unread: number; role: Role }) {
   const path = usePathname();
+  const items = role === "policyholder" ? ITEMS : ROLE_ITEMS[role];
   return (
     <nav aria-label="Primary" className="hidden w-56 shrink-0 flex-col gap-1 border-r border-line bg-surface p-3 lg:flex">
-      {ITEMS.map(({ href, label, icon: Icon }) => (
+      {items.map(({ href, label, icon: Icon }) => (
         <Link
           key={href}
           href={href}
@@ -49,8 +55,9 @@ export function Sidebar({ unread }: { unread: number }) {
   );
 }
 
-export function TabBar({ unread }: { unread: number }) {
+export function TabBar({ unread, role }: { unread: number; role: Role }) {
   const path = usePathname();
+  if (role !== "policyholder") return <RoleTabBar role={role} />;
   const moreActive = ["/more", "/place", "/alerts", "/sense", "/settings"].some((p) => active(path, p));
   return (
     <nav
@@ -77,6 +84,26 @@ export function TabBar({ unread }: { unread: number }) {
           </Link>
         );
       })}
+    </nav>
+  );
+}
+
+function RoleTabBar({ role }: { role: Exclude<Role, "policyholder"> }) {
+  const path = usePathname();
+  const items = ROLE_ITEMS[role];
+  return (
+    <nav aria-label="Primary" className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-1 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden">
+      {items.map(({ href, label, icon: Icon }) => (
+        <Link
+          key={href}
+          href={href}
+          aria-current={active(path, href) || path.startsWith("/client") ? "page" : undefined}
+          className="flex min-h-[56px] flex-col items-center justify-center gap-0.5 text-[11px] font-medium text-accent-text"
+        >
+          <Icon className="h-5 w-5" aria-hidden />
+          {label}
+        </Link>
+      ))}
     </nav>
   );
 }

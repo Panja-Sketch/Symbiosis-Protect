@@ -11,7 +11,7 @@ export async function AppShell({ children }: { children: ReactNode }) {
   const session = getSession();
   const [personas, alerts] = await Promise.all([
     apiTry<Persona[]>("/personas"),
-    apiTry<AlertRow[]>(`/alerts?account_id=${session.account_id}`),
+    session.role === "policyholder" ? apiTry<AlertRow[]>(`/alerts?account_id=${session.account_id}`) : Promise.resolve(null),
   ]);
   const unread = (alerts ?? []).filter((a) => !a.read_at).length;
   const me = personas?.find((p) => p.id === session.account_id);
@@ -34,9 +34,9 @@ export async function AppShell({ children }: { children: ReactNode }) {
         {personas && <IdentitySwitcher personas={personas} accountId={session.account_id} role={session.role} />}
       </header>
       <div className="flex flex-1">
-        <Sidebar unread={unread} />
+        <Sidebar unread={unread} role={session.role} />
         <main id="main" className="mx-auto w-full max-w-6xl flex-1 px-4 pb-28 pt-4 lg:pb-8">
-          {me?.preview_flag && (
+          {me?.preview_flag && session.role === "policyholder" && (
             <p className="mb-3 rounded-lg border border-amber/50 bg-amber-soft px-3 py-2 text-sm text-amber-text" data-testid="preview-banner">
               <strong>Personal-lines preview (AZ demo data).</strong> This carrier writes commercial and agricultural lines in Arizona; this
               persona is illustrative.
@@ -45,7 +45,7 @@ export async function AppShell({ children }: { children: ReactNode }) {
           {children}
         </main>
       </div>
-      <TabBar unread={unread} />
+      <TabBar unread={unread} role={session.role} />
     </div>
   );
 }

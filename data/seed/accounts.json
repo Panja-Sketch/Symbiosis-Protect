@@ -17,7 +17,8 @@
    "quiet_hours": [
     "21:00",
     "07:00"
-   ]
+   ],
+   "share_default": true
   },
   "program_label": "Personal-lines preview (AZ demo data)",
   "provenance": "SYNTHETIC",
@@ -41,7 +42,8 @@
    "quiet_hours": [
     "21:00",
     "07:00"
-   ]
+   ],
+   "share_default": false
   },
   "program_label": "Personal-lines preview (AZ demo data)",
   "provenance": "SYNTHETIC",
@@ -65,7 +67,8 @@
    "quiet_hours": [
     "21:00",
     "07:00"
-   ]
+   ],
+   "share_default": true
   },
   "program_label": null,
   "provenance": "SYNTHETIC",
@@ -89,7 +92,8 @@
    "quiet_hours": [
     "21:00",
     "07:00"
-   ]
+   ],
+   "share_default": true
   },
   "program_label": null,
   "provenance": "SYNTHETIC",
@@ -113,7 +117,8 @@
    "quiet_hours": [
     "21:00",
     "07:00"
-   ]
+   ],
+   "share_default": true
   },
   "program_label": null,
   "provenance": "SYNTHETIC",
@@ -137,7 +142,8 @@
    "quiet_hours": [
     "21:00",
     "07:00"
-   ]
+   ],
+   "share_default": true
   },
   "program_label": null,
   "provenance": "SYNTHETIC",

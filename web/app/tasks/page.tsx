@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Provenance } from "@/components/provenance";
 import { TaskList } from "@/components/task-list";
 import { apiGet } from "@/lib/api";
-import { getSession } from "@/lib/session";
+import { policyholderOnly } from "@/lib/session";
 import { cn, fmtDate } from "@/lib/utils";
 import type { EvidenceResponse, Policy, TasksResponse } from "@/lib/types";
 import { EvidenceTab } from "@/components/evidence-tab";
@@ -15,7 +15,7 @@ const TABS = [
 ] as const;
 
 export default async function TasksPage({ searchParams }: { searchParams: { tab?: string; open?: string } }) {
-  const { account_id } = getSession();
+  const { account_id } = policyholderOnly();
   const tab = TABS.find((t) => t.key === searchParams.tab)?.key ?? "do_now";
   const [res, counts, policies] = await Promise.all([
     apiGet<TasksResponse>(`/accounts/${account_id}/tasks?status=${tab === "evidence" ? "done" : tab}`),

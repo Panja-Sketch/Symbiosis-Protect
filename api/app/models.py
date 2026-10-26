@@ -22,6 +22,7 @@ class Contact(BaseModel):
 class Preferences(BaseModel):
     channels: list[Literal["in_app", "email"]] = ["in_app", "email"]
     quiet_hours: tuple[str, str] | None = ("21:00", "07:00")
+    share_default: bool = True  # new tasks are shared with the insurer/agent unless the owner turns this off
 
 
 class Agent(BaseModel):
@@ -335,3 +336,16 @@ class Case(BaseModel):
     manifest_sha256: str | None = None
     reopen_count: int = 0
     provenance: Provenance = "SIMULATED"
+
+
+class EvidencePackage(BaseModel):
+    id: str
+    policy_id: str
+    account_id: str
+    scope: Literal["shared_only", "all"]
+    files: list[dict]
+    manifest_sha256: str
+    created_at: datetime
+    created_by_role: str
+    shared_with: list[str] = Field(default_factory=list)
+    provenance: Provenance = "SYNTHETIC"
