@@ -1,7 +1,7 @@
 """/api/v1 routes (Phase 2 surface). Every response that carries data includes a `provenance`."""
 
 import hmac
-from datetime import datetime
+from datetime import date, datetime
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query
 from pydantic import BaseModel
@@ -11,6 +11,7 @@ from app.adapters import scenario
 from app.config import get_settings
 from app.deps import Container, get_container
 from app.ribbon import build_ribbon
+from app.seed import seed_store
 
 router = APIRouter()
 
@@ -231,4 +232,32 @@ def director_reset(c: Container = Depends(C)):
         for doc in c.store.list(col):
             c.store.delete(col, doc["id"])
     scenario.reset(c.store)
+    seed_store(c.store)  # also restores owner edits to assets/profiles back to the seeded demo state
     return {"evaluated": c.engine.evaluate_all(), "provenance": "SIMULATED"}
+
+
+@router.get("/accounts/{account_id}/assets", tags=["assets"])
+def assets(account_id: str, c: Container = Depends(C)):
+    locs = c.store.list("locations", account_id=account_id)
+    rows = [a for loc in locs for a in c.store.list("assets", location_id=loc["id"])]
+    profiles = [c.store.get("property_profiles", loc["id"]) for loc in locs]
+    return {"assets": sorted(rows, key=lambda a: (a["type"], a["id"])), "profiles": profiles, "provenance": "SYNTHETIC"}
+
+
+class AssetPatch(BaseModel):
+    install_year: int | None = None
+    last_service_date: date | None = None
+    notes: str | None = None
+
+
+@router.patch("/assets/{asset_id}", tags=["assets"])
+def patch_asset(asset_id: str, body: AssetPatch, c: Container = Depends(C)):
+    """Owner edits 'My place' facts; rules re-run immediately so tasks reflect the change."""
+    a = _must(c.store, "assets", asset_id)
+    patch = body.model_dump(mode="json", exclude_unset=True)
+    if "install_year" in patch and patch["install_year"] is not None and not (1950 <= patch["install_year"] <= 2100):
+        raise HTTPException(422, "install_year out of range")
+    a.update(patch)
+    c.store.put("assets", asset_id, a)
+    loc = _must(c.store, "locations", a["location_id"])
+    return {"asset": a, "evaluated": c.engine.evaluate_account(loc["account_id"])}

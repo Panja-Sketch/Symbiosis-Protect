@@ -27,8 +27,11 @@ def lint():
 
 def test():
     run(["uv", "run", "pytest", "-q"], cwd=ROOT / "api")
-    if (ROOT / "web" / "vitest.config.ts").exists():
-        run([PNPM, "test"], cwd=ROOT / "web")
+    run([PNPM, "test"], cwd=ROOT / "web")
+
+
+def e2e():
+    run([PNPM, "test:e2e"], cwd=ROOT / "web")
 
 
 def seed():
@@ -78,7 +81,7 @@ def deploy():
     sys.exit("Deploy is gated to Phase 9 and requires the owner to say 'deploy'.")
 
 
-TASKS = {"dev": dev, "data": data, "seed": seed, "test": test, "lint": lint, "deploy": deploy}
+TASKS = {"dev": dev, "e2e": e2e, "data": data, "seed": seed, "test": test, "lint": lint, "deploy": deploy}
 
 if __name__ == "__main__":
     name = sys.argv[1] if len(sys.argv) > 1 else ""

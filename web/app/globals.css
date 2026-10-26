@@ -2,26 +2,107 @@
 @tailwind components;
 @tailwind utilities;
 
+/* "Desert Instrument" tokens. Text uses the *-text variants (>= 4.5:1 on their surfaces). */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f6f4ef;
+  --surface: #ffffff;
+  --surface-2: #efece4;
+  --ink: #0f1b2d;
+  --muted: #4b5666;
+  --line: #d9d5ca;
+  --accent: #0e9f9a; /* Monsoon Teal (fills, rings) */
+  --accent-strong: #0b6f6b; /* buttons with white text */
+  --accent-soft: #dff3f1;
+  --accent-text: #0a615d;
+  --clay: #c2603a; /* Mesa Clay */
+  --clay-soft: #f8e6dd;
+  --clay-text: #9a3f1e;
+  --saguaro: #2f7d4f; /* done / verified */
+  --saguaro-soft: #e0f0e5;
+  --saguaro-text: #266640;
+  --amber: #d9a441; /* Haboob Amber (watch) */
+  --amber-soft: #fbf0d6;
+  --amber-text: #7a5410;
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    --bg: #0b1422;
+    --surface: #131f33;
+    --surface-2: #1a2940;
+    --ink: #eef2f7;
+    --muted: #a9b4c4;
+    --line: #2a3a54;
+    --accent: #2fc4be;
+    --accent-strong: #2fc4be;
+    --accent-soft: #123b3d;
+    --accent-text: #5fdad4;
+    --clay: #e0825d;
+    --clay-soft: #3a2118;
+    --clay-text: #f0a487;
+    --saguaro: #55b47a;
+    --saguaro-soft: #15301f;
+    --saguaro-text: #7fd09f;
+    --amber: #e5b955;
+    --amber-soft: #36290c;
+    --amber-text: #f0cf80;
+    color-scheme: dark;
   }
 }
 
+:root[data-theme="dark"] {
+  --bg: #0b1422;
+  --surface: #131f33;
+  --surface-2: #1a2940;
+  --ink: #eef2f7;
+  --muted: #a9b4c4;
+  --line: #2a3a54;
+  --accent: #2fc4be;
+  --accent-strong: #2fc4be;
+  --accent-soft: #123b3d;
+  --accent-text: #5fdad4;
+  --clay: #e0825d;
+  --clay-soft: #3a2118;
+  --clay-text: #f0a487;
+  --saguaro: #55b47a;
+  --saguaro-soft: #15301f;
+  --saguaro-text: #7fd09f;
+  --amber: #e5b955;
+  --amber-soft: #36290c;
+  --amber-text: #f0cf80;
+  color-scheme: dark;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }

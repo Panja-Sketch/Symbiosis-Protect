@@ -127,3 +127,26 @@ def test_internal_evaluate_requires_token_outside_demo(client):
         assert ok.status_code == 200 and len(ok.json()["evaluated"]) == 6
     finally:
         s.demo_mode = True
+
+
+def test_patch_asset_updates_tasks(client):
+    tc, *_ = client
+    tc.post("/api/v1/accounts/acct-p1/evaluate")
+    before = [t["rule_id"] for t in tc.get("/api/v1/accounts/acct-p1/tasks?status=open").json()["tasks"]]
+    assert "az.ho.water_heater_age.v1" in before
+    r = tc.patch("/api/v1/assets/ast-p1-wh", json={"install_year": 2024})
+    assert r.status_code == 200 and r.json()["asset"]["install_year"] == 2024
+    assert tc.patch("/api/v1/assets/ast-p1-wh", json={"install_year": 1800}).status_code == 422
+    assert tc.patch("/api/v1/assets/nope", json={}).status_code == 404
+    listing = tc.get("/api/v1/accounts/acct-p1/assets").json()
+    assert any(a["id"] == "ast-p1-wh" and a["install_year"] == 2024 for a in listing["assets"])
+
+
+def test_director_reset_restores_seeded_assets(client):
+    tc, *_ = client
+    tc.patch("/api/v1/assets/ast-p1-wh", json={"install_year": 2024})
+    tc.post("/api/v1/director/reset")
+    wh = next(a for a in tc.get("/api/v1/accounts/acct-p1/assets").json()["assets"] if a["id"] == "ast-p1-wh")
+    assert wh["install_year"] is None
+    ids = [t["rule_id"] for t in tc.get("/api/v1/accounts/acct-p1/tasks?status=open").json()["tasks"]]
+    assert "az.ho.water_heater_age.v1" in ids

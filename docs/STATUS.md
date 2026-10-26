@@ -19,3 +19,10 @@
 - API: personas, accounts, policies, weather, alerts, history, risk-ribbon, tasks (list/complete[E0]/defer/decline), alerts (list/read), director (inject/time-travel/reset), internal evaluate.
 - Verified: 58 tests pass (golden rule tests per persona and scenario, adapters with mocked NWS incl. User-Agent assertion and cache hits, API flows). Live check (`RUN_LIVE=1`): NWS + Open-Meteo succeed for all 6 locations; with real Oct-25 forecast the Flagstaff sprinkler-freeze task fires with LIVE provenance.
 - Not yet: photo proof (Phase 4), AI wording (Phase 5), devices/cases (Phase 6), roles (Phase 7), full Director UI (Phase 8). Multipart `complete` arrives in Phase 4 (JSON E0 now).
+
+## Phase 3 — UI core (2026-10-25) ✅
+- Web: Desert Instrument tokens (light + dark, contrast-checked text variants), Inter + Fraunces, phone tab bar / laptop sidebar, demo-identity switcher (HMAC-signed cookie, labelled "not a login"), provenance pills with tooltips on every data block.
+- Screens: Home (Risk Ribbon with task pins, Do-now ≤3, weather + NWS alerts, readiness ring, history teaser), Tasks (Do now / Coming up / Done + seeded history), Coverage Lens sheet (what could happen · what your policy says with coverage chips · what to do · why now · proof actions), Coverage, My place (editable asset ages → tasks re-evaluate; Recharts history; FEMA NRI), Alerts (filters, mark read), More. Ask/Sense/Settings are honest "arrives in Phase N" pages.
+- API additions: `GET /accounts/{id}/assets`, `PATCH /assets/{id}`; Director reset now restores seeded assets.
+- Verified: Playwright 36/36 at 390×844 and 1440×900 including axe WCAG 2.2 AA on 11 pages, no horizontal scroll, heat-scenario → SIMULATED task → Coverage Lens → complete → readiness updates, persona switch, asset edit. Vitest 4, pytest 60.
+- Gaps: Lighthouse score not yet measured; Agent/Underwriter roles listed in the switcher but views arrive in Phase 7; photo/doc proof in Phase 4.
