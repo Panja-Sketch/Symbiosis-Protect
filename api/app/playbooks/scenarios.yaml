@@ -1,0 +1,31 @@
+# Scenario Director injections (all labelled SIMULATED). Thresholds/values live here, not in code.
+freeze_flagstaff:
+  label: "Freeze Warning – Flagstaff"
+  cities: [Flagstaff]
+  alerts:
+    - { event: "Freeze Warning", severity: Moderate, urgency: Expected, duration_hours: 36,
+        headline: "SIMULATED Freeze Warning: lows of 18 to 24 degrees expected tonight and tomorrow night" }
+  forecast: { days: 3, max_f: 31, min_f: 18, precip_in: 0.1, precip_prob: 20 }
+heat_phoenix:
+  label: "Extreme Heat Warning – Phoenix metro"
+  cities: [Chandler, Tempe, Mesa]
+  alerts:
+    - { event: "Extreme Heat Warning", severity: Severe, urgency: Expected, duration_hours: 96,
+        headline: "SIMULATED Extreme Heat Warning: highs of 113 to 117 degrees for the next four days" }
+  forecast: { days: 5, max_f: 114, min_f: 90, precip_in: 0.0, precip_prob: 0 }
+storm_flood_valley:
+  label: "Severe Thunderstorm + Flash Flood Warning – Tempe/Mesa"
+  cities: [Tempe, Mesa, Chandler]
+  alerts:
+    - { event: "Severe Thunderstorm Warning", severity: Severe, urgency: Immediate, duration_hours: 6,
+        headline: "SIMULATED Severe Thunderstorm Warning: 60 mph wind gusts and quarter-size hail" }
+    - { event: "Flash Flood Warning", severity: Severe, urgency: Immediate, duration_hours: 6,
+        headline: "SIMULATED Flash Flood Warning: washes and low-lying streets may flood" }
+  forecast: { days: 1, max_f: 98, min_f: 78, precip_in: 1.2, precip_prob: 90 }
+dust_i10:
+  label: "Dust Storm Warning – I-10 corridor"
+  cities: [Chandler, Tempe, Mesa, Tucson]
+  alerts:
+    - { event: "Dust Storm Warning", severity: Severe, urgency: Immediate, duration_hours: 3,
+        headline: "SIMULATED Dust Storm Warning: visibility near zero along Interstate 10" }
+  forecast: { days: 1, max_f: 104, min_f: 82, precip_in: 0.0, precip_prob: 10 }

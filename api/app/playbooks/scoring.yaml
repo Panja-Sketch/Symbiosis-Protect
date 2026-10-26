@@ -1,0 +1,32 @@
+# score = severity_weight(peril, lob) x priority_weight x urgency(time_to_event) x exposure x (1 - completion_recency)
+do_now_cap: 3
+priority_weight: { high: 1.0, medium: 0.7, low: 0.4 }
+severity_weight:
+  water:    { homeowners: 1.0, dwelling_fire: 1.0, bop: 1.1, commercial_real_estate: 1.3, agribusiness: 1.1 }
+  freeze:   { homeowners: 1.1, dwelling_fire: 1.1, bop: 1.3, commercial_real_estate: 1.3, agribusiness: 1.0 }
+  flood:    { homeowners: 1.0, dwelling_fire: 1.0, bop: 1.1, commercial_real_estate: 1.2, agribusiness: 1.1 }
+  heat:     { homeowners: 0.9, dwelling_fire: 0.9, bop: 1.0, commercial_real_estate: 1.0, agribusiness: 1.4 }
+  spoilage: { agribusiness: 1.5, bop: 1.1 }
+  wind:     { homeowners: 0.9, dwelling_fire: 0.9, bop: 1.0, commercial_real_estate: 1.0, agribusiness: 1.0 }
+  liability: { bop: 1.1, commercial_real_estate: 1.1 }
+urgency:                         # first matching row wins (hours until the triggering event)
+  - { within_hours: 0,   value: 1.0 }
+  - { within_hours: 24,  value: 0.9 }
+  - { within_hours: 72,  value: 0.75 }
+  - { within_hours: 168, value: 0.6 }
+  - { within_hours: 720, value: 0.45 }
+  - { within_hours: 100000, value: 0.3 }
+exposure:
+  base: 1.0
+  per_year_over_threshold: 0.03  # asset older than its threshold
+  unknown_age: 0.15
+  prior_claim_same_peril: 0.25
+  nri_percentile_weight: 0.5     # x (percentile / 100) for the matching NRI hazard
+  cap: 2.0
+completion_recency: { decay_days_default: 30 }
+nri_hazard_for_peril:            # which NRI hazard's AZ-tract percentile adds exposure for a peril
+  heat: HWAV
+  spoilage: HWAV
+  freeze: CWAV
+  flood: IFLD
+  wind: SWND

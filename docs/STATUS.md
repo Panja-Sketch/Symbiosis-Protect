@@ -12,3 +12,10 @@
 - `python scripts/tasks.py data` rebuilds everything (raw downloads cached in git-ignored `data/raw/`); `python scripts/tasks.py seed` loads the Firestore emulator (refuses to run without `FIRESTORE_EMULATOR_HOST`).
 - Tests: 19 pass (parsers, seed integrity/foreign keys, no-promise copy, climate sanity).
 - Gaps: playbook YAML + rule engine (Phase 2); NRI values are county/tract level, not parcel level.
+
+## Phase 2 — Engine (2026-10-25) ✅
+- Adapters: `NWSProvider` (User-Agent from `NWS_USER_AGENT`; cache points 7 d / forecast 30 min / alerts 5 min), `OpenMeteoProvider`, `CompositeWeatherProvider` (NWS temps + Open-Meteo precip, graceful fallback), `ScenarioProvider` (Director injections + time-travel, always SIMULATED), notifier chain (in-app + console e-mail with quiet hours), `MemoryCache`/`FirestoreCache`, `MemoryStore`/`FirestoreStore`.
+- Engine: 26 YAML playbooks, 14 condition types, deterministic scoring (severity × priority × urgency × exposure × (1 − completion recency)), Do-now cap 3, task lifecycle (create/refresh/expire/defer/decline/complete with cooldowns), alert dedupe, APScheduler job (every `SCHEDULER_MINUTES`), `POST /api/v1/internal/evaluate`.
+- API: personas, accounts, policies, weather, alerts, history, risk-ribbon, tasks (list/complete[E0]/defer/decline), alerts (list/read), director (inject/time-travel/reset), internal evaluate.
+- Verified: 58 tests pass (golden rule tests per persona and scenario, adapters with mocked NWS incl. User-Agent assertion and cache hits, API flows). Live check (`RUN_LIVE=1`): NWS + Open-Meteo succeed for all 6 locations; with real Oct-25 forecast the Flagstaff sprinkler-freeze task fires with LIVE provenance.
+- Not yet: photo proof (Phase 4), AI wording (Phase 5), devices/cases (Phase 6), roles (Phase 7), full Director UI (Phase 8). Multipart `complete` arrives in Phase 4 (JSON E0 now).

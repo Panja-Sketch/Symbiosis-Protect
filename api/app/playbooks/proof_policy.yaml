@@ -1,0 +1,11 @@
+# Which proof level closes which kind of item (open question in BUILD_SPEC §16 — owner decides; keep configurable).
+levels:
+  E0: "One-tap attestation"
+  E1: "In-app photo with time and location"
+  E2: "Document (invoice, inspection report)"
+  E3: "Third-party review"
+  E4: "Sensor-verified"
+close_requires:
+  advisory: E0
+  high: E1
+  critical: E2

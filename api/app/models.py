@@ -188,6 +188,7 @@ class HistoricTask(BaseModel):
     status: Literal["done", "declined", "expired"]
     opened_at: datetime
     closed_at: datetime
+    asset_id: str | None = None
     proof_level: Literal["E0", "E1", "E2", "E3", "E4"] | None = None
     visibility: Literal["private", "shared"] = "private"
     provenance: Provenance = "SYNTHETIC"
@@ -209,3 +210,95 @@ class GlossaryTerm(BaseModel):
     term: str
     plain: str
     related_codes: list[str] = Field(default_factory=list)
+
+
+class WeatherAlert(BaseModel):
+    id: str
+    event: str
+    severity: str | None = None
+    urgency: str | None = None
+    headline: str
+    description: str = ""
+    onset: datetime | None = None
+    ends: datetime | None = None
+    expires: datetime | None = None
+    area_desc: str = ""
+    source: Literal["NWS", "SCENARIO"] = "NWS"
+    provenance: Provenance = "LIVE"
+
+
+class DailyForecast(BaseModel):
+    date: date
+    max_f: float | None = None
+    min_f: float | None = None
+    precip_in: float | None = None
+    precip_prob: int | None = None
+    short: str | None = None
+    source: str = "NWS"
+
+
+class HourlyForecast(BaseModel):
+    start: datetime
+    temp_f: float
+    precip_prob: int | None = None
+    short: str | None = None
+
+
+class Forecast(BaseModel):
+    location_id: str
+    fetched_at: datetime
+    daily: list[DailyForecast]
+    hourly: list[HourlyForecast] = Field(default_factory=list)
+    sources: list[str] = Field(default_factory=list)
+    provenance: Provenance = "LIVE"
+
+
+class Task(BaseModel):
+    id: str
+    rule_id: str
+    account_id: str
+    policy_id: str
+    location_id: str
+    asset_id: str | None = None
+    source: Literal["rule", "insurer", "agent"] = "rule"
+    title: str
+    why: str
+    steps: list[str]
+    priority: Literal["high", "medium", "low"]
+    score: float = 0.0
+    est_minutes: int | None = None
+    est_cost_usd: tuple[int, int] | None = None
+    peril: str = "water"
+    coverage_note_key: str | None = None
+    coverage_codes: list[str] = Field(default_factory=list)
+    proof_default_level: Literal["E0", "E1", "E2", "E3", "E4"] = "E1"
+    proof_accepted: list[str] = Field(default_factory=lambda: ["E0", "E1"])
+    status: Literal["open", "done", "deferred", "declined", "expired"] = "open"
+    defer_until: datetime | None = None
+    expires_after_hours: int = 168
+    cooldown_days: int = 30
+    bucket: Literal["do_now", "coming_up"] = "coming_up"
+    relevant_date: date | None = None
+    due_at: datetime | None = None
+    opened_at: datetime
+    closed_at: datetime | None = None
+    inputs_snapshot: dict = Field(default_factory=dict)
+    proof: list[Proof] = Field(default_factory=list)
+    visibility: Literal["private", "shared"] = "private"
+    provenance: Provenance = "SYNTHETIC"
+    wording_provenance: Literal["AI"] | None = None  # set only when AI phrased the text
+
+
+class Alert(BaseModel):
+    id: str
+    account_id: str
+    kind: Literal["weather", "task", "device", "agent"]
+    severity: Literal["info", "watch", "warning", "critical"]
+    title: str
+    body: str
+    deep_link: str | None = None
+    dedupe_key: str
+    created_at: datetime
+    sent_channels: list[str] = Field(default_factory=list)
+    read_at: datetime | None = None
+    provenance: Provenance = "LIVE"

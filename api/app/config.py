@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     session_secret: str = "dev-only-change-me"
     demo_mode: bool = True
     scheduler_enabled: bool = True
+    scheduler_minutes: int = 15
     ai_asks_per_hour: int = 30
 
 

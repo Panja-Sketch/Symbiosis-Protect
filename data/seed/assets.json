@@ -56,7 +56,9 @@
   "unit_label": null
  },
  {
-  "attributes": {},
+  "attributes": {
+   "location_confirmed": false
+  },
   "floor": null,
   "id": "ast-p1-shutoff",
   "install_year": null,
@@ -112,7 +114,9 @@
   "unit_label": null
  },
  {
-  "attributes": {},
+  "attributes": {
+   "location_confirmed": true
+  },
   "floor": null,
   "id": "ast-p2-shutoff",
   "install_year": null,
@@ -123,6 +127,20 @@
   "notes": "Front yard meter box, quarter-turn valve.",
   "provenance": "SYNTHETIC",
   "type": "main_shutoff",
+  "unit_label": null
+ },
+ {
+  "attributes": {},
+  "floor": null,
+  "id": "ast-p2-hoses",
+  "install_year": 2016,
+  "label": "Washer hookup hoses (provided to tenants)",
+  "last_service_date": null,
+  "location_id": "loc-p2",
+  "material": "rubber",
+  "notes": "Landlord-provided washer hookup.",
+  "provenance": "SYNTHETIC",
+  "type": "washer_hoses",
   "unit_label": null
  },
  {
@@ -252,7 +270,9 @@
   "unit_label": null
  },
  {
-  "attributes": {},
+  "attributes": {
+   "location_confirmed": true
+  },
   "floor": null,
   "id": "ast-p4-shutoff",
   "install_year": null,
@@ -294,7 +314,9 @@
   "unit_label": null
  },
  {
-  "attributes": {},
+  "attributes": {
+   "location_confirmed": true
+  },
   "floor": null,
   "id": "ast-p5-shutoff",
   "install_year": null,
@@ -313,7 +335,7 @@
   "id": "ast-p6-cooler1",
   "install_year": 2009,
   "label": "Cooler room 1 compressor system",
-  "last_service_date": "2025-02-11",
+  "last_service_date": "2026-08-24",
   "location_id": "loc-p6",
   "material": null,
   "notes": "",
@@ -355,7 +377,7 @@
   "id": "ast-p6-wash",
   "install_year": 2009,
   "label": "Packing line wash-down water system",
-  "last_service_date": "2025-03-06",
+  "last_service_date": "2026-03-06",
   "location_id": "loc-p6",
   "material": null,
   "notes": "",
@@ -369,7 +391,7 @@
   "id": "ast-p6-bf",
   "install_year": 2017,
   "label": "Backflow preventer on wash-down line",
-  "last_service_date": "2025-03-06",
+  "last_service_date": "2026-03-06",
   "location_id": "loc-p6",
   "material": null,
   "notes": "",

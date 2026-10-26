@@ -1,0 +1,111 @@
+# AgriBusiness playbooks (4 from the spec + 1 recurring generator rule).
+- id: az.ag.preharvest_refrigeration.v1
+  lob: [agribusiness]
+  peril: spoilage
+  title: "Service refrigeration before harvest"
+  scope: asset
+  asset_type: refrigeration
+  why_template: >
+    {asset_label} was last serviced {last_service|never on file}. Harvest-season loads are the heaviest on cooling
+    equipment, and a compressor failure with product inside is a spoilage loss in hours.
+  when:
+    all:
+      - season: { name: desert_harvest_prep, approaching: true }
+      - asset_last_service_months: { asset: refrigeration, gte: 6, or_unknown: true }
+  steps:
+    - "Schedule your refrigeration contractor for a full inspection: compressors, condensers, defrost, door seals."
+    - "Verify the high-temperature alarm works and the call list is current."
+    - "Log a temperature check at the coldest and warmest points in the room."
+    - "Keep the service report; upload it as proof."
+  est_minutes: 60
+  est_cost_usd: [300, 1500]
+  proof: { default_level: E2, accepted: [E2, E3] }
+  coverage_note_key: spoilage_cooling_failure
+  coverage_codes: [AG_SPOILAGE, END_EQUIP_BREAKDOWN, AG_STOCK]
+  priority: high
+  expires_after_hours: 720
+  cooldown_days: 60
+  sources: ["asset profile", "season calendar"]
+
+- id: az.ag.heat_power_backup.v1
+  lob: [agribusiness]
+  peril: heat
+  title: "Test backup power before the heat"
+  scope: asset
+  asset_type: backup_power
+  why_template: >
+    {trigger_text} A utility outage in extreme heat can warm a cooler within hours. {asset_label} was last
+    tested {last_service|never on file}.
+  when:
+    any:
+      - nws_group: heat
+      - forecast_max_temp_f: { gte: 110, min_days: 2, within_hours: 96 }
+      - asset_last_service_months: { asset: backup_power, gte: 12, or_unknown: true }
+  steps:
+    - "Run the generator under load for at least 30 minutes and check fuel level and battery."
+    - "Confirm the automatic transfer switch moves the coolers over."
+    - "Confirm your refrigeration high-temperature alarm calls the right phones."
+    - "Write down the run time and results; upload the log."
+  est_minutes: 60
+  est_cost_usd: [0, 400]
+  proof: { default_level: E2, accepted: [E1, E2] }
+  coverage_note_key: spoilage_cooling_failure
+  coverage_codes: [AG_UTILITY, AG_SPOILAGE, END_UTILITY_SERVICES]
+  priority: high
+  expires_after_hours: 168
+  cooldown_days: 60
+  sources: ["NWS alert or forecast", "asset profile"]
+
+- id: az.ag.washdown_backflow.v1
+  lob: [agribusiness]
+  peril: water
+  title: "Check wash-down hoses and the backflow preventer"
+  scope: asset
+  asset_type: wash_down_system
+  why_template: >
+    {asset_label} was last checked {last_service|never on file}. Worn hoses and fittings leak into electrical
+    equipment, and a failed backflow preventer can let wash-down water flow back into the clean supply.
+  when:
+    all:
+      - asset_last_service_months: { asset: wash_down_system, gte: 6, or_unknown: true }
+  steps:
+    - "Walk the wash-down hoses and fittings; replace any that are cracked, bulging or weeping."
+    - "Check that spray stays away from panels, outlets and conduit entries."
+    - "Confirm the backflow preventer has a current test tag; if not, schedule a certified test."
+    - "Photograph each hose station and the backflow tag."
+  est_minutes: 45
+  est_cost_usd: [0, 300]
+  proof: { default_level: E1, accepted: [E1, E2] }
+  coverage_note_key: water_sudden_vs_gradual
+  coverage_codes: [AG_EQUIPMENT]
+  priority: medium
+  expires_after_hours: 336
+  cooldown_days: 90
+  sources: ["asset profile"]
+
+- id: az.ag.monsoon_outage_spoilage.v1
+  lob: [agribusiness]
+  peril: spoilage
+  title: "Monsoon power-outage and spoilage plan"
+  why_template: >
+    {trigger_text} Monsoon storms are a leading cause of utility outages, and your off-premises power coverage has a
+    waiting period (see Coverage), so the first hours are on you.
+  when:
+    any:
+      - nws_group: thunderstorm
+      - nws_group: dust
+      - season: { name: monsoon, approaching: true }
+  steps:
+    - "Keep cooler doors closed and pre-chill rooms if an outage is forecast."
+    - "Confirm the generator starts and has fuel for at least 24 hours."
+    - "Keep a log: outage start time, room temperatures every 2 hours, and what was moved or discarded."
+    - "Call your utility and your agent early; take dated photos of product and thermometers."
+  est_minutes: 30
+  est_cost_usd: [0, 100]
+  proof: { default_level: E1, accepted: [E0, E1] }
+  coverage_note_key: spoilage_cooling_failure
+  coverage_codes: [AG_UTILITY, AG_SPOILAGE, END_UTILITY_SERVICES]
+  priority: high
+  expires_after_hours: 72
+  cooldown_days: 21
+  sources: ["NWS alert", "season calendar"]

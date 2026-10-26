@@ -1,0 +1,26 @@
+# Shared thresholds and event groups. Rules reference these by name; nothing here is hard-coded in Python.
+seasons:
+  monsoon: { start: "06-15", end: "09-30" }          # NWS official monsoon season
+  freeze_high_country: { start: "10-15", end: "04-30" }
+  desert_harvest_prep: { start: "09-15", end: "11-15" }
+approaching_days: 45            # a season counts as "approaching" this many days before it starts
+high_country_min_elevation_ft: 4000
+season_in_progress_urgency_hours: 168   # urgency used while a season is already under way (no specific event)
+stale_asset_urgency_hours: 336  # urgency used when a task is due only because maintenance is overdue
+onboarding_urgency_hours: 720
+nws_groups:
+  heat: ["Extreme Heat Warning", "Excessive Heat Warning", "Extreme Heat Watch", "Excessive Heat Watch"]
+  freeze: ["Freeze Warning", "Hard Freeze Warning", "Extreme Cold Warning", "Freeze Watch", "Hard Freeze Watch"]
+  thunderstorm: ["Severe Thunderstorm Warning", "Severe Thunderstorm Watch"]
+  flood: ["Flash Flood Warning", "Flash Flood Watch", "Flood Warning", "Flood Watch"]
+  dust: ["Dust Storm Warning", "Blowing Dust Warning"]
+  wind: ["High Wind Warning", "Wind Advisory"]
+hard_water:
+  grains_per_gallon_phoenix_area: 12   # assumption, see docs/SOURCES.md
+risk_ribbon:                     # per-day risk colour thresholds (forecast-driven)
+  heat_high_f: 110
+  heat_elevated_f: 105
+  freeze_high_f: 28
+  freeze_elevated_f: 32
+  rain_high_in: 0.5
+  rain_elevated_in: 0.25

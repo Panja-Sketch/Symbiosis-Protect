@@ -1,0 +1,214 @@
+# Homeowners + Dwelling Fire playbooks (8). Thresholds come from thresholds.yaml where shared.
+- id: az.ho.condensate.heat.v1
+  lob: [homeowners, dwelling_fire]
+  peril: water
+  title: "Flush your AC condensate line before the heat wave"
+  why_template: >
+    {city} is forecast to hit {max_temp_f}°F for {days} day(s). Your AC will run almost nonstop, and a
+    clogged condensate line is one of the most common causes of indoor water damage in Arizona.
+    Your last service on file: {last_service|unknown}.
+  applies_if: { has_central_ac: true }
+  when:
+    any:
+      - nws_group: heat
+      - forecast_max_temp_f: { gte: 110, min_days: 2, within_hours: 96 }
+    all:
+      - asset_last_service_months: { asset: hvac_condensate, gte: 6, or_unknown: true }
+  steps:
+    - "Find the condensate line (a white PVC pipe near the indoor air handler)."
+    - "Pour 1 cup of distilled white vinegar into the access port and wait 30 minutes."
+    - "Check that the outdoor drain end is dripping, not dry."
+    - "If water is standing in the drain pan, call an HVAC technician."
+  est_minutes: 20
+  est_cost_usd: [0, 150]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: water_sudden_vs_gradual
+  coverage_codes: [HO_WATER_SUDDEN, DF_WATER_SUDDEN]
+  priority: high
+  expires_after_hours: 96
+  cooldown_days: 30
+  sources: ["NWS alert or forecast", "asset profile"]
+
+- id: az.ho.water_heater_age.v1
+  lob: [homeowners, dwelling_fire]
+  peril: water
+  title: "Check your water heater's age and add a leak safeguard"
+  scope: asset
+  asset_type: water_heater
+  why_template: >
+    {asset_label} is {age_text}. In {city}, hard water speeds up tank wear; national research puts the average
+    failure age near 11 years. A failing tank can release dozens of gallons at once.
+  when:
+    all:
+      - asset_age_years: { asset: water_heater, gte_hard_water: 8, gte_default: 9, or_unknown: true }
+  steps:
+    - "Find the serial number on the tank label; the first letters/digits usually give the manufacture month and year (varies by brand)."
+    - "Look for rust at the base, damp insulation, or mineral crust around the fittings."
+    - "Make sure there is a drain pan with a pipe to a safe drain, and know where the cold-water shutoff to the heater is."
+    - "If the tank is at or past its expected life, get a plumber's quote for a planned replacement."
+  est_minutes: 30
+  est_cost_usd: [0, 1800]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: wear_and_age
+  coverage_codes: [HO_WATER_SUDDEN, DF_WATER_SUDDEN, EX_WEAR]
+  priority: medium
+  expires_after_hours: 720
+  cooldown_days: 180
+  sources: ["asset profile", "IBHS water heater research"]
+
+- id: az.ho.hose_age.v1
+  lob: [homeowners, dwelling_fire]
+  peril: water
+  title: "Replace aging washer hoses with braided steel"
+  scope: asset
+  asset_type: washer_hoses
+  why_template: >
+    {asset_label} are {age_text} and made of {material|unknown material}. Rubber supply hoses can burst without
+    warning; a burst hose can run for hours if no one is home.
+  when:
+    any:
+      - asset_age_years: { asset: washer_hoses, gte_hard_water: 5, gte_default: 5, or_unknown: true }
+      - asset_attr: { asset: washer_hoses, attr: material, equals: rubber }
+  steps:
+    - "Turn off both washer valves, then unscrew the hoses (keep a towel and bucket handy)."
+    - "Replace with braided stainless-steel hoses; hand-tighten, then a quarter-turn with pliers."
+    - "Write the install date on a piece of tape on the hose so you know its age next time."
+    - "Turn the valves off whenever you leave for a long trip."
+  est_minutes: 30
+  est_cost_usd: [20, 60]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: water_sudden_vs_gradual
+  coverage_codes: [HO_WATER_SUDDEN, DF_WATER_SUDDEN]
+  priority: high
+  expires_after_hours: 720
+  cooldown_days: 365
+  sources: ["asset profile", "IBHS supply hose research"]
+
+- id: az.ho.monsoon_roof_gutters.v1
+  lob: [homeowners, dwelling_fire]
+  peril: wind
+  title: "Get the roof and drainage ready for monsoon"
+  why_template: >
+    Arizona's monsoon season runs June 15 to September 30. {season_text} Clogged gutters and loose tiles are the
+    usual way a short, heavy storm turns into an indoor leak.
+  when:
+    any:
+      - season: { name: monsoon, approaching: true }
+      - nws_group: thunderstorm
+  steps:
+    - "Clear gutters, downspouts and any roof valleys of leaves and debris."
+    - "Look at the roof from the ground (or with a phone camera) for slipped or broken tiles."
+    - "Trim branches that overhang the roof and secure outdoor furniture and shade structures."
+    - "Take dated photos of the roof and yard now, so you have a before picture."
+  est_minutes: 60
+  est_cost_usd: [0, 200]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: roof_wind_hail
+  coverage_codes: [HO_DWELLING, DF_DWELLING]
+  priority: medium
+  expires_after_hours: 336
+  cooldown_days: 120
+  sources: ["NWS monsoon season dates"]
+
+- id: az.ho.flash_flood_readiness.v1
+  lob: [homeowners, dwelling_fire]
+  peril: flood
+  title: "Flash-flood readiness — and a note about flood coverage"
+  why_template: >
+    The National Weather Service has an active flood-related alert for {city}: {event}.
+    Standard property policies usually leave out flood, so preparing matters.
+  when:
+    any:
+      - nws_group: flood
+  steps:
+    - "Move valuables, documents and electronics off the floor or to a higher shelf."
+    - "Never drive through a flooded wash or road — turn around."
+    - "Take photos of each room and your valuables for your records."
+    - "Ask your agent whether flood coverage makes sense for your location."
+  est_minutes: 30
+  est_cost_usd: [0, 0]
+  proof: { default_level: E0, accepted: [E0, E1] }
+  coverage_note_key: flood_exclusion
+  coverage_codes: [EX_FLOOD]
+  priority: high
+  expires_after_hours: 48
+  cooldown_days: 7
+  sources: ["NWS alert"]
+
+- id: az.ho.travel_vacancy_shutoff.v1
+  lob: [homeowners, dwelling_fire]
+  peril: water
+  title: "Shut off the water and check for drips while the home is empty"
+  why_template: >
+    The property is {occupancy_text}. Water losses in empty homes tend to run longer before anyone notices them,
+    and some policies treat long vacancies differently.
+  applies_if: { occupancy: [vacant_between_tenants] }
+  when:
+    all:
+      - always: true
+  steps:
+    - "Turn off the main water valve (or at least the water heater's cold-water valve and washer valves)."
+    - "Set the water heater to vacation/pilot mode or turn it off."
+    - "Run a faucet to relieve pressure, then check under sinks and around the water heater for drips."
+    - "Ask your agent about vacancy permission if the home will be empty longer than 60 days."
+  est_minutes: 20
+  est_cost_usd: [0, 0]
+  proof: { default_level: E1, accepted: [E0, E1] }
+  coverage_note_key: vacancy_limit
+  coverage_codes: [DF_WATER_SUDDEN, EX_VACANCY, END_VACANCY_PERMIT]
+  priority: high
+  expires_after_hours: 336
+  cooldown_days: 30
+  sources: ["property profile"]
+
+- id: az.ho.freeze_high_country.v1
+  lob: [homeowners, dwelling_fire]
+  peril: freeze
+  title: "Protect pipes before the freeze"
+  why_template: >
+    A freeze is expected near {city} ({elevation_ft} ft): low of {min_temp_f}°F. Pipes on outside walls and in
+    unheated spaces are the ones that split.
+  applies_if: { elevation_gte_high_country: true }
+  when:
+    any:
+      - nws_group: freeze
+      - forecast_min_temp_f: { lte: 28, within_hours: 72 }
+  steps:
+    - "Disconnect garden hoses and cover outdoor spigots."
+    - "Open cabinet doors under sinks on outside walls."
+    - "Let one faucet drip slowly overnight on the coldest night."
+    - "Know where your main shutoff is in case a pipe does split."
+  est_minutes: 20
+  est_cost_usd: [0, 30]
+  proof: { default_level: E0, accepted: [E0, E1] }
+  coverage_note_key: freeze_heat_condition
+  coverage_codes: [HO_WATER_SUDDEN]
+  priority: high
+  expires_after_hours: 72
+  cooldown_days: 14
+  sources: ["NWS alert or forecast"]
+
+- id: az.ho.know_shutoff.v1
+  lob: [homeowners, dwelling_fire]
+  peril: water
+  title: "Find and label your main water shutoff"
+  why_template: >
+    You have not confirmed where the main shutoff is. In a burst-pipe emergency, the minutes spent looking
+    for it are minutes of water damage.
+  when:
+    all:
+      - asset_attr: { asset: main_shutoff, attr: location_confirmed, equals: false }
+  steps:
+    - "Check near the water heater, on the exterior wall closest to the street, and near the hose bib at the front."
+    - "Turn the valve a quarter-turn (ball valve) or clockwise (gate valve) to confirm it stops the water."
+    - "Label it with a bright tag and take a photo for your records."
+    - "Tell everyone in the household where it is."
+  est_minutes: 15
+  est_cost_usd: [0, 10]
+  proof: { default_level: E1, accepted: [E0, E1] }
+  coverage_note_key: water_sudden_vs_gradual
+  coverage_codes: [HO_WATER_SUDDEN]
+  priority: medium
+  expires_after_hours: 720
+  cooldown_days: 365
+  sources: ["asset profile"]

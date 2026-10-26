@@ -43,27 +43,26 @@ def _doc_id(value: str) -> str:
     return value.replace("/", "_")
 
 
-def seed_firestore(db=None) -> dict[str, int]:
-    if db is None:
-        from app.db import get_db
-
-        db = get_db()
+def seed_store(store) -> dict[str, int]:
+    """Write all validated seed + derived docs into any Store (memory or Firestore)."""
     counts = {}
     for name, rows in load_seed().items():
         id_field = COLLECTIONS[name][2]
-        batch = db.batch()
-        for i, row in enumerate(rows, 1):
-            batch.set(db.collection(name).document(_doc_id(str(row[id_field]))), row)
-            if i % 400 == 0:
-                batch.commit()
-                batch = db.batch()
-        batch.commit()
+        for row in rows:
+            store.put(name, _doc_id(str(row[id_field])), row)
         counts[name] = len(rows)
     derived = load_derived()
     for doc_id, body in derived.items():
-        db.collection("derived").document(doc_id).set(body)
+        store.put("derived", doc_id, body)
     counts["derived"] = len(derived)
     return counts
+
+
+def seed_firestore(db=None) -> dict[str, int]:
+    from app.db import get_db
+    from app.store import FirestoreStore
+
+    return seed_store(FirestoreStore(db or get_db()))
 
 
 if __name__ == "__main__":

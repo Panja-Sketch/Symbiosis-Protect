@@ -1,0 +1,156 @@
+# Commercial Real Estate (habitational) playbooks (6).
+- id: az.cre.unit_register.v1
+  lob: [commercial_real_estate]
+  peril: water
+  title: "Complete the unit register (water heater, supply lines, AC)"
+  why_template: >
+    The unit register is incomplete: {units_count} of {unit_total} units are missing details the safety
+    checks depend on ({missing_text}). Without them, we cannot tell you which units to look at first.
+  when:
+    all:
+      - register_incomplete: { required: [water_heater_year, last_turnover_date, hvac_condensate_last_service] }
+  steps:
+    - "Open the unit register and fill in the missing fields for the units listed."
+    - "Water heater year is on the tank label; if you cannot find it, mark 'unknown' so we keep flagging it."
+    - "Add the date of the last turnover and the last AC condensate service."
+  est_minutes: 45
+  est_cost_usd: [0, 0]
+  proof: { default_level: E2, accepted: [E0, E2] }
+  coverage_note_key: unit_below_damage
+  coverage_codes: [CRE_WATER_ESCAPE]
+  priority: medium
+  expires_after_hours: 720
+  cooldown_days: 90
+  sources: ["unit register"]
+
+- id: az.cre.turnover_supply_lines.v1
+  lob: [commercial_real_estate]
+  peril: water
+  title: "Check supply lines in recently turned units"
+  why_template: >
+    {units_count} unit(s) turned over in the last {window_days} days without a supply-line check on file:
+    {units}. Turnover is the best moment to replace washer hoses and toilet/sink supply lines before the next
+    tenant moves in.
+  when:
+    all:
+      - units_match: { attr: last_turnover_date, within_days: 60, and_attr_equals: { supply_lines_checked_at_turnover: false } }
+  steps:
+    - "In each listed unit, check under every sink, behind the toilet and behind the washer."
+    - "Replace rubber hoses with braided stainless steel; make sure shutoffs turn."
+    - "Photograph each fixture with the unit number visible, then mark the unit done in the register."
+  est_minutes: 30
+  est_cost_usd: [20, 120]
+  proof: { default_level: E1, accepted: [E1, E2] }
+  coverage_note_key: unit_below_damage
+  coverage_codes: [CRE_WATER_ESCAPE, CRE_BUILDINGS]
+  priority: high
+  expires_after_hours: 336
+  cooldown_days: 21
+  sources: ["unit register"]
+
+- id: az.cre.water_heater_by_unit.v1
+  lob: [commercial_real_estate]
+  peril: water
+  title: "Plan replacement for aging unit water heaters"
+  why_template: >
+    {units_count} unit water heaters are at or past the {threshold_years}-year mark for hard-water areas:
+    {units}. A failed tank on an upper floor sends water through the ceilings below.
+  when:
+    all:
+      - units_match: { attr: water_heater_year, age_gte_hard_water: 8, age_gte_default: 9 }
+  steps:
+    - "Inspect each listed heater for rust, damp insulation and corrosion at the fittings."
+    - "Confirm each has a pan and drain line, especially on floors 2-4."
+    - "Prioritize upper-floor units over the oldest tanks for replacement; get a bulk quote."
+  est_minutes: 60
+  est_cost_usd: [0, 1800]
+  proof: { default_level: E2, accepted: [E1, E2] }
+  coverage_note_key: unit_below_damage
+  coverage_codes: [CRE_WATER_ESCAPE, EX_WEAR]
+  priority: medium
+  expires_after_hours: 720
+  cooldown_days: 90
+  sources: ["unit register", "IBHS water heater research"]
+
+- id: az.cre.risers_roof_drains.v1
+  lob: [commercial_real_estate]
+  peril: water
+  title: "Inspect risers and clear roof drains"
+  why_template: >
+    {trigger_text} Roof drains and vertical risers carry large volumes in a monsoon storm; a clog or a weak joint
+    spreads water through several floors. Last service on file: {last_service|unknown}.
+  applies_if: { asset_exists: [roof_drains] }
+  when:
+    any:
+      - nws_group: thunderstorm
+      - nws_group: flood
+      - forecast_precip_in: { gte: 0.5, within_hours: 24 }
+      - season: { name: monsoon, approaching: true }
+      - asset_last_service_months: { asset: roof_drains, gte: 12, or_unknown: true }
+  steps:
+    - "Clear all roof drains, scuppers and overflow openings; check that overflow drains sit above the primary drains."
+    - "Walk the top-floor ceilings and riser closets for stains, drips or damp."
+    - "Confirm the roof drain and riser shutoffs are labelled and accessible."
+    - "Photograph each cleared drain with the building label visible."
+  est_minutes: 90
+  est_cost_usd: [0, 600]
+  proof: { default_level: E1, accepted: [E1, E2] }
+  coverage_note_key: roof_wind_hail
+  coverage_codes: [CRE_BUILDINGS, CRE_WATER_ESCAPE]
+  priority: high
+  expires_after_hours: 120
+  cooldown_days: 60
+  sources: ["NWS alert or forecast", "asset profile"]
+
+- id: az.cre.heat_condensate_units.v1
+  lob: [commercial_real_estate]
+  peril: water
+  title: "Flush AC condensate lines in units before the heat wave"
+  why_template: >
+    {city} is forecast to hit {max_temp_f}°F. With every unit's AC running nonstop, {units_count} unit(s) have no
+    condensate service in the last 6 months or on file: {units}. An overflow in an upper unit can reach the unit
+    below.
+  when:
+    any:
+      - nws_group: heat
+      - forecast_max_temp_f: { gte: 110, min_days: 2, within_hours: 96 }
+    all:
+      - units_match: { attr: hvac_condensate_last_service, older_than_months: 6 }
+  steps:
+    - "Send maintenance to each listed unit with distilled vinegar to flush the condensate line."
+    - "Check the drain pan and confirm the outdoor drain end is flowing."
+    - "Record the date in the unit register and photograph one unit per building."
+  est_minutes: 20
+  est_cost_usd: [0, 150]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: water_sudden_vs_gradual
+  coverage_codes: [CRE_WATER_ESCAPE]
+  priority: high
+  expires_after_hours: 96
+  cooldown_days: 30
+  sources: ["NWS alert or forecast", "unit register"]
+
+- id: az.cre.upper_leak_notify_below.v1
+  lob: [commercial_real_estate]
+  peril: water
+  title: "Leak in {upper_unit} — check unit {below_unit} below"
+  why_template: >
+    A water event was detected in unit {upper_unit} at {event_time}. Water moves down: unit {below_unit} sits
+    directly below and may see damp ceilings or walls next.
+  when:
+    all:
+      - recent_event: { kinds: [water_leak], within_hours: 72, needs_unit: true }
+  steps:
+    - "Shut off the water to unit {upper_unit} (unit valve or floor shutoff) if it is not already off."
+    - "Enter unit {below_unit} (with notice as required) and check the ceiling and walls under the affected area."
+    - "Photograph any staining with the unit label visible, and move belongings away from wet areas."
+    - "Notify both residents and your agent; keep the repair invoice."
+  est_minutes: 30
+  est_cost_usd: [0, 500]
+  proof: { default_level: E1, accepted: [E1, E2, E4] }
+  coverage_note_key: unit_below_damage
+  coverage_codes: [CRE_WATER_ESCAPE, CRE_GL]
+  priority: high
+  expires_after_hours: 72
+  cooldown_days: 1
+  sources: ["device or case events"]

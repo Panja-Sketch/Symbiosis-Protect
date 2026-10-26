@@ -13,17 +13,25 @@ dependencies = [
   "google-genai>=0.8",
   "apscheduler>=3.10",
   "python-multipart>=0.0.9",
+  "tzdata>=2026.5",
+  "pytest-httpx>=0.36.2",
 ]
 
 [dependency-groups]
-dev = ["pytest>=8", "ruff>=0.6", "pytest-asyncio>=0.23"]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+    "pytest-asyncio>=0.23",
+    "respx>=0.23.1",
+]
 
 [tool.ruff]
-line-length = 120
+line-length = 140
 target-version = "py312"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

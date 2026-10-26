@@ -84,12 +84,14 @@ def assets(rng_seed=48):
         _a("ast-p1-ac", "loc-p1", "hvac_condensate", "AC condensate line (attic air handler)", last_service_date=None,
            notes="No service record from the seller."),
         _a("ast-p1-roof", "loc-p1", "roof", "Concrete tile roof", install_year=2009),
-        _a("ast-p1-shutoff", "loc-p1", "main_shutoff", "Main water shutoff", notes="Location not yet confirmed by owner."),
+        _a("ast-p1-shutoff", "loc-p1", "main_shutoff", "Main water shutoff", notes="Location not yet confirmed by owner.", attributes={"location_confirmed": False}),
         # P2 Luis
         _a("ast-p2-wh", "loc-p2", "water_heater", "Water heater (hall closet, 40 gal)", install_year=2015),
         _a("ast-p2-ac", "loc-p2", "hvac_condensate", "AC condensate line", last_service_date=date(2025, 3, 14)),
         _a("ast-p2-roof", "loc-p2", "roof", "Tile roof", install_year=2012),
-        _a("ast-p2-shutoff", "loc-p2", "main_shutoff", "Main water shutoff", notes="Front yard meter box, quarter-turn valve."),
+        _a("ast-p2-shutoff", "loc-p2", "main_shutoff", "Main water shutoff", notes="Front yard meter box, quarter-turn valve.", attributes={"location_confirmed": True}),
+        _a("ast-p2-hoses", "loc-p2", "washer_hoses", "Washer hookup hoses (provided to tenants)", install_year=2016,
+           material="rubber", notes="Landlord-provided washer hookup."),
         # P3 Saguaro Grill
         _a("ast-p3-ice", "loc-p3", "ice_maker_line", "Ice machine supply line", install_year=2019, material="braided steel"),
         _a("ast-p3-dish", "loc-p3", "dishwasher_line", "Commercial dishwasher supply line", install_year=2020),
@@ -104,23 +106,23 @@ def assets(rng_seed=48):
            last_service_date=date(2025, 10, 6), notes="Annual inspection. Riser in back stockroom, exterior wall."),
         _a("ast-p4-roof", "loc-p4", "roof", "Membrane roof (snow-load rated)", install_year=2004),
         _a("ast-p4-wh", "loc-p4", "water_heater", "Water heater (break room)", install_year=2013),
-        _a("ast-p4-shutoff", "loc-p4", "main_shutoff", "Main water shutoff", notes="Back stockroom."),
+        _a("ast-p4-shutoff", "loc-p4", "main_shutoff", "Main water shutoff", notes="Back stockroom.", attributes={"location_confirmed": True}),
         # P5 Mesa Palms building-level
         _a("ast-p5-drains", "loc-p5", "roof_drains", "Roof drains and risers (all buildings)", last_service_date=date(2025, 6, 2)),
         _a("ast-p5-roof", "loc-p5", "roof", "Flat roof with internal drains", install_year=2011),
         _a("ast-p5-shutoff", "loc-p5", "main_shutoff", "Building shutoff valves (per floor)",
-           notes="Shutoffs per floor and per unit; labelled 2022."),
+           notes="Shutoffs per floor and per unit; labelled 2022.", attributes={"location_confirmed": True}),
         # P6 Desert Bloom
         _a("ast-p6-cooler1", "loc-p6", "refrigeration", "Cooler room 1 compressor system", install_year=2009,
-           last_service_date=date(2025, 2, 11)),
+           last_service_date=date(2026, 8, 24)),
         _a("ast-p6-cooler2", "loc-p6", "refrigeration", "Cooler room 2 compressor system", install_year=2016,
            last_service_date=date(2025, 8, 19)),
         _a("ast-p6-gen", "loc-p6", "backup_power", "Standby generator (150 kW)", install_year=2014,
            last_service_date=date(2025, 8, 4), notes="Last load test August 2025."),
         _a("ast-p6-wash", "loc-p6", "wash_down_system", "Packing line wash-down water system", install_year=2009,
-           last_service_date=date(2025, 3, 6)),
+           last_service_date=date(2026, 3, 6)),
         _a("ast-p6-bf", "loc-p6", "backflow_preventer", "Backflow preventer on wash-down line", install_year=2017,
-           last_service_date=date(2025, 3, 6)),
+           last_service_date=date(2026, 3, 6)),
     ]
     # P5: 48 units, deterministic. Floor 1-4, letters A-L. Water heater years skew old in floors 3-4.
     rng = random.Random(rng_seed)
@@ -161,25 +163,23 @@ def claims():
     ]
 
 
-def _t(id, acct, rule, title, status, opened, closed, level=None, vis="private"):
+def _t(id, acct, rule, title, status, opened, closed, level=None, vis="private", asset=None):
     return {"id": id, "account_id": acct, "rule_id": rule, "title": title, "status": status,
             "opened_at": datetime.fromisoformat(opened), "closed_at": datetime.fromisoformat(closed),
-            "proof_level": level, "visibility": vis}
+            "proof_level": level, "visibility": vis, "asset_id": asset}
 
 
 def task_history():
     return [
-        _t("th-p1-1", "acct-p1", "az.ho.know_shutoff.v1", "Find your main water shutoff", "done",
-           "2026-04-02T09:00:00", "2026-04-02T09:20:00", "E0"),
         _t("th-p1-2", "acct-p1", "az.ho.monsoon_roof_gutters.v1", "Clear gutters and check roof tiles before monsoon", "done",
            "2026-06-01T09:00:00", "2026-06-06T17:40:00", "E1", "shared"),
-        _t("th-p2-1", "acct-p2", "az.ho.hose_age.v1", "Check supply lines between tenants", "done",
+        _t("th-p2-1", "acct-p2", "az.ho.travel_vacancy_shutoff.v1", "Shut off the water and check for drips between tenants", "done",
            "2026-05-12T10:00:00", "2026-05-14T12:00:00", "E1", "shared"),
         _t("th-p2-2", "acct-p2", "az.ho.flash_flood_readiness.v1", "Flash-flood readiness and flood-coverage check", "declined",
            "2026-07-03T08:00:00", "2026-07-03T08:05:00"),
         _t("th-p3-1", "acct-p3", "az.bop.monsoon_roof_drains.v1", "Clear roof drains before monsoon", "done",
            "2026-06-02T08:00:00", "2026-06-09T11:00:00", "E1", "shared"),
-        _t("th-p3-2", "acct-p3", "az.bop.ice_maker_lines.v1", "Inspect ice-maker and dishwasher lines", "done",
+        _t("th-p3-2", "acct-p3", "az.bop.wet_floor_response.v1", "Wet-floor response after a monsoon roof leak", "done",
            "2026-08-01T08:00:00", "2026-08-01T10:10:00", "E1", "shared"),
         _t("th-p3-3", "acct-p3", "az.bop.condensate_heat.v1", "Flush rooftop AC condensate lines", "expired",
            "2026-07-10T08:00:00", "2026-07-14T08:00:00"),
@@ -194,9 +194,9 @@ def task_history():
         _t("th-p5-3", "acct-p5", "az.cre.turnover_supply_lines.v1", "Supply-line check at Unit 4F turnover", "done",
            "2026-08-12T09:00:00", "2026-08-13T13:00:00", "E1", "shared"),
         _t("th-p6-1", "acct-p6", "az.ag.preharvest_refrigeration.v1", "Service refrigeration before harvest", "done",
-           "2026-08-18T07:00:00", "2026-08-26T16:00:00", "E3", "shared"),
+           "2026-08-18T07:00:00", "2026-08-26T16:00:00", "E3", "shared", "ast-p6-cooler1"),
         _t("th-p6-2", "acct-p6", "az.ag.washdown_backflow.v1", "Wash-down hose and backflow check", "done",
-           "2026-03-01T07:00:00", "2026-03-06T15:00:00", "E3", "shared"),
+           "2026-03-01T07:00:00", "2026-03-06T15:00:00", "E3", "shared", "ast-p6-wash"),
     ]
 
 

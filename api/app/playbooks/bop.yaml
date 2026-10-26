@@ -1,0 +1,245 @@
+# Businessowners (restaurant / retail) playbooks (8: 6 from the spec + 2 recurring-maintenance rules).
+- id: az.bop.holiday_closure.v1
+  lob: [bop]
+  peril: freeze
+  title: "Holiday closure: shut off, heat on, checklist done"
+  why_template: >
+    {city} will be closed for {closure_label} starting {closure_start}. Empty buildings are where small leaks and
+    frozen lines go unnoticed. Overnight lows near {city} average {normal_low_f}°F in {closure_month}.
+  when:
+    all:
+      - closure_within_days: 7
+  steps:
+    - "Keep the thermostat at 55°F or higher, and at least 40°F in the stockroom and near the sprinkler riser."
+    - "Shut off water to non-essential fixtures (ice machine, dish machine, break room) and unplug the ice maker."
+    - "Open cabinet doors under sinks on outside walls; check that no hose is left connected outside."
+    - "Walk the building at close and write down the time; make sure someone can check the building during the closure."
+  est_minutes: 30
+  est_cost_usd: [0, 0]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: freeze_heat_condition
+  coverage_codes: [BOP_FREEZE_CONDITION, END_HEAT_MAINTAIN]
+  priority: high
+  expires_after_hours: 168
+  cooldown_days: 7
+  sources: ["property profile (scheduled closures)", "1991-2020 monthly normals"]
+
+- id: az.bop.freeze_sprinkler_40f.v1
+  lob: [bop]
+  peril: freeze
+  title: "Keep the sprinkler riser area at 40°F or warmer"
+  why_template: >
+    A freeze is coming near {city}: low of {min_temp_f}°F. You have a wet sprinkler system with the riser on an
+    exterior wall. Water in sprinkler pipes freezes and splits them, and a split pipe flows until someone shuts it off.
+  applies_if: { sprinkler_type: wet }
+  when:
+    any:
+      - nws_group: freeze
+      - forecast_min_temp_f: { lte: 32, within_hours: 72 }
+  steps:
+    - "Set heat so the stockroom and riser room stay at 40°F or higher, including overnight and on closed days."
+    - "Open the stockroom door or a vent so warm air reaches the riser wall; put a thermometer next to the riser."
+    - "Check any unheated areas (back dock, attic spaces) with sprinkler pipe; add insulation or heat as needed."
+    - "Know the sprinkler main drain and shutoff location, and your fire-sprinkler contractor's after-hours number."
+  est_minutes: 30
+  est_cost_usd: [0, 60]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: freeze_heat_condition
+  coverage_codes: [BOP_FREEZE_CONDITION, END_HEAT_MAINTAIN, EX_FREEZE_HEAT_OFF]
+  priority: high
+  expires_after_hours: 72
+  cooldown_days: 7
+  sources: ["NWS alert or forecast", "property profile"]
+
+- id: az.bop.ice_maker_lines.v1
+  lob: [bop]
+  peril: water
+  title: "Inspect ice-machine and dishwasher supply lines"
+  scope: asset
+  asset_type: [ice_maker_line, dishwasher_line]
+  why_template: >
+    {asset_label} is {age_text}. Supply lines on busy kitchen equipment flex and corrode, and {city}'s hard water
+    speeds that up. A leak at night or over a weekend can soak storage and floors before anyone sees it.
+  when:
+    all:
+      - asset_age_years: { asset: [ice_maker_line, dishwasher_line], gte_hard_water: 5, gte_default: 5, or_unknown: true }
+  steps:
+    - "Pull the equipment forward (or use the access panel) and look at the line and fittings for dampness, corrosion or kinks."
+    - "Replace any rubber or plastic line with braided stainless steel and a shutoff valve within reach."
+    - "Mark the install date on the line."
+    - "Tell closing staff to check the floor behind the equipment at close."
+  est_minutes: 30
+  est_cost_usd: [20, 200]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: water_sudden_vs_gradual
+  coverage_codes: [BOP_WATER_SUDDEN, BOP_BPP]
+  priority: medium
+  expires_after_hours: 720
+  cooldown_days: 365
+  sources: ["asset profile"]
+
+- id: az.bop.condensate_heat.v1
+  lob: [bop]
+  peril: water
+  title: "Flush rooftop AC condensate lines before the heat"
+  why_template: >
+    {city} is forecast to hit {max_temp_f}°F. Your rooftop AC units will run hard, and a clogged condensate line
+    can overflow over the dining room or sales floor. Last service on file: {last_service|unknown}.
+  applies_if: { has_central_ac: true }
+  when:
+    any:
+      - nws_group: heat
+      - forecast_max_temp_f: { gte: 110, min_days: 2, within_hours: 96 }
+    all:
+      - asset_last_service_months: { asset: hvac_condensate, gte: 6, or_unknown: true }
+  steps:
+    - "Ask your HVAC vendor to flush and test each rooftop unit's condensate drain this week."
+    - "Check under each unit above the ceiling for stains or sagging tiles."
+    - "Ask whether float switches are installed to shut the unit off if the drain backs up."
+    - "Keep the invoice; upload it as proof."
+  est_minutes: 45
+  est_cost_usd: [100, 500]
+  proof: { default_level: E2, accepted: [E1, E2] }
+  coverage_note_key: water_sudden_vs_gradual
+  coverage_codes: [BOP_WATER_SUDDEN, END_EQUIP_BREAKDOWN]
+  priority: high
+  expires_after_hours: 96
+  cooldown_days: 30
+  sources: ["NWS alert or forecast", "asset profile"]
+
+- id: az.bop.monsoon_roof_drains.v1
+  lob: [bop]
+  peril: water
+  title: "Clear roof drains and secure rooftop equipment"
+  why_template: >
+    {trigger_text} Flat roofs with clogged drains or scuppers hold water; one hour of heavy rain can send it
+    through the ceiling over a dining room or sales floor. Last drain service on file: {last_service|unknown}.
+  applies_if: { asset_exists: [roof_drains] }
+  when:
+    any:
+      - nws_group: thunderstorm
+      - nws_group: flood
+      - forecast_precip_in: { gte: 0.5, within_hours: 24 }
+      - season: { name: monsoon, approaching: true }
+      - asset_last_service_months: { asset: roof_drains, gte: 12, or_unknown: true }
+  steps:
+    - "Clear leaves, grit and debris from every roof drain and scupper (or have your roofer do it)."
+    - "Check that rooftop AC units are strapped down and panels are latched."
+    - "Move anything absorbent away from walls under known problem spots."
+    - "Take dated photos of each drain after clearing."
+  est_minutes: 60
+  est_cost_usd: [0, 400]
+  proof: { default_level: E1, accepted: [E1, E2] }
+  coverage_note_key: roof_wind_hail
+  coverage_codes: [BOP_BUILDING, BOP_WATER_SUDDEN]
+  priority: high
+  expires_after_hours: 120
+  cooldown_days: 60
+  sources: ["NWS alert or forecast", "asset profile"]
+
+- id: az.bop.wet_floor_response.v1
+  lob: [bop]
+  peril: liability
+  title: "Wet-floor response: dry it, sign it, document it"
+  why_template: >
+    {trigger_text} Water on a customer floor is the fastest route to a slip-and-fall claim.
+  applies_if: { occupancy: [commercial_open] }
+  when:
+    any:
+      - nws_group: thunderstorm
+      - nws_group: flood
+      - recent_event: { kinds: [water_leak, roof_leak], within_hours: 48 }
+  steps:
+    - "Put out wet-floor signs at entrances and any area where water can enter."
+    - "Mop or fan-dry affected floors and add entry mats."
+    - "Photograph the affected areas with the time visible."
+    - "If anyone slips or is hurt, record what happened and tell your agent the same day."
+  est_minutes: 15
+  est_cost_usd: [0, 50]
+  proof: { default_level: E1, accepted: [E0, E1] }
+  coverage_note_key: slip_fall_liability
+  coverage_codes: [BOP_GL, BOP_MEDPAY]
+  priority: high
+  expires_after_hours: 48
+  cooldown_days: 3
+  sources: ["NWS alert", "device or case events"]
+
+- id: az.bop.water_heater_age.v1
+  lob: [bop]
+  peril: water
+  title: "Plan for your aging commercial water heater"
+  scope: asset
+  asset_type: water_heater
+  why_template: >
+    {asset_label} is {age_text}. Hard water shortens tank life, and a failed tank can flood a back room unnoticed.
+  when:
+    all:
+      - asset_age_years: { asset: water_heater, gte_hard_water: 8, gte_default: 9, or_unknown: true }
+  steps:
+    - "Check the tank, fittings and the pan/drain for rust, damp or mineral crust."
+    - "Test the relief valve and confirm the drain line goes to a safe place."
+    - "Get a quote for a planned replacement before it fails."
+  est_minutes: 30
+  est_cost_usd: [0, 2500]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: wear_and_age
+  coverage_codes: [BOP_WATER_SUDDEN, EX_WEAR]
+  priority: medium
+  expires_after_hours: 720
+  cooldown_days: 180
+  sources: ["asset profile", "IBHS water heater research"]
+
+- id: az.bop.sprinkler_annual_inspection.v1
+  lob: [bop]
+  peril: freeze
+  title: "Schedule your annual sprinkler inspection"
+  scope: asset
+  asset_type: sprinkler_system
+  why_template: >
+    Your wet sprinkler system was last inspected {last_service|never on file}. Annual inspection is the usual
+    standard, and it is the best time to check for corrosion and insulation before winter.
+  when:
+    all:
+      - asset_last_service_months: { asset: sprinkler_system, gte: 12, or_unknown: true }
+  steps:
+    - "Call your fire-sprinkler contractor to schedule the annual inspection."
+    - "Ask them to check pipe insulation and heat coverage at the riser and in unheated areas."
+    - "Keep the report; upload it as proof."
+  est_minutes: 20
+  est_cost_usd: [150, 600]
+  proof: { default_level: E2, accepted: [E2, E3] }
+  coverage_note_key: freeze_heat_condition
+  coverage_codes: [BOP_FREEZE_CONDITION]
+  priority: medium
+  expires_after_hours: 720
+  cooldown_days: 90
+  sources: ["asset profile"]
+
+- id: az.bop.snow_load_roof.v1
+  lob: [bop]
+  peril: freeze
+  title: "Get the roof and drains ready for snow"
+  scope: asset
+  asset_type: roof
+  applies_if: { elevation_gte_high_country: true }
+  why_template: >
+    {city} sits at {elevation_ft} ft, where winter storms can leave heavy, wet snow. {season_text} Roof drains
+    packed with leaves, and snow that melts and refreezes at the edge, are the usual ways a store ends up with
+    water inside.
+  when:
+    all:
+      - season: { name: freeze_high_country, approaching: true }
+  steps:
+    - "Clear leaves and debris from roof drains, scuppers and gutters before the first storm."
+    - "Check the roof surface and flashings around vents and skylights for gaps."
+    - "Know who can safely clear heavy snow from the roof, and keep their number handy."
+    - "Keep entry areas salted and mats down to prevent slips."
+  est_minutes: 60
+  est_cost_usd: [0, 400]
+  proof: { default_level: E1, accepted: [E0, E1, E2] }
+  coverage_note_key: roof_wind_hail
+  coverage_codes: [BOP_BUILDING, BOP_GL]
+  priority: medium
+  expires_after_hours: 720
+  cooldown_days: 120
+  sources: ["property profile", "season calendar"]
