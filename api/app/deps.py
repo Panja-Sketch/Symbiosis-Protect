@@ -10,6 +10,7 @@ from app.adapters.notifier import ConsoleEmailNotifier, InAppNotifier, NotifierC
 from app.adapters.scenario import ScenarioProvider
 from app.adapters.storage import BlobStorage, LocalStorage
 from app.adapters.weather import CompositeWeatherProvider, NWSProvider, OpenMeteoProvider
+from app.ai.service import Assistant, load_cfg
 from app.config import Settings, get_settings
 from app.engine.engine import Engine
 from app.engine.playbooks import Config, load_config, load_rules
@@ -27,9 +28,10 @@ class Container:
     config: Config
     email: ConsoleEmailNotifier
     storage: BlobStorage
+    assistant: Assistant
 
 
-def build_container(settings: Settings | None = None, store: Store | None = None, cache=None, weather=None, storage=None) -> Container:
+def build_container(settings: Settings | None = None, store: Store | None = None, cache=None, weather=None, storage=None, gemini=None) -> Container:
     s = settings or get_settings()
     if store is None:
         if s.firestore_emulator_host:
@@ -49,7 +51,12 @@ def build_container(settings: Settings | None = None, store: Store | None = None
     config = load_config()
     engine = Engine(store, scenario, history, NotifierChain(InAppNotifier(store), email), load_rules(), config)
     root = Path(__file__).resolve().parents[2] / s.local_storage_dir
-    return Container(s, store, engine, scenario, history, config, email, storage or LocalStorage(root))
+    if gemini is None and s.ai_enabled:
+        from app.ai.gemini import GeminiExplainer
+
+        gemini = GeminiExplainer(s.google_cloud_project, s.google_cloud_location, s.gemini_model)
+    assistant = Assistant(store, cache, load_cfg(), gemini, s.ai_asks_per_hour, s.gemini_model)
+    return Container(s, store, engine, scenario, history, config, email, storage or LocalStorage(root), assistant)
 
 
 @lru_cache

@@ -1,0 +1,95 @@
+# Assistant configuration: retrieval vocabulary, guardrail phrases, hand-off triggers and starter questions.
+retrieval:
+  min_score: 1.2          # below this, nothing in the policy matches -> hand off to the agent
+  high_score: 3.5
+  max_items: 3
+  min_coverage: 0.5      # share of the question's content words the top item must match (directly or via synonyms)
+  relative_min: 0.55     # other items must score at least this fraction of the top item
+generic_words: [cover, covered, coverage, covers, policy, insurance, insured, insure, claim, claims, loss, losses, pay, paid, payment, damage, damaged, happen, happens, need, want, know, tell, please, much, many]
+stopwords: [a, an, the, is, are, was, were, be, do, does, did, my, our, i, we, you, your, if, for, of, to, in, on, at, and, or, it, this, that, what, whats, how, can, will, would, should, could, am, there, any, with, from, by, as, about, get, have, has, me]
+synonyms:                # query word -> extra words searched in the policy summary
+  ac: [air, conditioner, condensate, hvac, equipment]
+  hvac: [air, conditioner, condensate, equipment]
+  condensate: [air, conditioner, hvac]
+  flood: [flood, surface, wash, flash]
+  flooding: [flood, surface, wash, flash]
+  monsoon: [wind, hail, storm, flood, roof, power]
+  storm: [wind, hail, roof, flood]
+  rain: [roof, wind, hail, flood]
+  hail: [wind, hail, roof]
+  roof: [roof, wind, hail]
+  freeze: [freeze, freezing, pipes, sprinkler, heat]
+  frozen: [freeze, freezing, pipes, sprinkler, heat]
+  pipe: [water, leak, plumbing, pipes, burst]
+  pipes: [water, leak, plumbing, burst]
+  leak: [water, leak, sudden, gradual]
+  leaks: [water, leak, sudden, gradual]
+  leaking: [water, leak, sudden, gradual]
+  drip: [water, leak, gradual]
+  tenant: [tenant, rental, landlord, residents, unit]
+  tenants: [tenant, rental, landlord, residents, unit]
+  renter: [tenant, residents, rental]
+  unit: [unit, below, residents, water, escape]
+  below: [unit, below, water, escape]
+  produce: [spoilage, stock, produce, cooling, refrigeration]
+  spoiled: [spoilage, cooling, refrigeration, stock]
+  spoilage: [spoilage, cooling, refrigeration]
+  cooler: [spoilage, cooling, refrigeration, power]
+  cooling: [spoilage, cooling, refrigeration]
+  outage: [power, utility, interruption, spoilage]
+  power: [power, utility, interruption, spoilage]
+  vacant: [vacancy, empty, between]
+  vacancy: [vacancy, empty]
+  empty: [vacancy, empty]
+  stolen: [theft]
+  sewer: [backup, drain, sewer]
+  drain: [backup, drain, sewer]
+  backup: [backup, drain, sewer]
+  income: [business, income, rent, rental]
+  closed: [business, income, closure]
+  closure: [business, income, closure]
+  slip: [liability, guest, medical, wet]
+  fall: [liability, guest, medical, wet]
+  injured: [liability, medical, guest]
+  sued: [liability]
+  deductible: [deductible]
+  limit: [limit]
+  rebuild: [dwelling, replacement, building]
+  contents: [belongings, property, contents]
+  belongings: [belongings, property, contents]
+  stuff: [belongings, property, contents]
+  heater: [water, heater, wear, leak]
+  hose: [water, hose, leak, supply, wear]
+  hoses: [water, hose, leak, supply, wear]
+  recall: [recall]
+  earthquake: [earth, movement, earthquake]
+  sprinkler: [sprinkler, freeze, heat, leak]
+handoff_triggers:         # questions the assistant must not answer itself: route to the agent
+  claim_decision: ["will my claim", "will they pay", "will you pay", "will it be covered", "will i be covered", "approve my claim", "should i file", "file a claim", "claim denied", "get paid", "how much will i get", "how much would i get", "guarantee"]
+  pricing: ["premium", "how much does", "price", "cheaper", "discount", "quote", "rate increase"]
+  legal: ["lawyer", "attorney", "sue ", "lawsuit", "legal advice", "bad faith"]
+forbidden_in_answer:      # post-validation: an answer containing any of these is rejected (case-insensitive)
+  - "you are covered"
+  - "you're covered"
+  - "you are fully covered"
+  - "will be covered"
+  - "is covered for sure"
+  - "definitely covered"
+  - "guaranteed"
+  - "we will pay"
+  - "will be paid"
+  - "will pay for"
+  - "you will be reimbursed"
+  - "claim will be approved"
+  - "you should sue"
+  - "legal advice"
+required_hedge_any: ["your policy summary", "policy summary says", "your agent"]
+handoff_text: "Your agent confirms final coverage decisions."
+no_match_text: "I could not find that in your policy summary, so I will not guess."
+rate_limit_text: "You have reached the hourly limit for questions in this demo. Please try again later or contact your agent."
+starters:
+  homeowners: ["Is water from my AC covered?", "What does my water-backup add-on do?", "Am I covered for monsoon flooding?", "What is my deductible?", "What happens if a pipe bursts while I am away?"]
+  dwelling_fire: ["What if my tenant's leak damages the house?", "What happens if the home is vacant between tenants?", "Do I get lost rent if the house is unusable?", "Am I covered for monsoon flooding?", "What is my deductible?"]
+  bop: ["Am I covered if a roof leak ruins stock?", "What happens to my income if we have to close?", "Does my policy cover a pipe that freezes?", "What if a guest slips on a wet floor?", "What does equipment breakdown do?"]
+  commercial_real_estate: ["What if a tenant's leak damages the unit below?", "What does water backup cover?", "Is flooding from a monsoon storm covered?", "What is the water deductible?", "Do I cover residents' belongings?"]
+  agribusiness: ["Does my policy cover spoiled produce if the cooler fails?", "What if the power goes out during a monsoon storm?", "Are crops in the field covered?", "What does the off-premises power add-on do?", "What is the spoilage deductible?"]

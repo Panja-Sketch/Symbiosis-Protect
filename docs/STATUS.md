@@ -31,3 +31,11 @@
 - Task completion with E0 one-tap (signed attestation hash), E1 photo (camera on phones; time = server clock, device time recorded separately; geolocation only if permitted, otherwise recorded as "not shared"), E2 document/PDF. SHA-256 computed server-side, blob stored via `BlobStorage` (local disk now, GCS in Phase 9), magic-byte type check, 8 MB cap, coordinate validation.
 - `GET /proofs/{id}/file` re-verifies the hash before serving (409 on mismatch); `GET /accounts/{id}/evidence`; Evidence tab in Tasks with hash, location, level mix, download.
 - Verified: pytest 67 (hash, tamper, type sniffing, size, coordinates, E0/E1 rules); Playwright 42/42 incl. photo → Evidence hash equals the client-computed SHA-256 → re-download byte-identical, and no-location path.
+
+## Phase 5 — AI assistant (2026-10-25) ✅
+- `POST /assistant/ask`, `GET /assistant/starters`. Grounded on the account's policy summary + glossary + coverage notes + open tasks only (no web, no other accounts). Output schema `{answer_plain, cited_coverage_codes, confidence, needs_agent, suggested_actions}` (+ glossary citations).
+- `TemplateExplainer` (deterministic retrieval over policy items with synonym expansion, coverage gating, title boost) is the always-on fallback; `GeminiExplainer` (google-genai, Vertex, service-account auth, JSON schema, 500 max tokens, temperature 0.2) is used only when `AI_ENABLED=true`; every model answer is validated by `guard.py` and replaced on failure.
+- Per-account rate limit (`AI_ASKS_PER_HOUR`, 429), response cache by (policy, normalized question), `ai_logs` (prompt hash only, model, latency, fallback used and why).
+- UI: starter chips per LOB, answer bubbles with provenance pill, cited-coverage chips that jump to the coverage card, agent hand-off (email/call), refusal path.
+- Verified: pytest 103 (18 scripted Q&A across all 6 personas + refusals, claim/pricing/legal hand-off, cross-account leak check, guard rejection of 5 bad-answer classes, outage fallback, cache, rate limit, log contents, all starters pass the guard); Playwright 46/46.
+- Not verified: a live Gemini call (no Vertex credentials on this machine). The Gemini path is covered with a fake client; verify live in Phase 9 with the service account.

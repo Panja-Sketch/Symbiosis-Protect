@@ -151,3 +151,31 @@ test("photo proof without location permission is still accepted and says so", as
   await page.goto("/tasks?tab=evidence");
   await expect(page.getByTestId("evidence-row").first()).toContainText("location not shared");
 });
+
+test("ask: starter question returns a grounded answer with citation chips that open the coverage card", async ({ page }) => {
+  await page.goto("/ask");
+  await page.getByTestId("starter").filter({ hasText: "Is water from my AC covered?" }).click();
+  const ans = page.getByTestId("answer");
+  await expect(ans).toBeVisible();
+  await expect(ans.getByTestId("answer-text")).toContainText("Your policy summary");
+  await expect(ans.getByTestId("answer-text")).toContainText("Your agent confirms final coverage decisions");
+  await expect(ans.getByTestId("handoff")).toContainText("Dana Whitfield");
+  const chip = ans.getByTestId("citation-chip").first();
+  await expect(chip).toContainText("Sudden water leaks");
+  await chip.click();
+  await expect(page).toHaveURL(/\/coverage#HO_WATER_SUDDEN/);
+  await expect(page.locator("#HO_WATER_SUDDEN")).toBeVisible();
+});
+
+test("ask: unknown topic is refused and handed to the agent; claim decision is not promised", async ({ page }) => {
+  await page.goto("/ask");
+  await page.getByLabel("Your question about your coverage").fill("Do you cover my dog's vet bills?");
+  await page.getByRole("button", { name: "Send question" }).click();
+  await expect(page.getByTestId("answer-text")).toContainText("could not find that in your policy summary");
+  await expect(page.getByTestId("handoff")).toContainText("Talk to your agent about this");
+  await page.getByLabel("Your question about your coverage").fill("Will my claim be paid if a hose bursts?");
+  await page.getByRole("button", { name: "Send question" }).click();
+  const last = page.getByTestId("answer-text").last();
+  await expect(last).toContainText("I cannot");
+  await expect(last).not.toContainText(/you are covered|will be paid|guaranteed/i);
+});

@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from app import models as m
 from app.adapters import scenario
 from app.adapters.storage import sha256_hex
+from app.ai.service import RateLimited
 from app.config import get_settings
 from app.deps import Container, get_container
 from app.ribbon import build_ribbon
@@ -335,3 +336,27 @@ def patch_asset(asset_id: str, body: AssetPatch, c: Container = Depends(C)):
     c.store.put("assets", asset_id, a)
     loc = _must(c.store, "locations", a["location_id"])
     return {"asset": a, "evaluated": c.engine.evaluate_account(loc["account_id"])}
+
+
+class AskBody(BaseModel):
+    account_id: str
+    question: str
+
+
+@router.get("/assistant/starters", tags=["assistant"])
+def starters(account_id: str, c: Container = Depends(C)):
+    _must(c.store, "accounts", account_id)
+    return {"starters": c.assistant.starters(account_id)}
+
+
+@router.post("/assistant/ask", tags=["assistant"],
+             description="Answers only from the account's policy summary; cites coverage codes; hands off advisory questions to the agent.")
+def ask(body: AskBody, c: Container = Depends(C)):
+    _must(c.store, "accounts", body.account_id)
+    q = body.question.strip()
+    if len(q) < 3:
+        raise HTTPException(422, "question too short")
+    try:
+        return c.assistant.ask(body.account_id, q, c.engine.now())
+    except RateLimited as e:
+        raise HTTPException(429, str(e)) from None

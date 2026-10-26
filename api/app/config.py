@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     scheduler_minutes: int = 15
     ai_asks_per_hour: int = 30
     max_proof_bytes: int = 8_000_000
+    ai_enabled: bool = False  # true only where Vertex AI service-account credentials exist
 
 
 @lru_cache
