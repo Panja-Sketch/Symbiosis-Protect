@@ -1,0 +1,25 @@
+# secrets / env
+.env
+.env.*
+!.env.example
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+# node
+node_modules/
+.next/
+out/
+# data
+data/raw/
+# local runtime
+.local/
+firestore-debug.log
+ui-debug.log
+*.log
+coverage/
+playwright-report/
+test-results/
+.DS_Store

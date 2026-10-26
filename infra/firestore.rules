@@ -1,0 +1,7 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // The API uses the Admin SDK; clients never touch Firestore directly.
+    match /{document=**} { allow read, write: if false; }
+  }
+}
