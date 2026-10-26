@@ -150,3 +150,15 @@ def test_director_reset_restores_seeded_assets(client):
     assert wh["install_year"] is None
     ids = [t["rule_id"] for t in tc.get("/api/v1/accounts/acct-p1/tasks?status=open").json()["tasks"]]
     assert "az.ho.water_heater_age.v1" in ids
+
+
+def test_director_state_endpoint(client):
+    tc, *_ = client
+    tc.post("/api/v1/director/inject", json={"kind": "freeze_flagstaff"})
+    s = tc.get("/api/v1/director/state").json()
+    assert s["injections"][0]["label"] == "Freeze Warning – Flagstaff" and s["fake_now"] is None
+    tc.post("/api/v1/director/time-travel", json={"to": "2026-07-18T19:00:00+00:00"})
+    assert tc.get("/api/v1/director/state").json()["fake_now"].startswith("2026-07-18")
+    tc.post("/api/v1/director/reset")
+    after = tc.get("/api/v1/director/state").json()
+    assert after["injections"] == [] and after["fake_now"] is None

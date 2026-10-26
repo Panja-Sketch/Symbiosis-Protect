@@ -16,6 +16,7 @@ class Hit:
     alert_ids: list[str] = field(default_factory=list)
     asset_ids: list[str] = field(default_factory=list)
     provenance: set = field(default_factory=set)  # LIVE / SIMULATED / SYNTHETIC / HISTORIC
+    event_driven: bool = False  # triggered by something that just happened (sensor/event), not a forecast or a schedule
 
 
 NO = Hit(False)
@@ -241,7 +242,7 @@ def c_recent_event(ctx, spec, cand):
             if spec.get("needs_unit") and not below:
                 continue
             facts.update({"upper_unit": e["unit_label"], "below_unit": below})
-        return Hit(True, facts, reasons, 0.0, provenance={"SIMULATED" if e.get("simulated") else "LIVE"})
+        return Hit(True, facts, reasons, 0.0, provenance={"SIMULATED" if e.get("simulated") else "LIVE"}, event_driven=True)
     return NO
 
 
@@ -312,6 +313,7 @@ def eval_condition(ctx: Ctx, cond: dict, cand: Asset | None) -> Hit:
 
 def merge(hits: list[Hit]) -> Hit:
     facts, reasons, alert_ids, asset_ids, prov, hours = {}, [], [], [], set(), []
+    event = any(h.event_driven for h in hits)
     for h in hits:
         for k, v in h.facts.items():
             facts.setdefault(k, v)
@@ -322,7 +324,7 @@ def merge(hits: list[Hit]) -> Hit:
         if h.hours is not None:
             hours.append(h.hours)
     return Hit(True, facts, reasons, min(hours) if hours else None, list(dict.fromkeys(alert_ids)),
-               list(dict.fromkeys(asset_ids)), prov)
+               list(dict.fromkeys(asset_ids)), prov, event_driven=event)
 
 
 def eval_when(ctx: Ctx, when: dict, cand: Asset | None) -> Hit:

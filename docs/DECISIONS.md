@@ -34,3 +34,7 @@
 | 2026-10-25 | Seeded Luis (P2) has share_default=false and private history so the privacy rule is demonstrable; the other five share by default | Shows participation 5/6 and hidden private items |
 | 2026-10-25 | Renewal talking points are rule-composed (labelled SYNTHETIC), not AI-phrased; AI polishing is not wired | Truthfulness rule: do not label rule text as AI; AI phrasing can be added later with the numbers-preserved guard already in roles.py |
 | 2026-10-25 | Insurer/agent-issued tasks are shared, always do_now and exempt from the cap, and cannot be made private by the policyholder | Spec section 5.3 |
+| 2026-10-26 | Scenario Director at /director (also a floating button when DEMO_MODE is not false); demo clock via presets plus a day-of-year slider; time travel affects weather and seasonal rules only, not device sensing | Sense uses the real wall clock so simulated readings stay consistent |
+| 2026-10-26 | Tasks triggered by an event that just happened (sensor leak -> 'check the unit below') get event_boost 2.0 in scoring.yaml | They must outrank forecast-driven tasks in the Do-now cap |
+| 2026-10-26 | Added az.bop.flash_flood_readiness.v1 (27 rules) so Saguaro Grill gets the flood-exclusion note in the storm scenario | Demo script step 4 |
+| 2026-10-26 | scenarios.yaml read with explicit UTF-8 | Windows default codec turned the en dash in labels into mojibake |

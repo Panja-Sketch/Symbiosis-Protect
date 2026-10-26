@@ -243,3 +243,28 @@
   expires_after_hours: 720
   cooldown_days: 120
   sources: ["property profile", "season calendar"]
+
+- id: az.bop.flash_flood_readiness.v1
+  lob: [bop]
+  peril: flood
+  title: "Flash-flood readiness — and a note about flood coverage"
+  why_template: >
+    {trigger_text} Standard businessowners policies usually leave out flood, so water rising from a wash or street is
+    generally not part of this policy. Preparing and knowing your options matters.
+  when:
+    any:
+      - nws_group: flood
+  steps:
+    - "Move stock, paperwork and electronics off the floor and away from doors and low areas."
+    - "Place door barriers or sandbags if you have them, and park vehicles above street level."
+    - "Photograph the building, stock and equipment now, with the time visible, for your records."
+    - "Ask your agent whether flood coverage makes sense for your location."
+  est_minutes: 30
+  est_cost_usd: [0, 100]
+  proof: { default_level: E1, accepted: [E0, E1] }
+  coverage_note_key: flood_exclusion
+  coverage_codes: [EX_FLOOD, BOP_BUILDING, BOP_BPP]
+  priority: high
+  expires_after_hours: 48
+  cooldown_days: 7
+  sources: ["NWS alert"]

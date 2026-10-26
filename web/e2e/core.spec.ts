@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { asPersona, inject, noHorizontalScroll, resetDemo } from "./helpers";
 
-const PAGES = ["/", "/tasks", "/tasks?tab=coming_up", "/tasks?tab=done", "/tasks?tab=evidence", "/coverage", "/place", "/alerts", "/ask", "/sense", "/settings", "/more"];
+const PAGES = ["/", "/tasks", "/tasks?tab=coming_up", "/tasks?tab=done", "/tasks?tab=evidence", "/coverage", "/place", "/alerts", "/ask", "/sense", "/settings", "/more", "/director"];
 
 test.beforeEach(async ({ request, context }) => {
   await resetDemo(request);

@@ -53,3 +53,9 @@
 - Insurer/agent-issued recommendations (`POST /tasks/issue`) with alert to the policyholder; evidence export `POST /evidence/{policy}/export` → ZIP with `manifest.json`, `manifest.sha256` and per-file SHA-256 (shared-only for underwriter/agent, everything for the owner), persisted as `EvidencePackage`.
 - Settings screen is real now (channels, quiet hours, sharing default).
 - Verified: pytest 128 (role gates, private hidden, toggle, declined, portfolio tiles, issue + cap bypass, export zip re-hash, scope, sense evidence, preferences); Playwright 72/72 incl. role switch + redirects, same SHA-256 across policyholder/underwriter views, privacy toggle, issue → policyholder labelled card, export download + hash, agent book alert flags, axe on role pages.
+
+## Phase 8 — Scenario Director (2026-10-26) ✅
+- `/director` page + floating Director button: Freeze (Flagstaff), Extreme Heat (Phoenix metro), Severe Thunderstorm + Flash Flood (Tempe/Mesa), Dust Storm (I-10), slow leak (Mesa Palms 3B), burst (Maya's laundry), cooler drift (Desert Bloom), stockroom cold (Ponderosa), Reset, time-travel presets (July 18, Dec 22), day slider, live demo-clock and active-injection display. Everything injected is labelled SIMULATED.
+- `GET /director/state`; Reset now also clears readings, device state, cases, proofs and rate-limit counters and restores seed data.
+- Fixed along the way: hydration mismatch in the Sense "updated Ns ago" label (found by the console-error check), UTF-8 read of scenarios.yaml, event-driven task priority.
+- Verified: **full BUILD_SPEC section 15 demo script runs end to end in ~110 s (limit 8 min) with zero console/page errors**, laptop + a 390×844 phone context (heat → Coverage Lens → Ask → photo proof on phone → storm/flood → freeze + holiday closure → Sense leak verified + reopened → agent + underwriter + export). pytest 129, Playwright 75/75.

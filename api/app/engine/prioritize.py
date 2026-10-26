@@ -44,5 +44,5 @@ def score(ctx: Ctx, c: Candidate, last_done: datetime | None = None) -> float:
     sc = ctx.config.scoring
     sev = sc["severity_weight"].get(c.rule.peril, {}).get(ctx.policy.lob, 1.0)
     val = (sev * sc["priority_weight"][c.rule.priority] * urgency(sc, c.hit.hours) * exposure(ctx, c)
-           * (1 - completion_recency(ctx, c, last_done)))
+           * (sc.get("event_boost", 1.0) if c.hit.event_driven else 1.0) * (1 - completion_recency(ctx, c, last_done)))
     return round(val, 4)

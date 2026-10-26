@@ -1,5 +1,6 @@
 # score = severity_weight(peril, lob) x priority_weight x urgency(time_to_event) x exposure x (1 - completion_recency)
 do_now_cap: 3
+event_boost: 2.0                 # tasks triggered by a sensor/event that just happened outrank forecast- or schedule-driven ones
 priority_weight: { high: 1.0, medium: 0.7, low: 0.4 }
 severity_weight:
   water:    { homeowners: 1.0, dwelling_fire: 1.0, bop: 1.1, commercial_real_estate: 1.3, agribusiness: 1.1 }

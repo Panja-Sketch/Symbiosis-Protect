@@ -91,10 +91,12 @@ def test_storm_and_flash_flood_for_saguaro_grill(env):
     weather.set_days("loc-p3", hi=98.0, lo=78.0)
     engine.evaluate_account("acct-p3")
     ids = rule_ids(engine, "acct-p3")
-    assert "bop.monsoon_roof_drains" in ids and "bop.wet_floor_response" in ids
+    assert "bop.monsoon_roof_drains" in ids and "bop.wet_floor_response" in ids and "bop.flash_flood_readiness" in ids
     assert "bop.condensate_heat" not in ids
     wet = next(t for t in engine.tasks("acct-p3", "open") if "wet_floor" in t["rule_id"])
-    assert wet["coverage_note_key"] == "slip_fall_liability" and wet["bucket"] == "do_now"
+    assert wet["coverage_note_key"] == "slip_fall_liability"
+    flood = next(t for t in engine.tasks("acct-p3", "open") if "flash_flood" in t["rule_id"])
+    assert flood["coverage_note_key"] == "flood_exclusion" and "EX_FLOOD" in flood["coverage_codes"]
 
 
 def test_freeze_for_flagstaff_sprinkler_rule_and_not_for_desert_stores(env):

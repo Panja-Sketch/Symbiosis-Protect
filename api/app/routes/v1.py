@@ -291,6 +291,15 @@ def director_inject(body: InjectBody, c: Container = Depends(C)):
     return {"state": state, "evaluated": c.engine.evaluate_all(), "provenance": "SIMULATED"}
 
 
+@router.get("/director/state", tags=["director"])
+def director_state(c: Container = Depends(C)):
+    _demo_only()
+    st = scenario.get_state(c.store)
+    return {"fake_now": st.get("fake_now"), "injections": [{**i, "label": scenario.SCENARIOS[i["kind"]]["label"]} for i in st["injections"]],
+            "now": c.engine.now().isoformat(), "scenarios": {k: v["label"] for k, v in scenario.SCENARIOS.items()},
+            "provenance": "SIMULATED"}
+
+
 class TimeTravelBody(BaseModel):
     to: datetime | None = None
 

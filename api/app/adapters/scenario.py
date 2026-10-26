@@ -7,7 +7,7 @@ import yaml
 
 from app.models import DailyForecast, Forecast, Location, WeatherAlert
 
-SCENARIOS = yaml.safe_load((Path(__file__).resolve().parent.parent / "playbooks" / "scenarios.yaml").read_text())
+SCENARIOS = yaml.safe_load((Path(__file__).resolve().parent.parent / "playbooks" / "scenarios.yaml").read_text(encoding="utf-8"))
 STATE_COL, STATE_ID = "scenario_state", "active"
 
 

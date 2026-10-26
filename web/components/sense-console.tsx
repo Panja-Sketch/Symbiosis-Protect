@@ -1,6 +1,19 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+
+/** Seconds since `iso`, computed only on the client after mount so server and client HTML match. */
+function useAge(iso: string | undefined): number | null {
+  const [age, setAge] = useState<number | null>(null);
+  useEffect(() => {
+    if (!iso) return;
+    const tick = () => setAge(Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 1000)));
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [iso]);
+  return age;
+}
 import { CheckCircle2, Droplets, Hand, Plug, ShieldCheck, Thermometer, Waves, Wrench } from "lucide-react";
 import { Line, LineChart, ResponsiveContainer, YAxis } from "recharts";
 import { Provenance } from "@/components/provenance";
@@ -52,7 +65,7 @@ function DeviceCard({ d, demo, act }: { d: Device; demo: boolean; act: (path: st
   const series = d.recent.map((x) => ({ t: x.ts, v: water ? x.flow_lpm : x.temp_f }));
   const c = d.case;
   const open = c && c.state !== "verified";
-  const age = r ? Math.max(0, Math.round((Date.now() - new Date(r.ts).getTime()) / 1000)) : null;
+  const age = useAge(r?.ts);
 
   return (
     <article className="space-y-3 rounded-card border border-line bg-surface p-4" data-testid="device-card" data-device={d.id}>
@@ -88,7 +101,7 @@ function DeviceCard({ d, demo, act }: { d: Device; demo: boolean; act: (path: st
                 <Tile icon={Thermometer} label="Temperature" value={`${r.temp_f?.toFixed(1)}°F`} bad={d.kind === "cooler" ? (r.temp_f ?? 0) >= 41 : (r.temp_f ?? 99) <= 40} />
               )}
               <p className="col-span-2 self-end text-xs text-muted sm:col-span-4">
-                Updated {age}s ago · valve {d.state?.valve ?? "n/a"}
+                {age != null ? `Updated ${age}s ago` : "Updating"} · valve {d.state?.valve ?? "n/a"}
               </p>
             </div>
           ) : (

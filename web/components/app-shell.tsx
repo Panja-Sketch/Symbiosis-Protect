@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
+import { Clapperboard } from "lucide-react";
 import { Sidebar, TabBar } from "@/components/nav";
 import { IdentitySwitcher } from "@/components/identity-switcher";
 import { apiTry } from "@/lib/api";
@@ -45,6 +47,14 @@ export async function AppShell({ children }: { children: ReactNode }) {
           {children}
         </main>
       </div>
+      {process.env.DEMO_MODE !== "false" && (
+        <Link
+          href="/director"
+          className="fixed bottom-20 right-3 z-40 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-semibold shadow-lift hover:bg-surface-2 lg:bottom-4"
+        >
+          <Clapperboard className="h-4 w-4" aria-hidden /> Director
+        </Link>
+      )}
       <TabBar unread={unread} role={session.role} />
     </div>
   );
