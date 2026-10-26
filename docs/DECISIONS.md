@@ -19,3 +19,6 @@
 | 2026-10-25 | Time-travel mode builds the forecast from 1991–2020 monthly normals, labelled SIMULATED | A live October forecast cannot represent July; never pass simulated weather off as live |
 | 2026-10-25 | Task `provenance` = provenance of the inputs that triggered it (SIMULATED if any simulated input, else LIVE, else SYNTHETIC/HISTORIC); `wording_provenance` is `AI` only when AI phrased text | Rule text is deterministic templates, so it is not labelled AI |
 | 2026-10-25 | Task/seed score bounds: exposure capped at 2.0 (scoring.yaml) | Prevents one claim-heavy persona from dominating all rankings |
+| 2026-10-25 | Photo proof uses an <input type=file capture=environment> (native camera on phones, file picker on laptops) rather than a getUserMedia live stream | Simpler, works on every browser, still timestamps (server clock authoritative; device clock stored separately) and hashes server-side |
+| 2026-10-25 | File type is sniffed from magic bytes; E1 accepts PNG/JPEG/WebP, E2 also PDF; 8 MB cap (MAX_PROOF_BYTES) | Do not trust client content-type |
+| 2026-10-25 | Proof download re-hashes the stored blob and returns 409 if it no longer matches its recorded SHA-256 | Tamper evidence for the evidence package |

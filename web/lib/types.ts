@@ -23,8 +23,14 @@ export interface Proof {
   type: string;
   captured_at: string;
   sha256: string;
-  lat?: number;
-  lon?: number;
+  lat?: number | null;
+  lon?: number | null;
+  uri?: string | null;
+  filename?: string | null;
+  content_type?: string | null;
+  size_bytes?: number | null;
+  location_source?: string;
+  client_captured_at?: string | null;
 }
 
 export interface Task {
@@ -214,4 +220,16 @@ export interface HistoryResponse {
     hazards: Record<string, { name: string; eal_rating: string | null; az_tract_percentile: number | null }>;
   };
   provenance: Provenance;
+}
+
+export interface EvidenceRow extends Proof {
+  task_id: string;
+  task_title: string;
+  file_url: string | null;
+}
+
+export interface EvidenceResponse {
+  proofs: EvidenceRow[];
+  history: HistoricTask[];
+  level_mix: Record<string, number>;
 }

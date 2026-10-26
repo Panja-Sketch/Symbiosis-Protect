@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 import { asPersona, inject, noHorizontalScroll, resetDemo } from "./helpers";
 
-const PAGES = ["/", "/tasks", "/tasks?tab=coming_up", "/tasks?tab=done", "/coverage", "/place", "/alerts", "/ask", "/sense", "/settings", "/more"];
+const PAGES = ["/", "/tasks", "/tasks?tab=coming_up", "/tasks?tab=done", "/tasks?tab=evidence", "/coverage", "/place", "/alerts", "/ask", "/sense", "/settings", "/more"];
 
 test.beforeEach(async ({ request, context }) => {
   await resetDemo(request);
@@ -62,6 +62,7 @@ test("heat scenario drives a SIMULATED condensate task; Coverage Lens explains i
   await expect(lens).toContainText("Why now");
   await expect(lens).toContainText("114");
   const before = await page.getByTestId("readiness-count").innerText();
+  await lens.getByText("One tap").click();
   await lens.getByRole("button", { name: "I did this" }).click();
   await expect(page.getByTestId("coverage-lens")).toHaveCount(0);
   await expect(page.getByTestId("readiness-count")).not.toHaveText(before);
@@ -104,4 +105,49 @@ test("my place: editing the water heater year updates the equipment list", async
   await row.getByRole("button", { name: "Save" }).click();
   await expect(page.getByTestId("asset-row").filter({ hasText: "Water heater" })).toContainText("Installed 2024");
   await expect(page.getByRole("heading", { name: "Local history" })).toBeVisible();
+});
+
+test("photo proof: stored with hash, location, appears in Evidence, re-downloads identically", async ({ page, request, context }) => {
+  const png = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+    "base64",
+  );
+  const { createHash } = await import("node:crypto");
+  const expected = createHash("sha256").update(png).digest("hex");
+  await context.grantPermissions(["geolocation"]);
+  await context.setGeolocation({ latitude: 33.3062, longitude: -111.8413 });
+  await inject(request, "heat_phoenix");
+  await page.goto("/");
+  await page.getByTestId("task-card").filter({ hasText: "AC condensate" }).click();
+  const lens = page.getByTestId("coverage-lens");
+  await expect(lens.getByLabel(/Photo/)).toBeChecked();
+  await lens.getByTestId("proof-file").setInputFiles({ name: "condensate.png", mimeType: "image/png", buffer: png });
+  await lens.getByTestId("proof-submit").click();
+  await expect(page.getByTestId("coverage-lens")).toHaveCount(0);
+  await page.goto("/tasks?tab=evidence");
+  const row = page.getByTestId("evidence-row").filter({ hasText: "AC condensate" });
+  await expect(row.getByTestId("evidence-hash")).toHaveText(expected);
+  await expect(row).toContainText("33.3062");
+  await expect(row).toContainText("E1");
+  const href = await row.getByRole("link", { name: /Download/ }).getAttribute("href");
+  const res = await request.get(`http://localhost:3100${href}`);
+  expect(res.status()).toBe(200);
+  expect(createHash("sha256").update(await res.body()).digest("hex")).toBe(expected);
+  expect(res.headers()["x-content-sha256"]).toBe(expected);
+});
+
+test("photo proof without location permission is still accepted and says so", async ({ page, request }) => {
+  const png = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
+    "base64",
+  );
+  await inject(request, "heat_phoenix");
+  await page.goto("/");
+  await page.getByTestId("task-card").filter({ hasText: "AC condensate" }).click();
+  await page.getByTestId("proof-submit").click();
+  await expect(page.getByRole("alert")).toContainText("photo first");
+  await page.getByTestId("proof-file").setInputFiles({ name: "x.png", mimeType: "image/png", buffer: png });
+  await page.getByTestId("proof-submit").click();
+  await page.goto("/tasks?tab=evidence");
+  await expect(page.getByTestId("evidence-row").first()).toContainText("location not shared");
 });

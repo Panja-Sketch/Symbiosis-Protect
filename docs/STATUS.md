@@ -26,3 +26,8 @@
 - API additions: `GET /accounts/{id}/assets`, `PATCH /assets/{id}`; Director reset now restores seeded assets.
 - Verified: Playwright 36/36 at 390×844 and 1440×900 including axe WCAG 2.2 AA on 11 pages, no horizontal scroll, heat-scenario → SIMULATED task → Coverage Lens → complete → readiness updates, persona switch, asset edit. Vitest 4, pytest 60.
 - Gaps: Lighthouse score not yet measured; Agent/Underwriter roles listed in the switcher but views arrive in Phase 7; photo/doc proof in Phase 4.
+
+## Phase 4 — Proof (2026-10-25) ✅
+- Task completion with E0 one-tap (signed attestation hash), E1 photo (camera on phones; time = server clock, device time recorded separately; geolocation only if permitted, otherwise recorded as "not shared"), E2 document/PDF. SHA-256 computed server-side, blob stored via `BlobStorage` (local disk now, GCS in Phase 9), magic-byte type check, 8 MB cap, coordinate validation.
+- `GET /proofs/{id}/file` re-verifies the hash before serving (409 on mismatch); `GET /accounts/{id}/evidence`; Evidence tab in Tasks with hash, location, level mix, download.
+- Verified: pytest 67 (hash, tamper, type sniffing, size, coordinates, E0/E1 rules); Playwright 42/42 incl. photo → Evidence hash equals the client-computed SHA-256 → re-download byte-identical, and no-location path.

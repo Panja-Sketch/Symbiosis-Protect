@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     scheduler_enabled: bool = True
     scheduler_minutes: int = 15
     ai_asks_per_hour: int = 30
+    max_proof_bytes: int = 8_000_000
 
 
 @lru_cache

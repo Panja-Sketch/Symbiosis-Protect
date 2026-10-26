@@ -2,7 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
-import { CheckCircle2, Clock, Wallet } from "lucide-react";
+import { CheckCircle2, Clock, MapPin, Wallet } from "lucide-react";
+import { ProofCapture } from "@/components/proof-capture";
 import { Provenance } from "@/components/provenance";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -33,7 +34,6 @@ function CoverageLens({ task, policy, onClose }: { task: Task; policy: Policy; o
   const covs = task.coverage_codes
     .map((c) => ({ code: c, cov: policy.coverages.find((x) => x.code === c), end: policy.endorsements.find((x) => x.code === c), ex: policy.exclusions_plain.find((x) => x.code === c) }))
     .filter((x) => x.cov || x.end || x.ex);
-  const canAttest = task.proof_accepted.includes("E0");
 
   async function act(path: string, body?: object) {
     setErr(null);
@@ -104,25 +104,44 @@ function CoverageLens({ task, policy, onClose }: { task: Task; policy: Policy; o
 
       <h3 className={h}>Proof</h3>
       {task.status === "done" ? (
-        <p className="mt-1 text-sm text-saguaro-text">
-          <CheckCircle2 className="mr-1 inline h-4 w-4" aria-hidden />
-          Done. Proof level {task.proof[0]?.level}; SHA-256 <code className="break-all text-xs">{task.proof[0]?.sha256}</code>
-        </p>
+        <div className="mt-1 space-y-2 text-sm" data-testid="proof-done">
+          <p className="text-saguaro-text">
+            <CheckCircle2 className="mr-1 inline h-4 w-4" aria-hidden />
+            Done with proof level {task.proof[0]?.level} ({task.proof[0]?.type}).
+          </p>
+          <p>
+            SHA-256 <code className="break-all text-xs" data-testid="proof-hash">{task.proof[0]?.sha256}</code>
+          </p>
+          {task.proof[0]?.lat != null && (
+            <p>
+              <MapPin className="mr-1 inline h-4 w-4" aria-hidden />
+              Location {task.proof[0].lat?.toFixed(4)}, {task.proof[0].lon?.toFixed(4)} (from your device)
+            </p>
+          )}
+          {task.proof[0]?.uri && (
+            <a
+              className="inline-flex min-h-[44px] items-center font-semibold text-accent-text underline"
+              href={`/backend/api/v1/proofs/${task.proof[0].id}/file?download=true`}
+            >
+              Download your proof file
+            </a>
+          )}
+        </div>
       ) : (
         <>
-          <p className="mt-1 text-sm text-muted">
-            Accepted: {task.proof_accepted.join(", ")} (E0 one tap · E1 photo · E2 document). Photo and document capture arrive in the
-            proof update; one-tap confirmation works now where accepted.
-          </p>
+          <ProofCapture
+            task={task}
+            onSubmitted={() => {
+              onClose();
+              start(() => router.refresh());
+            }}
+          />
           {err && (
             <p role="alert" className="mt-2 rounded-lg bg-clay-soft p-2 text-sm text-clay-text">
               {err}
             </p>
           )}
-          <div className="sticky bottom-0 -mx-4 mt-4 flex flex-wrap gap-2 border-t border-line bg-surface p-4">
-            <Button disabled={!canAttest || pending} onClick={() => act("complete", { level: "E0" })} className="flex-1">
-              <CheckCircle2 className="h-4 w-4" aria-hidden /> I did this
-            </Button>
+          <div className="mt-3 flex flex-wrap gap-2 border-t border-line pt-3">
             <Button variant="secondary" disabled={pending} onClick={() => act("defer", { hours: 24 })}>
               Remind me tomorrow
             </Button>

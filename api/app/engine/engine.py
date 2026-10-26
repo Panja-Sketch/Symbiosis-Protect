@@ -222,20 +222,45 @@ class Engine:
         return t
 
     def complete(self, task_id: str, level: str = "E0", by_user: str = "demo-user", extra: dict | None = None,
-                 now: datetime | None = None) -> dict:
+                 now: datetime | None = None, blob: dict | None = None, storage=None) -> dict:
+        """Close a task with proof. `blob` = {data, content_type, filename} for E1/E2; E0 is a signed attestation.
+        The server clock is authoritative for captured_at; the device clock is recorded separately."""
         t = self.get_task(task_id)
         if t["status"] != "open":
             raise ValueError(f"task is {t['status']}, not open")
         if level not in t["proof_accepted"]:
             raise ValueError(f"proof level {level} not accepted for this task (accepted: {t['proof_accepted']})")
+        if level in ("E1", "E2") and not blob:
+            raise ValueError(f"proof level {level} needs a {'photo' if level == 'E1' else 'document'} file")
+        if level == "E0" and blob:
+            raise ValueError("E0 is a one-tap attestation and takes no file")
+        extra = extra or {}
         now = now or self.now()
-        body = {"task_id": task_id, "level": level, "at": now.isoformat(), "by": by_user, **(extra or {})}
-        proof = m.Proof(id=f"proof-{uuid.uuid4().hex[:8]}", level=level, type="attest" if level == "E0" else "photo",
-                        captured_at=now, sha256=hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest(),
-                        by_user=by_user, **{k: v for k, v in (extra or {}).items() if k in ("lat", "lon", "uri")})
-        t["proof"].append(proof.model_dump(mode="json"))
+        pid = f"proof-{uuid.uuid4().hex[:10]}"
+        uri = None
+        if blob:
+            digest = hashlib.sha256(blob["data"]).hexdigest()
+            key = f"proofs/{t['account_id']}/{task_id}/{pid}"
+            storage.save(key, blob["data"], blob["content_type"])
+            uri = key
+        else:
+            body = {"task_id": task_id, "level": level, "at": now.isoformat(), "by": by_user,
+                    **{k: v for k, v in extra.items() if k in ("lat", "lon")}}
+            digest = hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()
+        has_loc = extra.get("lat") is not None and extra.get("lon") is not None
+        proof = m.Proof(
+            id=pid, level=level, type=("attest" if level == "E0" else "photo" if level == "E1" else "document"),
+            captured_at=now, sha256=digest, uri=uri, by_user=by_user,
+            lat=extra.get("lat") if has_loc else None, lon=extra.get("lon") if has_loc else None,
+            client_captured_at=extra.get("client_captured_at"), filename=(blob or {}).get("filename"),
+            content_type=(blob or {}).get("content_type"), size_bytes=len(blob["data"]) if blob else None,
+            location_source="device" if has_loc else "none")
+        doc = proof.model_dump(mode="json")
+        t["proof"].append(doc)
         t.update(status="done", closed_at=now.isoformat())
         self.store.put("tasks", task_id, t)
+        self.store.put("proofs", pid, {**doc, "task_id": task_id, "account_id": t["account_id"],
+                                       "task_title": t["title"], "visibility": t["visibility"]})
         self.rebucket(t["account_id"])
         return self.get_task(task_id)
 

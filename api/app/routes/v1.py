@@ -3,11 +3,12 @@
 import hmac
 from datetime import date, datetime
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
 from pydantic import BaseModel
 
 from app import models as m
 from app.adapters import scenario
+from app.adapters.storage import sha256_hex
 from app.config import get_settings
 from app.deps import Container, get_container
 from app.ribbon import build_ribbon
@@ -126,20 +127,93 @@ def _readiness(c: Container, account_id: str) -> dict:
     return {"done": done, "applicable": applicable, "ratio": round(done / applicable, 3) if applicable else 1.0}
 
 
-class CompleteBody(BaseModel):
-    level: str = "E0"
-    lat: float | None = None
-    lon: float | None = None
+_MAGIC = [(bytes.fromhex("89504e470d0a1a0a"), "image/png"), (bytes.fromhex("ffd8ff"), "image/jpeg"),
+          (b"RIFF", "image/webp"), (b"%PDF-", "application/pdf")]
 
 
-@router.post("/tasks/{task_id}/complete", tags=["tasks"])
-def complete(task_id: str, body: CompleteBody, c: Container = Depends(C)):
+def _sniff(data: bytes) -> str | None:
+    for magic, ctype in _MAGIC:
+        if data.startswith(magic) and (ctype != "image/webp" or data[8:12] == b"WEBP"):
+            return ctype
+    return None
+
+
+def _num(v, lo, hi, name):
+    if v in (None, ""):
+        return None
     try:
-        return c.engine.complete(task_id, body.level, extra=body.model_dump(exclude={"level"}, exclude_none=True))
+        f = float(v)
+    except ValueError:
+        raise HTTPException(422, f"{name} must be a number") from None
+    if not lo <= f <= hi:
+        raise HTTPException(422, f"{name} out of range")
+    return f
+
+
+@router.post("/tasks/{task_id}/complete", tags=["tasks"],
+             description="JSON {level:'E0'} for one-tap, or multipart (level, file, lat, lon, client_captured_at) "
+                         "for E1 photo / E2 document.")
+async def complete(task_id: str, request: Request, c: Container = Depends(C)):
+    ctype = request.headers.get("content-type", "")
+    file = None
+    if ctype.startswith("application/json"):
+        data = await request.json()
+    else:
+        form = await request.form()
+        data, file = dict(form), form.get("file")
+    level = data.get("level", "E0")
+    extra = {"lat": _num(data.get("lat"), -90, 90, "lat"), "lon": _num(data.get("lon"), -180, 180, "lon")}
+    if (extra["lat"] is None) != (extra["lon"] is None):
+        raise HTTPException(422, "lat and lon must be sent together")
+    if data.get("client_captured_at"):
+        try:
+            extra["client_captured_at"] = datetime.fromisoformat(str(data["client_captured_at"]).replace("Z", "+00:00"))
+        except ValueError:
+            raise HTTPException(422, "client_captured_at must be ISO 8601") from None
+    blob = None
+    if file is not None and hasattr(file, "read"):
+        raw = await file.read()
+        if len(raw) > c.settings.max_proof_bytes:
+            raise HTTPException(413, f"file larger than {c.settings.max_proof_bytes} bytes")
+        kind = _sniff(raw)
+        img = {"image/png", "image/jpeg", "image/webp"}
+        allowed = {"E1": img, "E2": img | {"application/pdf"}}
+        if kind is None or kind not in allowed.get(level, set()):
+            raise HTTPException(415, "unsupported file type for this proof level")
+        blob = {"data": raw, "content_type": kind, "filename": getattr(file, "filename", None)}
+    try:
+        return c.engine.complete(task_id, level, extra=extra, blob=blob, storage=c.storage)
     except KeyError:
         raise HTTPException(404, "task not found") from None
     except ValueError as e:
         raise HTTPException(409, str(e)) from None
+
+
+@router.get("/proofs/{proof_id}/file", tags=["evidence"])
+def proof_file(proof_id: str, download: bool = False, c: Container = Depends(C)):
+    p = _must(c.store, "proofs", proof_id)
+    if not p.get("uri"):
+        raise HTTPException(404, "this proof has no file (one-tap attestation)")
+    data = c.storage.read(p["uri"])
+    if sha256_hex(data) != p["sha256"]:
+        raise HTTPException(409, "stored file no longer matches its recorded SHA-256")
+    disp = "attachment" if download else "inline"
+    name = p.get("filename") or f"{proof_id}"
+    return Response(data, media_type=p["content_type"], headers={
+        "X-Content-SHA256": p["sha256"], "Content-Disposition": f'{disp}; filename="{name}"',
+        "Cache-Control": "private, max-age=0"})
+
+
+@router.get("/accounts/{account_id}/evidence", tags=["evidence"])
+def evidence(account_id: str, c: Container = Depends(C)):
+    _must(c.store, "accounts", account_id)
+    rows = sorted(c.store.list("proofs", account_id=account_id), key=lambda p: p["captured_at"], reverse=True)
+    hist = [h for h in c.store.list("task_history", account_id=account_id) if h["status"] == "done"]
+    mix = {}
+    for r in rows:
+        mix[r["level"]] = mix.get(r["level"], 0) + 1
+    return {"proofs": [{**r, "file_url": f"/api/v1/proofs/{r['id']}/file" if r.get("uri") else None} for r in rows],
+            "history": hist, "level_mix": mix}
 
 
 class DeferBody(BaseModel):
@@ -228,7 +302,7 @@ def director_time_travel(body: TimeTravelBody, c: Container = Depends(C)):
 @router.post("/director/reset", tags=["director"])
 def director_reset(c: Container = Depends(C)):
     _demo_only()
-    for col in ("tasks", "alerts", "events", "outbox"):
+    for col in ("tasks", "alerts", "events", "outbox", "proofs"):
         for doc in c.store.list(col):
             c.store.delete(col, doc["id"])
     scenario.reset(c.store)

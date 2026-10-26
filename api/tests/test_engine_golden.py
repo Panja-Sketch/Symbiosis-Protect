@@ -157,7 +157,7 @@ def test_completed_task_is_not_recreated_during_cooldown(env):
     engine, *_ = env
     engine.evaluate_account("acct-p1")
     t = next(t for t in engine.tasks("acct-p1", "open") if "hose_age" in t["rule_id"])
-    done = engine.complete(t["id"], "E1")
+    done = engine.complete(t["id"], "E0")
     assert done["status"] == "done" and done["proof"][0]["sha256"] and len(done["proof"][0]["sha256"]) == 64
     engine.evaluate_account("acct-p1")
     assert "ho.hose_age" not in rule_ids(engine, "acct-p1")

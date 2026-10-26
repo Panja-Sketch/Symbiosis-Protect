@@ -2,11 +2,13 @@
 
 from dataclasses import dataclass
 from functools import lru_cache
+from pathlib import Path
 
 from app.adapters.cache import FirestoreCache, MemoryCache
 from app.adapters.history import DerivedHistoryProvider
 from app.adapters.notifier import ConsoleEmailNotifier, InAppNotifier, NotifierChain
 from app.adapters.scenario import ScenarioProvider
+from app.adapters.storage import BlobStorage, LocalStorage
 from app.adapters.weather import CompositeWeatherProvider, NWSProvider, OpenMeteoProvider
 from app.config import Settings, get_settings
 from app.engine.engine import Engine
@@ -24,9 +26,10 @@ class Container:
     history: DerivedHistoryProvider
     config: Config
     email: ConsoleEmailNotifier
+    storage: BlobStorage
 
 
-def build_container(settings: Settings | None = None, store: Store | None = None, cache=None, weather=None) -> Container:
+def build_container(settings: Settings | None = None, store: Store | None = None, cache=None, weather=None, storage=None) -> Container:
     s = settings or get_settings()
     if store is None:
         if s.firestore_emulator_host:
@@ -45,7 +48,8 @@ def build_container(settings: Settings | None = None, store: Store | None = None
     email = ConsoleEmailNotifier(store)
     config = load_config()
     engine = Engine(store, scenario, history, NotifierChain(InAppNotifier(store), email), load_rules(), config)
-    return Container(s, store, engine, scenario, history, config, email)
+    root = Path(__file__).resolve().parents[2] / s.local_storage_dir
+    return Container(s, store, engine, scenario, history, config, email, storage or LocalStorage(root))
 
 
 @lru_cache

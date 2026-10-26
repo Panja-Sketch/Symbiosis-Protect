@@ -4,22 +4,25 @@ import { TaskList } from "@/components/task-list";
 import { apiGet } from "@/lib/api";
 import { getSession } from "@/lib/session";
 import { cn, fmtDate } from "@/lib/utils";
-import type { Policy, TasksResponse } from "@/lib/types";
+import type { EvidenceResponse, Policy, TasksResponse } from "@/lib/types";
+import { EvidenceTab } from "@/components/evidence-tab";
 
 const TABS = [
   { key: "do_now", label: "Do now" },
   { key: "coming_up", label: "Coming up" },
   { key: "done", label: "Done" },
+  { key: "evidence", label: "Evidence" },
 ] as const;
 
 export default async function TasksPage({ searchParams }: { searchParams: { tab?: string; open?: string } }) {
   const { account_id } = getSession();
   const tab = TABS.find((t) => t.key === searchParams.tab)?.key ?? "do_now";
   const [res, counts, policies] = await Promise.all([
-    apiGet<TasksResponse>(`/accounts/${account_id}/tasks?status=${tab}`),
+    apiGet<TasksResponse>(`/accounts/${account_id}/tasks?status=${tab === "evidence" ? "done" : tab}`),
     apiGet<TasksResponse>(`/accounts/${account_id}/tasks?status=open`),
     apiGet<Policy[]>(`/accounts/${account_id}/policies`),
   ]);
+  const evidence = tab === "evidence" ? await apiGet<EvidenceResponse>(`/accounts/${account_id}/evidence`) : null;
   const policy = await apiGet<Policy>(`/policies/${policies[0].id}`);
   const n = { do_now: counts.tasks.filter((t) => t.bucket === "do_now").length, coming_up: counts.tasks.filter((t) => t.bucket === "coming_up").length };
   const openId = searchParams.open && [...res.tasks, ...counts.tasks].some((t) => t.id === searchParams.open) ? searchParams.open : undefined;
@@ -39,17 +42,21 @@ export default async function TasksPage({ searchParams }: { searchParams: { tab?
             )}
           >
             {t.label}
-            {t.key !== "done" && <span className="rounded-full bg-surface-2 px-1.5 text-xs">{n[t.key]}</span>}
+            {(t.key === "do_now" || t.key === "coming_up") && <span className="rounded-full bg-surface-2 px-1.5 text-xs">{n[t.key]}</span>}
           </Link>
         ))}
       </nav>
 
+      {tab === "evidence" ? (
+        <EvidenceTab evidence={evidence} />
+      ) : (
       <TaskList
         tasks={res.tasks}
         policy={policy}
         openId={openId}
         empty={tab === "done" ? "Nothing completed yet in this session." : "Nothing here right now."}
       />
+      )}
 
       {tab === "done" && res.history.length > 0 && (
         <section aria-labelledby="past-h" className="space-y-2">

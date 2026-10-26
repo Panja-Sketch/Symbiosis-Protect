@@ -176,6 +176,11 @@ class Proof(BaseModel):
     sha256: str
     uri: str | None = None
     by_user: str
+    client_captured_at: datetime | None = None
+    filename: str | None = None
+    content_type: str | None = None
+    size_bytes: int | None = None
+    location_source: Literal["device", "none"] = "none"
 
 
 class HistoricTask(BaseModel):
