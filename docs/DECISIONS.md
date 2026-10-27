@@ -43,3 +43,6 @@
 | 2026-10-26 | /internal/evaluate in the cloud requires a Google OIDC ID token from the scheduler service account (INTERNAL_AUTH=oidc); demo mode no longer bypasses it when oidc is on | Spec section 12/14 |
 | 2026-10-26 | Fonts use display: optional | Removed a 0.286 layout shift; Lighthouse performance 92-93 on mobile |
 | 2026-10-26 | Phase 9 scripts are written and dry-run tested but NOT executed; deploy needs the owner to say deploy (OWNER_SAID_DEPLOY=yes) | CLAUDE.md rule |
+| 2026-10-27 | Deployed to a new project symbiosis-protect-az-26, not symbiosis-ai-2026 | The existing project hosts another app with same-named services and a default Firestore DB; my reset endpoint deletes documents in collections like accounts/tasks, so sharing it was unsafe |
+| 2026-10-27 | GEMINI_MODEL=gemini-3.5-flash-lite on the global endpoint | gemini-2.x returned 404 for the project; listed as available only for 3.x |
+| 2026-10-27 | NWS contact e-mail in the deployed User-Agent is panjacharans@gmail.com (as given at deploy time; earlier local .env uses panjacharan8@gmail.com) | Owner supplied it with the deploy instruction; confirm which is correct |

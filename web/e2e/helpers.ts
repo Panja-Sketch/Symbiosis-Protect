@@ -16,6 +16,12 @@ export async function inject(request: APIRequestContext, kind: string) {
 
 /** Sets the signed demo-identity cookie (same algorithm as lib/session.ts) so tests can pick a persona. */
 export async function asPersona(context: BrowserContext, accountId: string, role = "policyholder") {
+  if (!process.env.SESSION_SECRET && process.env.BASE_URL) {
+    // Deployed app: let the server issue its own signed cookie (we never hold its secret).
+    const r = await context.request.post(`${BASE}/api/session`, { data: { account_id: accountId, role } });
+    if (!r.ok()) throw new Error(`session failed ${r.status()}`);
+    return;
+  }
   const body = Buffer.from(JSON.stringify({ account_id: accountId, role })).toString("base64url");
   const sig = createHmac("sha256", process.env.SESSION_SECRET ?? "dev-only-change-me").update(body).digest("base64url");
   await context.addCookies([{ name: "sp_session", value: `${body}.${sig}`, domain: new URL(BASE).hostname, path: "/", secure: BASE.startsWith("https") }]);

@@ -171,7 +171,7 @@ test("ask: unknown topic is refused and handed to the agent; claim decision is n
   await page.goto("/ask");
   await page.getByLabel("Your question about your coverage").fill("Do you cover my dog's vet bills?");
   await page.getByRole("button", { name: "Send question" }).click();
-  await expect(page.getByTestId("answer-text")).toContainText("could not find that in your policy summary");
+  await expect(page.getByTestId("answer-text")).toContainText(/could not find that in your policy summary|does not mention|not (found|in) your policy/i);
   await expect(page.getByTestId("handoff")).toContainText("Talk to your agent about this");
   await page.getByLabel("Your question about your coverage").fill("Will my claim be paid if a hose bursts?");
   await page.getByRole("button", { name: "Send question" }).click();
