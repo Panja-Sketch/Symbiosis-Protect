@@ -93,7 +93,7 @@ export default async function UnderwriterPage() {
               {p.accounts.map((a) => (
                 <tr key={a.account_id} className="border-b border-line/60" data-testid="portfolio-row">
                   <th scope="row" className="p-3 font-medium">
-                    <Link href={`/client/${a.account_id}`} className="text-accent-text underline underline-offset-2">
+                    <Link prefetch={false} href={`/client/${a.account_id}`} className="text-accent-text underline underline-offset-2">
                       {a.display_name}
                     </Link>
                     <span className="block text-xs font-normal text-muted">{a.city}</span>

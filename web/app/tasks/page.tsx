@@ -33,6 +33,7 @@ export default async function TasksPage({ searchParams }: { searchParams: { tab?
       <nav aria-label="Task lists" className="flex gap-1 rounded-xl bg-surface-2 p-1">
         {TABS.map((t) => (
           <Link
+          prefetch={false}
             key={t.key}
             href={`/tasks?tab=${t.key}`}
             aria-current={tab === t.key ? "page" : undefined}

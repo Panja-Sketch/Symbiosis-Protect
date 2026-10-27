@@ -108,6 +108,7 @@ export function AskChat({ accountId, starters, agentPhone }: { accountId: string
                     {m.answer.citations.map((c) => (
                       <li key={c.code}>
                         <Link
+          prefetch={false}
                           href={`/coverage#${c.code}`}
                           data-testid="citation-chip"
                           className="inline-flex min-h-[44px] items-center gap-1 rounded-full border border-accent/50 bg-accent-soft px-3 text-xs font-semibold text-accent-text"

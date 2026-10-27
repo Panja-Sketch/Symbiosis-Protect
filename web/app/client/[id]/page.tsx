@@ -15,7 +15,7 @@ export default async function ClientPage({ params }: { params: { id: string } })
   return (
     <div className="space-y-5">
       <div>
-        <Link href={back} className="inline-flex min-h-[44px] items-center text-sm font-semibold text-accent-text underline underline-offset-2">
+        <Link prefetch={false} href={back} className="inline-flex min-h-[44px] items-center text-sm font-semibold text-accent-text underline underline-offset-2">
           ← Back
         </Link>
         <h1 className="font-display text-2xl font-semibold md:text-3xl">{d.account.display_name}</h1>

@@ -107,7 +107,7 @@ export function ClientCard({ c }: { c: ClientRow }) {
 
       <div className="flex flex-wrap items-center justify-between gap-2">
         <ProofMix mix={c.proof_mix} />
-        <Link href={`/client/${c.account_id}`} className="inline-flex min-h-[44px] items-center gap-1 text-sm font-semibold text-accent-text underline underline-offset-2">
+        <Link prefetch={false} href={`/client/${c.account_id}`} className="inline-flex min-h-[44px] items-center gap-1 text-sm font-semibold text-accent-text underline underline-offset-2">
           Open account <ArrowRight className="h-4 w-4" aria-hidden />
         </Link>
       </div>

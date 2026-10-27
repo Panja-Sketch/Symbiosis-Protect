@@ -118,7 +118,7 @@ export function HistoryTeaser({ history, city }: { history: HistoryResponse; cit
         <p className="mt-3 text-sm">
           FEMA National Risk Index for your area: <strong>{history.risk_index.risk_rating}</strong>.
         </p>
-        <Link href="/place" className="mt-2 inline-flex min-h-[44px] items-center gap-1 text-sm font-semibold text-accent-text underline underline-offset-2">
+        <Link prefetch={false} href="/place" className="mt-2 inline-flex min-h-[44px] items-center gap-1 text-sm font-semibold text-accent-text underline underline-offset-2">
           See local history <ArrowRight className="h-4 w-4" aria-hidden />
         </Link>
       </CardBody>

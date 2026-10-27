@@ -17,7 +17,7 @@ export default function MorePage() {
       <ul className="divide-y divide-line rounded-card border border-line bg-surface">
         {LINKS.map(({ href, label, note, icon: Icon }) => (
           <li key={href}>
-            <Link href={href} className="flex min-h-[56px] items-center gap-3 px-4 py-2 hover:bg-surface-2">
+            <Link prefetch={false} href={href} className="flex min-h-[56px] items-center gap-3 px-4 py-2 hover:bg-surface-2">
               <Icon className="h-5 w-5 text-accent-text" aria-hidden />
               <span className="flex-1">
                 <span className="block font-semibold">{label}</span>

@@ -64,7 +64,7 @@ export function AlertList({ alerts }: { alerts: AlertRow[] }) {
                   <span>{fmtDate(a.created_at, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })}</span>
                   <span>Sent via {a.sent_channels.length ? a.sent_channels.map((c) => c.replace("_", " ")).join(", ") : "—"}</span>
                   {a.deep_link && (
-                    <Link href={a.deep_link} className="inline-flex min-h-[44px] items-center font-semibold text-accent-text underline underline-offset-2">
+                    <Link prefetch={false} href={a.deep_link} className="inline-flex min-h-[44px] items-center font-semibold text-accent-text underline underline-offset-2">
                       Open
                     </Link>
                   )}

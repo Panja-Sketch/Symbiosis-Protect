@@ -1,7 +1,8 @@
 import type { APIRequestContext, BrowserContext, Page } from "@playwright/test";
 import { createHmac } from "node:crypto";
 
-export const API = "http://127.0.0.1:8000/api/v1";
+export const API = `${process.env.API_URL ?? "http://127.0.0.1:8000"}/api/v1`;
+const BASE = process.env.BASE_URL ?? "http://localhost:3100";
 
 export async function resetDemo(request: APIRequestContext) {
   const r = await request.post(`${API}/director/reset`);
@@ -17,7 +18,7 @@ export async function inject(request: APIRequestContext, kind: string) {
 export async function asPersona(context: BrowserContext, accountId: string, role = "policyholder") {
   const body = Buffer.from(JSON.stringify({ account_id: accountId, role })).toString("base64url");
   const sig = createHmac("sha256", process.env.SESSION_SECRET ?? "dev-only-change-me").update(body).digest("base64url");
-  await context.addCookies([{ name: "sp_session", value: `${body}.${sig}`, domain: "localhost", path: "/" }]);
+  await context.addCookies([{ name: "sp_session", value: `${body}.${sig}`, domain: new URL(BASE).hostname, path: "/", secure: BASE.startsWith("https") }]);
 }
 
 export async function noHorizontalScroll(page: Page) {

@@ -130,7 +130,7 @@ test("photo proof: stored with hash, location, appears in Evidence, re-downloads
   await expect(row).toContainText("33.3062");
   await expect(row).toContainText("E1");
   const href = await row.getByRole("link", { name: /Download/ }).getAttribute("href");
-  const res = await request.get(`http://localhost:3100${href}`);
+  const res = await request.get(`${process.env.BASE_URL ?? "http://localhost:3100"}${href}`);
   expect(res.status()).toBe(200);
   expect(createHash("sha256").update(await res.body()).digest("hex")).toBe(expected);
   expect(res.headers()["x-content-sha256"]).toBe(expected);

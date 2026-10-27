@@ -78,7 +78,7 @@ export function RiskRibbon({ ribbon }: { ribbon: Ribbon }) {
             <ul className="mt-2 space-y-1">
               {day.task_pins.map((t) => (
                 <li key={t.task_id}>
-                  <Link href={`/tasks?open=${t.task_id}`} className="inline-flex min-h-[44px] items-center gap-2 font-medium text-accent-text underline underline-offset-2">
+                  <Link prefetch={false} href={`/tasks?open=${t.task_id}`} className="inline-flex min-h-[44px] items-center gap-2 font-medium text-accent-text underline underline-offset-2">
                     <Pin className="h-4 w-4" aria-hidden /> {t.title}
                   </Link>
                 </li>

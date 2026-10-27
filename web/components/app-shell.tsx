@@ -49,6 +49,7 @@ export async function AppShell({ children }: { children: ReactNode }) {
       </div>
       {process.env.DEMO_MODE !== "false" && (
         <Link
+          prefetch={false}
           href="/director"
           className="fixed bottom-20 right-3 z-40 inline-flex min-h-[44px] items-center gap-2 rounded-full border border-line bg-surface px-4 text-sm font-semibold shadow-lift hover:bg-surface-2 lg:bottom-4"
         >

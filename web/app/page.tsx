@@ -47,7 +47,7 @@ export default async function HomePage() {
             <h2 id="donow-h" className="font-display text-lg font-semibold">
               Do now
             </h2>
-            <Link href="/tasks" className="inline-flex min-h-[44px] items-center text-sm font-semibold text-accent-text underline underline-offset-2">
+            <Link prefetch={false} href="/tasks" className="inline-flex min-h-[44px] items-center text-sm font-semibold text-accent-text underline underline-offset-2">
               All tasks
             </Link>
           </div>

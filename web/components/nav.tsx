@@ -33,6 +33,7 @@ export function Sidebar({ unread, role }: { unread: number; role: Role }) {
     <nav aria-label="Primary" className="hidden w-56 shrink-0 flex-col gap-1 border-r border-line bg-surface p-3 lg:flex">
       {items.map(({ href, label, icon: Icon }) => (
         <Link
+          prefetch={false}
           key={href}
           href={href}
           aria-current={active(path, href) ? "page" : undefined}
@@ -68,6 +69,7 @@ export function TabBar({ unread, role }: { unread: number; role: Role }) {
         const on = href === "/more" ? moreActive : active(path, href);
         return (
           <Link
+          prefetch={false}
             key={href}
             href={href}
             aria-current={on ? "page" : undefined}
@@ -95,6 +97,7 @@ function RoleTabBar({ role }: { role: Exclude<Role, "policyholder"> }) {
     <nav aria-label="Primary" className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-1 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden">
       {items.map(({ href, label, icon: Icon }) => (
         <Link
+          prefetch={false}
           key={href}
           href={href}
           aria-current={active(path, href) || path.startsWith("/client") ? "page" : undefined}

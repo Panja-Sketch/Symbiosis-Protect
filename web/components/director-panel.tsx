@@ -156,7 +156,7 @@ export function DirectorPanel({ names }: { names: Record<string, string> }) {
           ))}
         </div>
         <p className="text-sm text-muted">
-          After a device event, open the <Link href="/sense" className="font-semibold text-accent-text underline">Sense</Link> screen as that persona.
+          After a device event, open the <Link prefetch={false} href="/sense" className="font-semibold text-accent-text underline">Sense</Link> screen as that persona.
         </p>
       </section>
 
