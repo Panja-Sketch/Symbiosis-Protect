@@ -13,7 +13,9 @@ WEB_SA="symbiosis-web@${PROJECT_ID}.iam.gserviceaccount.com"
 SCHED_SA="symbiosis-sched@${PROJECT_ID}.iam.gserviceaccount.com"
 SCHED_JOB="${SCHED_JOB:-symbiosis-evaluate}"
 IMAGE_BASE="${REGION}-docker.pkg.dev/${PROJECT_ID}/${REPO}"
-GEMINI_MODEL="${GEMINI_MODEL:-gemini-2.5-flash-lite}"
+GEMINI_MODEL="${GEMINI_MODEL:-gemini-3.5-flash-lite}"
+# gemini-2.x models were not available to this project; the 3.5 flash-lite model is served from the global endpoint.
+AI_LOCATION="${AI_LOCATION:-global}"
 NWS_USER_AGENT="${NWS_USER_AGENT:?Set NWS_USER_AGENT, e.g. 'SymbiosisProtectDemo/0.1 (you@example.com)'}"
 DRY_RUN="${DRY_RUN:-0}"
 

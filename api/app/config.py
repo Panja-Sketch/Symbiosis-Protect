@@ -11,10 +11,11 @@ class Settings(BaseSettings):
     carrier_name: str = "Symbiosis Protect"
     carrier_primary_color: str = "#0E9F9A"
     nws_user_agent: str = "SymbiosisProtectDemo/0.1 (set-NWS_USER_AGENT)"
-    gemini_model: str = "gemini-2.5-flash-lite"
+    gemini_model: str = "gemini-3.5-flash-lite"
     google_cloud_project: str = "symbiosis-protect-demo"
     google_cloud_location: str = "us-central1"
     firestore_emulator_host: str | None = None
+    store_backend: str = "auto"  # auto = Firestore when an emulator is configured, else memory | firestore | memory
     storage_backend: str = "local"
     local_storage_dir: str = ".local/storage"
     auth_mode: str = "demo"

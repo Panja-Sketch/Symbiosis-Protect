@@ -36,7 +36,7 @@ class Container:
 def build_container(settings: Settings | None = None, store: Store | None = None, cache=None, weather=None, storage=None, gemini=None) -> Container:
     s = settings or get_settings()
     if store is None:
-        if s.firestore_emulator_host:
+        if s.store_backend == "firestore" or (s.store_backend == "auto" and s.firestore_emulator_host):
             from app.db import get_db
 
             db = get_db()

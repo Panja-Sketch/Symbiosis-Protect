@@ -50,7 +50,7 @@ run gcloud builds submit --config infra/cloudbuild-web.yaml --substitutions "_IM
 echo "== 8. Deploy API (min 0 / max 1 instance: Sense device state is serialized in-process, see docs/DECISIONS.md)"
 run gcloud run deploy "$API_SERVICE" --image "${IMAGE_BASE}/api:latest" --region "$REGION" --project "$PROJECT_ID" \
   --service-account "$API_SA" --allow-unauthenticated --min-instances 0 --max-instances 1 --memory 1Gi --cpu 1 --timeout 60 \
-  --set-env-vars "GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${REGION},STORAGE_BACKEND=gcs,GCS_BUCKET=${BUCKET},DEMO_MODE=true,SCHEDULER_ENABLED=false,AI_ENABLED=true,GEMINI_MODEL=${GEMINI_MODEL},AUTH_MODE=demo,INTERNAL_AUTH=oidc,SCHEDULER_SERVICE_ACCOUNT=${SCHED_SA},NWS_USER_AGENT=${NWS_USER_AGENT}" \
+  --set-env-vars "GOOGLE_CLOUD_PROJECT=${PROJECT_ID},GOOGLE_CLOUD_LOCATION=${AI_LOCATION},STORE_BACKEND=firestore,STORAGE_BACKEND=gcs,GCS_BUCKET=${BUCKET},DEMO_MODE=true,SCHEDULER_ENABLED=false,AI_ENABLED=true,GEMINI_MODEL=${GEMINI_MODEL},AUTH_MODE=demo,INTERNAL_AUTH=oidc,SCHEDULER_SERVICE_ACCOUNT=${SCHED_SA},NWS_USER_AGENT=${NWS_USER_AGENT}" \
   --set-secrets "SESSION_SECRET=symbiosis-session-secret:latest"
 API_URL="$(capture gcloud run services describe "$API_SERVICE" --region "$REGION" --project "$PROJECT_ID" --format 'value(status.url)')"
 # The Scheduler's ID token is minted for this audience; the API verifies it.
@@ -72,7 +72,7 @@ run gcloud scheduler jobs create http "$SCHED_JOB" --location "$REGION" --projec
 echo "== 11. Smoke test"
 WEB_URL="$(capture gcloud run services describe "$WEB_SERVICE" --region "$REGION" --project "$PROJECT_ID" --format 'value(status.url)')"
 if [[ "$DRY_RUN" != "1" ]]; then
-  curl -fsS "${API_URL}/healthz" && echo
+  curl -fsS "${API_URL}/api/v1/healthz" && echo
   curl -fsS "${WEB_URL}/api/healthz" && echo
 fi
 echo "Web: ${WEB_URL}"
