@@ -11,7 +11,7 @@ __pycache__/
 # node
 node_modules/
 .next/
-out/
+/web/out/
 # data
 data/raw/
 # local runtime
@@ -19,7 +19,8 @@ data/raw/
 firestore-debug.log
 ui-debug.log
 *.log
-coverage/
+/coverage/
+/web/coverage/
 playwright-report/
 test-results/
 .DS_Store
